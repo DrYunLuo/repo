@@ -1,0 +1,4 @@
+git clone [地址]
+git add . 推送本地
+git commit -m ' ' 推送本地缓存
+git push origin master
