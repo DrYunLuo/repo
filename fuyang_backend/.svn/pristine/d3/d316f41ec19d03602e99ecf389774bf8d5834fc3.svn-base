@@ -1,0 +1,91 @@
+<div ng-include="'tpl/include/header.html'"></div>
+<div id="groups_main" ng-controller="campaignCtrl">
+    <div class="container" style="padding-top:15px;">
+        <div class="left_container col-xs-12 col-sm-8 col-md-8 col-lg-8">
+            <div class="groups_title col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding:0; ">
+                <span class="col-xs-3 col-sm-3 col-md-3 col-lg-3">活动详情</span>
+                <div class="crumb">
+                    <ol class="bread col-xs-9 col-sm-9 col-md-9 col-lg-9" style="padding: 0;">
+                        <li><a class="g_clc groups_active" href="">今日</a></li>
+                        <li><a class="g_clc" href="" >本周</a></li>
+                        <li><a class="g_clc" href="">本月</a></li>
+                        <li><a class="g_clc" href="">最新</a></li>
+                        <li><a class="g_clc" href="">最热</a></li>
+                        <li><a class="g_clc" href="">全部</a></li>
+                    </ol>
+                </div>
+            </div>
+            <!--<div class="groups_title col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding:0; ">-->
+                <!--<span class="col-xs-3 col-sm-3 col-md-3 col-lg-3">活动详情</span>-->
+                <!--<div class="crumb">-->
+                    <!--<ol class="bread col-xs-9 col-sm-9 col-md-9 col-lg-9" style="padding: 0;">-->
+                        <!--<li><a href="#">今日</a></li>-->
+                        <!--<li><a href="#">本周</a></li>-->
+                        <!--<li><a href="#">本月</a></li>-->
+                        <!--<li><a href="#">最新</a></li>-->
+                        <!--<li><a href="#">最热</a></li>-->
+                        <!--<li><a href="#">全部</a></li>-->
+                    <!--</ol>-->
+                <!--</div>-->
+            <!--</div>-->
+            <div class="groups_detail col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding:12px 0;">
+                <div class="media col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding:8px 0;">
+                    <a class="media-left" href="#">
+                        <img src="img/groups1.jpg" alt="">
+                    </a>
+                    <div class="media-body">
+                        <h4 class="media-heading"><a href="#/active_detail">革命烈士公祭活动&nbsp;&nbsp;</a></h4>
+                        <div class="person campaign_person">
+                            活动时间: &nbsp;<span>14</span>&nbsp;
+                        </div>
+                        <div class="groups_description campaign_description">
+                            发起组织:
+                            <span class="description">阜阳褒扬英烈志愿者协会</span>
+                        </div>
+                        <div class="campaign_leader">
+                            发起人: <span>胡青</span>
+                        </div>
+                        <div class="campaign_mess">
+                            参与人数：<span class="status">20131</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pagin">
+                <ul class="pagination col-xs-12 col-sm-12 col-md-12 col-lg-12"><li><a href="#"><< 返回</a></li>
+                    <li><a href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#">4</a></li>
+                    <li><a href="#">5</a></li>
+                    <li><a href="#">下一页 >></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="right_container col-xs-12 col-sm-4 col-md-4 col-lg-4">
+            <div class="create_group create_campaign col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <button>发起组织活动</button>
+                <span></span>
+            </div>
+            <div class="group_news col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <h3 class="col-xs-5 col-sm-5 col-md-5 col-lg-5">各区动态</h3>
+                <ul class="group_news_content col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <li ng-repeat="obj in news"><a href="#/news_detail/{{obj.id}}" ng-bind="obj.title"></a></li>
+                </ul>
+                <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11" style="text-align: right">
+                    <a href="">更多>></a>
+                </div>
+            </div>
+            <div class="group_news col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <h3 class="col-xs-5 col-sm-5 col-md-5 col-lg-5">活动信息</h3>
+                <ul class="group_news_content col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <li ng-repeat="obj in campaigns"><a href="#/news_detail/{{obj.id}}" ng-bind="obj.title"></a></li>
+                </ul>
+                <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11" style="text-align: right">
+                    <a href="">更多>></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div ng-include="'tpl/include/footer.html'"></div>

@@ -1,0 +1,524 @@
+package com.yichuang.fuyang.web;
+
+
+
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.fileupload.disk.DiskFileItem;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.net.ftp.FTPClient;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+
+import com.github.pagehelper.PageInfo;
+import com.yichuang.fuyang.entity.Campaignrecords;
+import com.yichuang.fuyang.entity.Campaigns;
+import com.yichuang.fuyang.service.CampaignrecordsService;
+import com.yichuang.fuyang.service.CampaignsService;
+import com.yichuang.fuyang.service.GroupsService;
+import com.yichuang.fuyang.service.PropertyService;
+import com.yichuang.fuyang.service.YichuangException;
+import com.yichuang.fuyang.util.DefaultResponse;
+import com.yichuang.fuyang.util.FTPUtil;
+import com.yichuang.fuyang.util.JsonResult;
+import com.yichuang.fuyang.util.Utils;
+import com.yichuang.fuyang.util.YCConstants;
+
+/**
+ * 活动功能
+ * @author Administrator
+ *
+ */
+@Controller
+@RequestMapping("/campaigns")
+public class CampaignsController {
+	@Autowired
+	private CampaignsService campaignsService;
+	
+	@Autowired
+	private PropertyService propertyService;
+	
+	@Autowired
+	private GroupsService groupsService;
+	
+	@Autowired
+	private CampaignrecordsService campaignrecordsService;
+	
+	/**
+	 * 获取热门活动
+	 * @param pageNo
+	 * @param pageSize
+	 * @return
+	 */
+	@RequestMapping("/getHostCampaigns")
+	@ResponseBody
+	public JsonResult<PageInfo<Campaigns>> getHostCampaigns(Integer pageNo,Integer pageSize,String keyParams){
+		JsonResult<PageInfo<Campaigns>> result = null;
+		try {
+			JsonResult<PageInfo<Campaigns>> checkResult = Utils.checkKeyParams(propertyService.KEY, keyParams);
+			if(checkResult != null){
+				result = checkResult;
+			}else{
+			
+				PageInfo<Campaigns> pageInfo = campaignsService.getHostCampaigns(pageNo, pageSize);
+				result =   new JsonResult<PageInfo<Campaigns>>(pageInfo);
+			}
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new JsonResult<PageInfo<Campaigns>>(1,"获取信息失败",null);
+		}
+	}
+	
+	/**
+	 * 获取最新活动
+	 * @param pageNo
+	 * @param pageSize
+	 * @return
+	 */
+	@RequestMapping("/getNewCampaigns")
+	@ResponseBody
+	public JsonResult<PageInfo<Campaigns>> getNewCamPaigns(Integer pageNo,Integer pageSize,String keyParams){
+		JsonResult<PageInfo<Campaigns>> result = null;
+		try {
+			JsonResult<PageInfo<Campaigns>> checkResult = Utils.checkKeyParams(propertyService.KEY, keyParams);
+			if(checkResult != null){
+				result = checkResult;
+			}else {
+				PageInfo<Campaigns> pageInfo = campaignsService.getNewCampaigns(pageNo, pageSize);
+				result =   new JsonResult<PageInfo<Campaigns>>(pageInfo);
+			}
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new JsonResult<PageInfo<Campaigns>>(1,"获取信息失败",null);
+		}
+	}
+	
+	/**
+	 * 获取首页活动信息
+	 * @param pageNo
+	 * @param pageSize
+	 * @return
+	 */
+	@RequestMapping("/getRecommendCampaigns")
+	@ResponseBody
+	public JsonResult<PageInfo<Campaigns>> getRecommendCampaigns(Integer pageNo,Integer pageSize,String keyParams){
+		
+		JsonResult<PageInfo<Campaigns>> result = null;
+		try {
+			JsonResult<PageInfo<Campaigns>> checkResult = (JsonResult<PageInfo<Campaigns>>)Utils.checkKeyParams(propertyService.KEY, keyParams);
+			if(checkResult != null){
+				result = checkResult;
+			}else {
+				PageInfo<Campaigns> pageInfo = campaignsService.getRecommend(pageNo, pageSize);
+				result =  new JsonResult<PageInfo<Campaigns>>(pageInfo);
+			}
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new JsonResult<PageInfo<Campaigns>>(1,"获取信息失败",null);
+		}
+	}
+	
+	/**
+	 * 获取活动详细信息
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping("/getCampaignInfoId")
+	@ResponseBody
+	public JsonResult<List<Campaigns>> getCampaignInfo(String id,String keyParams){
+		JsonResult<List<Campaigns>> result = null;
+		try {
+			JsonResult<List<Campaigns>> checkResult = Utils.checkKeyParams(id+propertyService.KEY, keyParams);
+			if(checkResult != null){
+				result = checkResult;
+			}else{
+				List<Campaigns> list = campaignsService.getCampaignInfoId(id);
+				result = new JsonResult<List<Campaigns>>(list);
+			}
+		return result;
+		}catch(YichuangException e){
+			return new JsonResult<List<Campaigns>>(e.getField(),e.getMessage(),null);
+		}catch (Exception e) {
+			return new JsonResult<List<Campaigns>>(1,"获取信息失败",null);
+		}
+	}
+	
+	
+	/**
+	 * 获取公益项目
+	 * @param pageNo
+	 * @param pageSize
+	 * @return
+	 */
+	@RequestMapping("/getBenefit")
+	@ResponseBody
+	public JsonResult<PageInfo<Campaigns>> getBenefit(Integer pageNo,Integer pageSize,String keyParams){
+		JsonResult<PageInfo<Campaigns>> result = null;
+		try {
+			JsonResult<PageInfo<Campaigns>> checkResult = Utils.checkKeyParams(propertyService.KEY, keyParams);
+			if(checkResult != null){
+				result = checkResult;
+			}else {
+				PageInfo<Campaigns> pageInfo = campaignsService.getBenefit(pageNo, pageSize);
+				result =  new JsonResult<PageInfo<Campaigns>>(pageInfo);
+				}
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new JsonResult<PageInfo<Campaigns>>(1,"获取信息失败",null);
+		}
+	}
+	
+	/**
+	 * 获取公益项目详情
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping("/getBenefitById")
+	@ResponseBody
+	public JsonResult<List<Campaigns>> getBenefitById(String id,String keyParams){
+		JsonResult<List<Campaigns>> result = null;
+		try {
+			JsonResult<List<Campaigns>> checkResult = Utils.checkKeyParams(id+propertyService.KEY, keyParams);
+			if(checkResult != null){
+				result = checkResult;
+			}else {
+				List<Campaigns> list = campaignsService.getBenefitById(id);
+				result =  new JsonResult<List<Campaigns>>(list);
+			}
+			return result;
+		} catch (YichuangException e) {
+			e.printStackTrace();
+			return new JsonResult<List<Campaigns>>(e.getField(),e.getMessage(),null);
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new JsonResult<List<Campaigns>>(1,"获取信息失败",null);
+		}
+	}
+	
+	/**
+	 * 爱心捐赠总数
+	 * @return
+	 */
+	@RequestMapping("getLovingHeart")
+	@ResponseBody
+	public JsonResult<Integer> getLovingHeart(String keyParams){
+		JsonResult<Integer> result = null;
+		try {
+			JsonResult<Integer> checkResult = Utils.checkKeyParams(propertyService.KEY, keyParams);
+			if(checkResult != null){
+				result = checkResult;
+			}else{
+				Integer integer = campaignsService.getLovingHeart();
+				result =  new JsonResult<Integer>(integer);
+			}
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new JsonResult<Integer>(1,"获取信息失败",null);
+		}
+	}
+	
+	
+	/**
+	 * 上传活动图片
+	 */
+	@RequestMapping("registPic")
+	@ResponseBody
+	public JsonResult<String> registPic(MultipartFile file, HttpServletRequest request, HttpServletResponse response){
+		CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(
+				request.getSession().getServletContext());
+		// 判断request是否存在附件
+		if (multipartResolver.isMultipart(request)) {
+			
+			Map<String, Object> connectReturnMap = null;
+			FTPClient ftp = null;
+
+			// 转换成多部分request
+			MultipartHttpServletRequest multRequest = (MultipartHttpServletRequest) request;
+			Iterator<String> iter = multRequest.getFileNames();
+			while (iter.hasNext()) {
+
+				// 根据上传文件名称获取上传的文件
+				MultipartFile file1 = multRequest.getFile(iter.next());
+				
+				// 将MultipartFile 转为 File
+				CommonsMultipartFile cf = (CommonsMultipartFile) file1;
+				DiskFileItem fi = (DiskFileItem) cf.getFileItem();
+				File fileFrom = fi.getStoreLocation();
+				try {
+					connectReturnMap = FTPUtil.connect(propertyService.REMOTE_IMAGE_ACTIVE, propertyService.REMOTE_IMAGE_IP,
+							propertyService.REMOTE_IMAGE_PORT, propertyService.REMOTE_IMAGE_USERNAME,
+							propertyService.REMOTE_IMAGE_PASSWORD);
+					if(connectReturnMap != null && (boolean)connectReturnMap.get("connectFlag")){
+						ftp = (FTPClient) connectReturnMap.get("FTPClient");
+						FTPUtil.upload(fileFrom, fi.getName(),ftp);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				// 根据 name 获取上传的文件...
+				String fileName = file1.getOriginalFilename();
+				String serverPath = propertyService.REMOTE_IMAGE_ACTIVE + fileName;
+				return new JsonResult<String>(DefaultResponse.SUCCESS,null);
+			}
+		}
+		return new JsonResult<String>(DefaultResponse.OPERATE_ERROR,null);
+	}
+	
+	/**
+	 * 发布活动
+	 * @param campaigns
+	 * @return
+	 * @author zhangpeng modify
+	 */
+	@RequestMapping("registCam")
+	@ResponseBody
+	public JsonResult<String> registCam(Campaigns campaigns){
+		try {
+				if(StringUtils.isEmpty(campaigns.getId())){
+					campaignsService.save(campaigns);
+					return new JsonResult<String>(DefaultResponse.SUCCESS,null);
+				}
+				Integer i = campaignsService.updateReleaseCampaignById(campaigns);
+				if(i>0){
+					return new JsonResult<String>(DefaultResponse.SUCCESS, null);
+				}else{
+				return new JsonResult<String>(DefaultResponse.UPDATE_ERROR, null);
+				}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new JsonResult<String>(DefaultResponse.INSERT_ERROR,null);
+		}
+	}
+	
+	/**
+	 * 发布活动  TODO
+	 * @param campaigns
+	 * @param multipartFile
+	 * @param id 保留字段 用于对外对内提供服务,目前没用
+	 * @return
+	 */
+	@RequestMapping("add")
+	@ResponseBody
+	public JsonResult<?> saveCampaigns(Campaigns campaigns,HttpServletRequest req,String keyParams){
+		JsonResult<?>  result = null;
+		
+		try {
+			JsonResult<?> checkResult = Utils.checkKeyParams(propertyService.KEY,keyParams);
+			if(checkResult != null){
+				result = checkResult;
+			}else{
+				boolean isMultipartContent = ServletFileUpload.isMultipartContent(req);
+				if(!isMultipartContent){
+					result = new JsonResult<Void>(1, "请求方式错误", null);
+				}
+				MultipartHttpServletRequest request = (MultipartHttpServletRequest) req;
+				MultipartFile thumbFile = request.getFile("thumb_");
+				MultipartFile imageFile = request.getFile("image_");
+				String thumUrl;
+				String imageUrl;
+				
+				thumUrl = getFileUrl(thumbFile);
+				imageUrl = getFileUrl(imageFile);
+				campaigns.setThumb(thumUrl);
+				campaigns.setImage(imageUrl);
+				campaigns.setIsUs("true");
+				campaigns.setCreatedAt(new Date());
+				campaigns.setUpdatedAt(campaigns.getCreatedAt());
+				this.campaignsService.save(campaigns);
+				result = new JsonResult<Campaigns>(0,"ok",null);
+			}
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new JsonResult<Void>(1,"图片格式不正确",null);
+		}
+		
+	}
+
+	private String getFileUrl(MultipartFile multipartFile) throws IllegalStateException, IOException {
+		String fileNameString = null;
+		if(multipartFile!=null){
+			String path = propertyService.REMOTE_IMAGE_ACTIVE;
+			String originalFilename = multipartFile.getOriginalFilename();
+			String suffix = originalFilename.substring(originalFilename.lastIndexOf("."));
+			String uuidString = UUID.randomUUID().toString().replace("-", "");
+			fileNameString = uuidString+suffix;
+			File file = new File(path,fileNameString);
+			File filePath = new File(path);
+			if(!filePath.exists()){
+				filePath.mkdirs();
+			}
+				//保存文件到磁盘
+				multipartFile.transferTo(file);
+				//磁盘读取文件 使用imagelo流读取文件 假设不是图片文件则为null
+				BufferedImage image = ImageIO.read(file);
+				if(image==null){
+					file.delete();
+					throw new YichuangException(1,"该文件不是图片");
+				}
+		}
+		return fileNameString;
+	}
+	
+	/**
+	 * 获取未审核活动  
+	 * @param pageNo
+	 * @param pageSize
+	 * @return
+	 * getCampaignsByStatus
+	 */
+	@RequestMapping("getCampaignsByStatus")
+	@ResponseBody
+	public JsonResult<PageInfo<Campaigns>> getCampaignsBuCheck(Integer pageNo,Integer pageSize,String keyParams,Campaigns campaigns){
+		try {
+//			JsonResult checkResult = Utils.checkKeyParams(propertyService.KEY, keyParams);
+//			if(checkResult != null){
+//				return checkResult;
+//			}
+			PageInfo<Campaigns> pageInfo = campaignsService.getCampaignsByCheck(pageNo, pageSize,campaigns);
+			return new JsonResult<PageInfo<Campaigns>>(pageInfo);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new JsonResult<PageInfo<Campaigns>>(1,"获取信息失败",null);
+		}
+	}
+	
+	/**
+	 * 审核活动
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping("checkCampaign")
+	@ResponseBody
+	public JsonResult<String> checkCampaign(Campaigns campaigns,String auditStatus){
+		
+		if(campaigns == null ||campaigns.getId() == null || campaigns.getId().trim() == ""){
+			return new JsonResult<String>(DefaultResponse.PARAM_NULL_ERROR,null);
+		}
+		try{
+			//审核活动
+			campaigns.setStatus(auditStatus);
+			campaignsService.updateCampaignById(campaigns);
+			//如果审核通过，给组织增加活动总数
+			if(YCConstants.AUDIT_TURE.equals(auditStatus)){
+				List<Campaigns> list = campaignsService.getCampaignInfoId(campaigns.getId());
+				if(list != null && list.size() > 0){
+					if(YCConstants.AUDIT_TURE.equals(campaigns.getStatus())){
+						groupsService.updateCamCount(list.get(0).getGroupId());
+						return new JsonResult<String>(DefaultResponse.SUCCESS,null);
+					}
+					return new JsonResult<String>(DefaultResponse.OPERATE_ERROR,null);
+					
+				}
+				return new JsonResult<String>(DefaultResponse.OPERATE_ERROR,null);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new JsonResult<String>(DefaultResponse.OPERATE_ERROR,null);
+		}
+		return new JsonResult<String>(DefaultResponse.SUCCESS,YCConstants.SYSTEM_STRING_ONE);
+	}
+	
+	/**
+	 * 今日活动
+	 * @param pageNo
+	 * @param pageSize
+	 * @return
+	 */
+	@RequestMapping("today")
+	@ResponseBody
+	public JsonResult<PageInfo<Campaigns>> today(Integer pageNo,Integer pageSize){
+		try {
+			PageInfo<Campaigns> pageInfo = campaignsService.getTodayCam(pageNo, pageSize);
+			return new JsonResult<PageInfo<Campaigns>>(pageInfo);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new JsonResult<PageInfo<Campaigns>>(DefaultResponse.QUERY_ERROR,null);
+		}
+	}
+	
+	
+	/**
+	 * 本周活动
+	 */
+	@RequestMapping("week")
+	@ResponseBody
+	public JsonResult<PageInfo<Campaigns>> week(Integer pageNo,Integer pageSize){
+		try {
+			PageInfo<Campaigns> pageInfo = campaignsService.getWeekCam(pageNo, pageSize);
+			return new JsonResult<PageInfo<Campaigns>>(pageInfo);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new JsonResult<PageInfo<Campaigns>>(DefaultResponse.QUERY_ERROR,null);
+		}
+	}
+	
+	/**
+	 * 获取本月活动
+	 * @param pageNo
+	 * @param pageSize
+	 * @return
+	 */
+	@RequestMapping("month")
+	@ResponseBody
+	public JsonResult<PageInfo<Campaigns>> month(Integer pageNo,Integer pageSize){
+		try {
+			PageInfo<Campaigns> pageInfo = campaignsService.getMonthCam(pageNo, pageSize);
+			return new JsonResult<PageInfo<Campaigns>>(pageInfo);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new JsonResult<PageInfo<Campaigns>>(DefaultResponse.QUERY_ERROR,null);
+		}
+	}
+	/**
+	 * 根据活动ID串批量更新活动信息
+	 * @param pageNo
+	 * @param pageSize
+	 * @return
+	 */
+	@RequestMapping("updateCampBatch")
+	@ResponseBody
+	public JsonResult<String> updateCampBatch(String campIds){
+		try {
+			if(StringUtils.isEmpty(campIds)){
+				return new JsonResult<String>(DefaultResponse.PARAM_NULL_ERROR,null);
+			}
+			String campaignIds = campIds.substring(0, campIds.length()-1);
+			if(StringUtils.isEmpty(campaignIds)){
+				return new JsonResult<String>(DefaultResponse.PARAM_NULL_ERROR,null);
+			}
+			String[] campaignIdArr = campaignIds.split(",");
+			campaignsService.updateCampBatch(campaignIdArr);
+			return new JsonResult<String>(DefaultResponse.SUCCESS,null);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new JsonResult<String>(DefaultResponse.QUERY_ERROR,null);
+		}
+	}
+}

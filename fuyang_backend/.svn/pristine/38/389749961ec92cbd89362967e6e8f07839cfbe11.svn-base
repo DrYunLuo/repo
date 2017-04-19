@@ -1,0 +1,40 @@
+#box_left{
+    float: left;
+    width:212px;
+    background: #f8f9f9;
+    border-right: 1px solid #e2e2e2;
+}
+#box_left ul li a{
+    display: block;
+    height:59px;
+    line-height:59px;
+    text-align: center;
+    font-size: 16px;
+    text-decoration: none;
+    background: url(../img/title_bg.png) no-repeat 0 -60px;
+}
+#box_left ul li a.active{
+    color:#fff;
+    background: url(../img/title_bg.png) no-repeat 0 0;
+}
+#box_right{
+    width:78%;
+    float: right;
+    border: 1px solid #ddd;
+}
+#box_right p{
+    height: 40px;
+    line-height: 35px;
+    background:#E84C3D;
+    color: #fff;
+    padding-left:20px;
+    font-size: 20px;
+}
+#list_box ul{
+    min-height:350px;
+
+}
+#list_box ul li{
+    height: 30px;
+    padding:0 20px;
+}

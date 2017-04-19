@@ -1,0 +1,162 @@
+#group_detail_main{
+    font-family: '微软雅黑';
+    font-size: 14px;
+    color:#444;
+}
+#main_top{/*margin-left:2%;*/
+    overflow: hidden;}
+#main_top #group_pic img{
+    width: 400px; height:300px;}
+#main_top>div{
+    float: left;
+}
+
+
+#main_content{
+    margin-top:40px;
+}
+
+/*#main_content>div{margin-right: 5em;}*/
+/*#main_content>div{flex: 2;}*/
+.db{flex: 12;margin-right: 2em;}
+
+#group_info h2{
+    margin-top:0;
+    font-weight: 600;
+    font-size: 20px;
+}
+#group_info table{
+    width:360px;
+}
+#group_info table td{
+    padding:5px 0;
+}
+#group_info button{
+    width: 200px;
+    height:30px;
+    color:#fff;
+    border-radius: 5px 5px;
+    background: #e84c3d;
+    outline: 0;
+    border: 0;
+    font-size: 16px;
+    margin-top:5px;
+}
+
+/******************************************/
+
+.dn{
+    display: none;
+}
+.notice{
+    color: #e84c3d !important;
+}
+
+#main_tabs{
+
+    border-bottom:2px solid #dcdcdc;
+
+}
+#main_tabs img{
+margin-bottom: 10px;
+}
+.ground_img-left{
+    margin-bottom: 17px;
+}
+#main_tabs span{
+    width:108px;
+    height:36px;
+    line-height: 36px;
+    text-align: center;
+    display: inline-block;
+    font-size: 16px;
+
+    color: #000;
+    cursor: pointer;
+}
+#main_tabs span{
+font-size: 1.8em;font-weight: bold;
+}
+#main_tabs span.current{
+  color: red;
+}
+
+/*#group_actlist{
+    width: 650px;
+}*/
+#group_actlist>ul>li{
+    margin-top:40px;
+    padding-bottom: 15px;
+
+    overflow: hidden;
+}
+#group_actlist .act_pic img{
+    width:180px;
+    height:130px;
+}
+#group_actlist>ul>li>div{
+    float: left;
+    margin-right: 10px;
+}
+#group_actlist .act_summary h3{
+    margin-top:0;
+    font-size: 16px;
+
+    font-weight: bold;
+}
+#group_actlist .act_summary h3 span{
+    font-size: 16px;
+    color: #000;
+}
+#group_actlist .act_summary h3:hover{
+   color: red;
+}
+#group_actlist .act_summary div{
+    font-size: 14px;
+    margin-top: 10px;
+}
+#group_actlist .act_summary div span{
+    font-size: 14px;
+}
+#group_actlist .act_summary p{
+    margin: 0 0 5px;
+}
+#actlist_page{
+    margin:30px auto;
+    display: table;
+}
+#group_desc{
+    text-indent:2em;
+    padding:20px 10px;
+}
+@media all and (max-width:768px){
+    #main_top #group_pic img {
+        width: 250px;
+        height: 180px;
+    }
+    #group_info {
+  margin-top:3rem ;
+    }
+    #main_content{display: block;}
+    #main_content>div{width: 100%;}
+    .act_pic img{width: 100%;margin-left: 20%;
+    margin-bottom: 2em;}
+    .act_summary{margin-left: 10%;}
+    #group_info table{
+        width:250px;
+    }
+    #main_top{margin-left: 15%;}
+    #main_tabs img{width: 3em;height: 3em;}
+    #main_tabs span{font-size: 1em;}
+}
+@media all and (min-width:998px) {
+    #group_desc{
+        font-size: 14px;
+    }
+    #group_info button {
+        margin-top: 30px;
+    }
+    #group_info table {
+        width: 430px;
+    }
+}

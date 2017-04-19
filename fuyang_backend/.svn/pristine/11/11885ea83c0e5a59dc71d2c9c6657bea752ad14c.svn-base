@@ -1,0 +1,59 @@
+<!---------------------------footer部分-------------------------->
+<footer style="padding-bottom: 20px;">
+  <div class="myfooter">
+    <div class="row">
+      <!--------------第一部分。。------------->
+      <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4" style="margin-top:20px;">
+        <p style="font-size: 1.4rem;">友情链接:</p>
+        <p style="font-size: 1.4rem;"><a href="http://fy.wenming.cn">阜阳文明网</a>
+          <a href="http://www.zgzyz.org.cn">中国青年志愿者网</a>
+          <a href="http://www.fyyouth.org.cn">阜阳共青团</a>
+          <a href="http://www.mzj.fy.gov.cn">阜阳市民政局</a>
+          <a href="http://www.fy.gov.cn">阜阳发布</a>
+        </p>
+        <p style="font-size: 1.2rem;color: #fff;">
+          反馈建议:<span style="color: #fff;font-size: 1.2rem;">service@zyfy.org.cn</span>
+        </p>
+        <p style="font-size: 1.2rem;color: #fff;">
+          客服QQ:<span style="color: #fff;font-size: 1.2rem;">499629910</span>
+        </p>
+      </div>
+      <!--------------第二部分。。------------->
+      <div class="mydv1 col-xs-0 col-sm-6 col-md-4 col-lg-4">
+        <div class="media">
+          <a class="pull-left" href="#">
+            <img class="media-object" src="img/666.png"
+                 alt="媒体对象">
+          </a>
+          <div style="border-left:1px solid #fff;" class="media-body">
+            <p class="myp1"><a href="">联系我们</a></p>
+            <p class="myp1"><a href="">帮助中心</a></p>
+            <p class="myp1"><a href="">关于我们</a></p>
+            <p class="myp1"><a href="">下载APP</a></p>
+          </div>
+        </div>
+      </div>
+      <!--------------第三部分。。------------->
+      <div class="mydv2 col-xs-0 col-sm-0 col-md-4 col-lg-4">
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+          <div class="thumbnail">
+            <img src="img/weibo.png"
+                 alt="">
+          </div>
+          <div class="caption">
+            <p>官方微博扫码关注</p>
+          </div>
+        </div>
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+          <div class="thumbnail">
+            <img src="img/weixin.jpg"
+                 alt="">
+          </div>
+          <div class="caption">
+            <p>微信扫码关注</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>

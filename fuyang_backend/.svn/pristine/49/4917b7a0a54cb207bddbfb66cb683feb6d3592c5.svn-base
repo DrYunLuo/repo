@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+ 
+ <mapper namespace="com.yichuang.fuyang.dao.CreditrecordDao">
+ 
+ 	<!-- 添加积分进出记录 -->
+ 	<insert id="addRecord" parameterType="com.yichuang.fuyang.entity.Creditrecord">
+ 		insert into creditrecord (id,volunteerId,time,creditrecord,groupId,VTValue,campaignId)
+ 		values((select UUID()),#{volunteerId},(select now()),#{creditrecord},#{groupId},#{VTValue},#{campaignId})
+ 	</insert>
+ 	
+ 	
+ 	<!-- 获取积分明细 -->
+ 	<select id="findByVolunteerId" parameterType="string" resultMap="BaseResultMap">
+ 		select * from creditrecord where volunteerId=#{volunteerId}
+ 	</select>
+ 	
+ 	<resultMap type="com.yichuang.fuyang.entity.Creditrecord" id="BaseResultMap">
+ 		<id property="id"  column="id"/>
+ 	</resultMap>
+ </mapper>

@@ -1,0 +1,98 @@
+#newslist{
+    margin-top:20px;
+}
+#box_left{
+    padding-right: 0;
+    background: #f8f9f9;
+}
+#box_left ul li a{
+    display: block;
+    height:59px;
+    line-height:59px;
+    text-align: center;
+    font-size: 16px;
+    text-decoration: none;
+    background: url(../img/title_bg.png) no-repeat 0 -60px;
+}
+#box_left ul li a.active{
+    color:#fff;
+    background: url(../img/title_bg.png) no-repeat 0 0;
+}
+#box_right{
+    padding-right: 0;
+    border: 1px solid #ddd;
+}
+#box_right>p{
+    height: 40px;
+    line-height: 35px;
+    background:#E84C3D;
+    color: #fff;
+    padding-left:20px;
+    font-size: 20px;
+}
+#list_box ul{
+    min-height:320px;
+
+}
+#list_box ul li{
+    height: 30px;
+    padding:0 20px;
+}
+#list_box ul li p{
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    overflow:hidden;
+}
+
+/*******************小屏的样式******************/
+@media all and (max-width:768px){
+    #box_left ul{
+        overflow: hidden;
+    }
+    #box_left ul li{
+        float: left;
+        width: 50%;
+        text-align: center;
+    }
+    #box_left ul li a{
+        display: inline-block;
+        background: url(../img/laba.png) no-repeat 0 4px;
+        height: 20px;
+        padding: 0 20px;
+        line-height: 20px;
+        text-align: left;
+    }
+    #box_left ul li a.active{
+        background: url(../img/laba.png) no-repeat 0 4px;
+        color: #E84C3D;
+    }
+}
+/*******************大屏的样式******************/
+@media all and (min-width:1000px){
+    #box_left ul li a {
+        width: 212px;
+    }
+}
+/*******************中屏的样式******************/
+@media all and (min-width:769px) and (max-width:999px){
+    #box_left ul{
+        overflow: hidden;
+    }
+    #box_left ul li{
+        float: left;
+        width: 100%;
+        text-align: center;
+    }
+    #box_left ul li a{
+        display: inline-block;
+        background: url(../img/laba.png) no-repeat 0 4px;
+        height: 20px;
+        padding: 0 20px;
+        line-height: 20px;
+        text-align: left;
+    }
+    #box_left ul li a.active{
+        background: url(../img/laba.png) no-repeat 0 4px;
+        color: #E84C3D;
+    }
+}

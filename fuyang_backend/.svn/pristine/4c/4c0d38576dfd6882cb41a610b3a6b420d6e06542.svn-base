@@ -1,0 +1,82 @@
+<div ng-include="'tpl/include/header.html'"></div>
+<div id="groups_main" ng-controller="groupCtrl">
+    <div class="container" style="padding-top:15px;">
+        <div class="left_container col-xs-12 col-sm-8 col-md-8 col-lg-8">
+            <div class="groups_title col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding:0; ">
+                <span class="col-xs-3 col-sm-3 col-md-3 col-lg-3">志愿者组织</span>
+                <div class="crumb">
+                    <ol class="bread col-xs-9 col-sm-9 col-md-9 col-lg-9" style="padding: 0;">
+                        <li><a class="g_clc groups_active" onlick="changeCss(this)">全部</a></li>
+                        <li><a class="g_clc" onclick="changeCss(this)">推荐</a></li>
+                        <li><a class="g_clc" onclick="changeCss(this)">最新</a></li>
+                        <li><a class="g_clc" onclick="changeCss(this)">最热</a></li>
+                        <li><a class="g_clc" onclick="changeCss(this)">活动最多</a></li>
+                    </ol>
+                </div>
+            </div>
+            <div class="groups_detail col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding:12px 0;">
+                <div class="medias col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding:8px 0;" ng-repeat="obj in list track by $index">
+                    <a class="media-left col-xs-4 col-sm-4 col-md-4 col-lg-4" id="groupPic" href="#">
+                        <img ng-src="img/groups1.jpg">
+                    </a>
+                    <div class="media-body col-xs-7 col-sm-7 col-md-7 col-lg-7">
+                        <h4 class="media-heading"><a href="#/group_detail/{{obj.groupId}}" ng-bind="obj.name">阜阳褒扬英烈志愿者协会</a></h4>
+                        <div class="person">
+                            团员人数：&nbsp;<span ng-bind="obj.volTotal">14</span>&nbsp;&nbsp;
+                            帮扶项目：&nbsp;<span ng-bind="obj.socialTotal">0</span>&nbsp;&nbsp;
+                            服务时长：&nbsp;<span ng-bind="obj.serverTime">4</span>&nbsp;&nbsp;
+                            活动个数：&nbsp;<span ng-bind="obj.campaignCount">0</span>&nbsp;&nbsp;
+                        </div>
+                        <p class="groups_description"> 组织简介：<span class="description" ng-bind="obj.description"></span></p>
+                        <div class="groups_mess">
+                            团队编号：<span class="groups_number" style="color:#e84c3d;" ng-bind="obj.uid">ZZ-030655</span>
+                            成立时间：<span class="status" ng-bind="obj.createdAt">2013-09-09</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="group_listPage">
+            </div>
+        </div>
+        <div class="right_container col-xs-12 col-sm-4 col-md-4 col-lg-4">
+            <div class="search_groups col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="dropdown col-xs-5 col-sm-5 col-md-5 col-lg-5">
+                    <select class="group_selec col-xs-12 col-sm-12 col-md-12 col-lg-12" name="" id="">
+                        <option value="">请选择</option>
+                        <option value="儿童">儿童</option>
+                        <option value="少年">少年</option>
+                        <option value="中年">中年</option>
+                        <option value="老年">老年</option>
+                    </select>
+                </div>
+                <div class="search col-xs-7 col-sm-7 col-md-7 col-lg-7">
+                    <input placeholder="请输入关键词" type="text" id="groupKeyword" class="groups_keyword col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <span onclick="searchGroup()"></span>
+                </div>
+            </div>
+            <div class="create_group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <button ng-click="signGroup()">创建我的组织</button>
+                <span></span>
+            </div>
+            <div class="group_news col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <h3 class="col-xs-5 col-sm-5 col-md-5 col-lg-5">各区动态</h3>
+                <ul class="group_news_content col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <li ng-repeat="obj in news"><a href="#/news_detail/{{obj.id}}" ng-bind="obj.title"></a></li>
+                </ul>
+                <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11" style="text-align: right">
+                    <a href="">更多>></a>
+                </div>
+            </div>
+            <div class="group_news col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <h3 class="col-xs-5 col-sm-5 col-md-5 col-lg-5">活动信息</h3>
+                <ul class="group_news_content col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <li ng-repeat="obj in campaigns"><a href="#/news_detail/{{obj.id}}" ng-bind="obj.title"></a></li>
+                </ul>
+                <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11" style="text-align: right">
+                    <a href="">更多>></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div ng-include="'tpl/include/footer.html'"></div>

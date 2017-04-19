@@ -1,0 +1,78 @@
+#act_detail_main{
+    font-family: '微软雅黑';
+    font-size: 14px;
+    color:#444;
+}
+.active_mydv1 span{margin-right: 4em;font-size: 1em;font-weight: bold;}
+.active_main{width: 80%; padding-top:20px;
+    margin: 0 auto;}
+#act_detail_main #group_info table td {
+    padding: 2px 0;
+}
+#group_pic{margin-right: 5em;}
+#group_info{margin-top: 2rem;}
+.active_flex{display: flex;
+margin-bottom:5em;margin-right:5em;}
+.active_mydv1 span{font-size: 1.8em}
+.active-right{flex:6;margin-right: 5em;}
+
+.active_flex p{
+    margin:0;
+    padding:0;
+    color:#444444;
+    text-indent: 2em;
+}
+/********************大屏的样式***********************/
+@media all and (min-width:1000px){
+    .active_flex p{
+        font-size:14px;
+        line-height:30px;
+    }
+    .active_flex p.active_myp{
+        margin-top:40px;
+    }
+    .active_mydv1{
+        padding:10px 20px 70px 0;
+    }
+}
+/********************中屏的样式***********************/
+@media all and (max-width:999px) and (min-width:769px){
+    .active_flex p{
+        font-size:14px;
+        line-height:30px;
+    }
+/*    #main_top>div{ float: left;
+        margin: 0 auto;}*/
+    .active_content p.active_myp{
+        margin-top:40px;
+    }
+    .active_mydv1{
+        margin:0;
+        padding:10px 20px 70px 20px;
+    }
+}
+/********************小屏的样式***********************/
+@media all and (max-width:768px){
+    .active_mydv1 span{font-size: 1.6em;font-weight: bold;}
+    .active_flex{
+        display:block;width: 100%;}
+    #right_container .content_box .title h3{font-size: 1.4em;font-weight: bold;}
+    .active_flex p{
+        font-size:12px;
+        line-height:25px;
+        width: 100%;
+
+    }
+    .active_mydv1 span{
+        font-size: 1.4em;font-weight: bold;
+    }
+    .active_flex p.active_myp{
+        margin-top:20px;
+    }
+    .active-right{width: 100%;}
+    .active_mydv1{
+        margin-top:10px;
+        padding:10px 10px 30px 10px;
+    }
+
+}

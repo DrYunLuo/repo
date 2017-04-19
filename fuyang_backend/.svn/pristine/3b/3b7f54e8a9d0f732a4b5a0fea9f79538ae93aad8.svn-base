@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+ <mapper namespace="com.yichuang.fuyang.dao.CodeDao">
+ 	<!-- 获取code类型 -->
+ 	<select id="getPostTypeList" parameterType="string" resultMap="BaseResultMap">
+ 		select * from code_value where code_type='post_type'
+ 	</select>
+ 	
+ 	
+ 	
+ 	<!-- 根据codeVaule 查询Code LH -->
+ 	<select id="getCodeByCodeValue"    parameterType="String"  resultMap="BaseResultMap">
+ 		select * from code_value where  code_type = #{type}
+ 	</select>
+ 		<!-- 动态 查询Code-->
+ 	<select id="getCodeDynamic"    parameterType="com.yichuang.fuyang.entity.Code"  resultMap="BaseResultMap">
+ 		select * from code_value 
+ 		<where>
+ 			<if test="codeType != null and codeType != ''">
+ 				 code_type = #{codeType} 
+ 			</if>
+ 			<if test="codeValue != null and codeValue != ''">
+ 			   and code_value = #{codeValue}
+ 			</if>
+ 		</where>
+ 	</select>
+ 	
+ 	<resultMap type="com.yichuang.fuyang.entity.Code" id="BaseResultMap">
+ 		<id property="codeId" column="code_id"/>
+ 		<result property="codeType" column="code_type"/>
+ 		<result property="codeValue" column="code_value"/>
+ 		<result property="codeValueName" column="code_value_name"/>
+ 	</resultMap>
+ </mapper>

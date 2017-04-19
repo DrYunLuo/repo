@@ -1,0 +1,195 @@
+<div ng-include="'tpl/include/header.html'"></div>
+<div class="volun_person" ng-controller="personCtrl">
+    <div class="volun_person_left col-xs-12 col-sm-8 col-md-8 col-lg-8">
+        <div class="groups_title col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding:0; ">
+            <span class="col-xs-3 col-sm-3 col-md-3 col-lg-3">志愿风采</span>
+            <div class="crumb">
+                <ol class="bread col-xs-9 col-sm-9 col-md-9 col-lg-9" style="padding: 0;">
+                    <li><a ng-click="showTotal()" class="g_clc">全部</a></li>
+                    <li><a ng-click="showF()" class="g_clc groups_active">推荐</a></li>
+                    <!--<li><a class="g_clc" href="" >推荐</a></li>-->
+                    <!--<li><a class="g_clc" href="">人气</a></li>-->
+                    <li><a ng-click="showTW()" class="g_clc">最新</a></li>
+                    <li><a ng-click="showTH()" class="g_clc">最热</a></li>
+                </ol>
+            </div>
+        </div>
+        <!--<div class="groups_title col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding:0; ">-->
+            <!--<span class="col-xs-3 col-sm-3 col-md-3 col-lg-3">志愿者组织</span>-->
+            <!--<div class="crumb">-->
+                <!--<ol class="bread col-xs-9 col-sm-9 col-md-9 col-lg-9" style="padding: 0;">-->
+                    <!--<li><a href="#">全部</a></li>-->
+                    <!--<li><a href="#">推荐</a></li>-->
+                    <!--<li><a href="#">认证</a></li>-->
+                    <!--<li><a href="#">最新</a></li>-->
+                    <!--<li><a href="#">最热</a></li>-->
+                    <!--<li><a href="#">活动最多</a></li>-->
+                <!--</ol>-->
+            <!--</div>-->
+        <!--</div>-->
+        <div class="volun_detail col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div ng-repeat="item in list track by $index" class="volun_person_img col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                <img src="{{item.photo}}" alt="" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">服务时长:{{item.serviceTime}}</div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">参与活动数:{{item.campaignTotal}}</div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">{{item.realname}}</div>
+                <!--<div class="volun_content col-xs-12 col-sm-12 col-md-12 col-lg-12">-->
+                    <!--<div class="zan_volun col-xs-6 col-sm-6 col-md-6 col-lg-6"><b class="zan_volun_img"></b><span class="zan_volun_num">12</span></div>-->
+                    <!--<div class="share_volun col-xs-6 col-sm-6 col-md-6 col-lg-6"><b class="share_volun_img"></b><span class="share_volun_num">455</span></div>-->
+                <!--</div>-->
+            </div>
+            <!--<div class="volun_person_img col-xs-3 col-sm-3 col-md-3 col-lg-3">-->
+                <!--<img src="img/volun1.jpg" alt="" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">-->
+                <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">革命烈士公祭活动</div>-->
+                <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">志愿名人</div>-->
+                <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">欧阳俊男</div>-->
+                <!--<div class="volun_content col-xs-12 col-sm-12 col-md-12 col-lg-12">-->
+                    <!--<div class="zan_volun col-xs-6 col-sm-6 col-md-6 col-lg-6"><b class="zan_volun_img"></b><span class="zan_volun_num">12</span></div>-->
+                    <!--<div class="share_volun col-xs-6 col-sm-6 col-md-6 col-lg-6"><b class="share_volun_img"></b><span class="share_volun_num">455</span></div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="volun_person_img col-xs-3 col-sm-3 col-md-3 col-lg-3">-->
+                <!--<img src="img/volun1.jpg" alt="" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">-->
+                <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">革命烈士公祭活动</div>-->
+                <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">志愿名人</div>-->
+                <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">欧阳俊男</div>-->
+                <!--<div class="volun_content col-xs-12 col-sm-12 col-md-12 col-lg-12">-->
+                    <!--<div class="zan_volun col-xs-6 col-sm-6 col-md-6 col-lg-6"><b class="zan_volun_img"></b><span class="zan_volun_num">12</span></div>-->
+                    <!--<div class="share_volun col-xs-6 col-sm-6 col-md-6 col-lg-6"><b class="share_volun_img"></b><span class="share_volun_num">455</span></div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="volun_person_img col-xs-3 col-sm-3 col-md-3 col-lg-3">-->
+                <!--<img src="img/volun1.jpg" alt="" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">-->
+                <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">革命烈士公祭活动</div>-->
+                <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">志愿名人</div>-->
+                <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">欧阳俊男</div>-->
+                <!--<div class="volun_content col-xs-12 col-sm-12 col-md-12 col-lg-12">-->
+                    <!--<div class="zan_volun col-xs-6 col-sm-6 col-md-6 col-lg-6"><b class="zan_volun_img"></b><span class="zan_volun_num">12</span></div>-->
+                    <!--<div class="share_volun col-xs-6 col-sm-6 col-md-6 col-lg-6"><b class="share_volun_img"></b><span class="share_volun_num">455</span></div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="volun_person_img col-xs-3 col-sm-3 col-md-3 col-lg-3">-->
+                <!--<img src="img/volun1.jpg" alt="" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">-->
+                <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">革命烈士公祭活动</div>-->
+                <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">志愿名人</div>-->
+                <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">欧阳俊男</div>-->
+                <!--<div class="volun_content col-xs-12 col-sm-12 col-md-12 col-lg-12">-->
+                    <!--<div class="zan_volun col-xs-6 col-sm-6 col-md-6 col-lg-6"><b class="zan_volun_img"></b><span class="zan_volun_num">12</span></div>-->
+                    <!--<div class="share_volun col-xs-6 col-sm-6 col-md-6 col-lg-6"><b class="share_volun_img"></b><span class="share_volun_num">455</span></div>-->
+                <!--</div>-->
+            <!--</div><div class="volun_person_img col-xs-3 col-sm-3 col-md-3 col-lg-3">-->
+            <!--<img src="img/volun1.jpg" alt="" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">-->
+            <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">革命烈士公祭活动</div>-->
+            <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">志愿名人</div>-->
+            <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">欧阳俊男</div>-->
+            <!--<div class="volun_content col-xs-12 col-sm-12 col-md-12 col-lg-12">-->
+                <!--<div class="zan_volun col-xs-6 col-sm-6 col-md-6 col-lg-6"><b class="zan_volun_img"></b><span class="zan_volun_num">12</span></div>-->
+                <!--<div class="share_volun col-xs-6 col-sm-6 col-md-6 col-lg-6"><b class="share_volun_img"></b><span class="share_volun_num">455</span></div>-->
+            <!--</div>-->
+        <!--</div>-->
+            <!--<div class="volun_person_img col-xs-3 col-sm-3 col-md-3 col-lg-3">-->
+                <!--<img src="img/volun1.jpg" alt="" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">-->
+                <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">革命烈士公祭活动</div>-->
+                <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">志愿名人</div>-->
+                <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">欧阳俊男</div>-->
+                <!--<div class="volun_content col-xs-12 col-sm-12 col-md-12 col-lg-12">-->
+                    <!--<div class="zan_volun col-xs-6 col-sm-6 col-md-6 col-lg-6"><b class="zan_volun_img"></b><span class="zan_volun_num">12</span></div>-->
+                    <!--<div class="share_volun col-xs-6 col-sm-6 col-md-6 col-lg-6"><b class="share_volun_img"></b><span class="share_volun_num">455</span></div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="volun_person_img col-xs-3 col-sm-3 col-md-3 col-lg-3">-->
+                <!--<img src="img/volun1.jpg" alt="" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">-->
+                <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">革命烈士公祭活动</div>-->
+                <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">志愿名人</div>-->
+                <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">欧阳俊男</div>-->
+                <!--<div class="volun_content col-xs-12 col-sm-12 col-md-12 col-lg-12">-->
+                    <!--<div class="zan_volun col-xs-6 col-sm-6 col-md-6 col-lg-6"><b class="zan_volun_img"></b><span class="zan_volun_num">12</span></div>-->
+                    <!--<div class="share_volun col-xs-6 col-sm-6 col-md-6 col-lg-6"><b class="share_volun_img"></b><span class="share_volun_num">455</span></div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="volun_person_img col-xs-3 col-sm-3 col-md-3 col-lg-3">-->
+                <!--<img src="img/volun1.jpg" alt="" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">-->
+                <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">革命烈士公祭活动</div>-->
+                <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">志愿名人</div>-->
+                <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">欧阳俊男</div>-->
+                <!--<div class="volun_content col-xs-12 col-sm-12 col-md-12 col-lg-12">-->
+                    <!--<div class="zan_volun col-xs-6 col-sm-6 col-md-6 col-lg-6"><b class="zan_volun_img"></b><span class="zan_volun_num">12</span></div>-->
+                    <!--<div class="share_volun col-xs-6 col-sm-6 col-md-6 col-lg-6"><b class="share_volun_img"></b><span class="share_volun_num">455</span></div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="volun_person_img col-xs-3 col-sm-3 col-md-3 col-lg-3">-->
+                <!--<img src="img/volun1.jpg" alt="" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">-->
+                <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">革命烈士公祭活动</div>-->
+                <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">志愿名人</div>-->
+                <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">欧阳俊男</div>-->
+                <!--<div class="volun_content col-xs-12 col-sm-12 col-md-12 col-lg-12">-->
+                    <!--<div class="zan_volun col-xs-6 col-sm-6 col-md-6 col-lg-6"><b class="zan_volun_img"></b><span class="zan_volun_num">12</span></div>-->
+                    <!--<div class="share_volun col-xs-6 col-sm-6 col-md-6 col-lg-6"><b class="share_volun_img"></b><span class="share_volun_num">455</span></div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="volun_person_img col-xs-3 col-sm-3 col-md-3 col-lg-3">-->
+                <!--<img src="img/volun1.jpg" alt="" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">-->
+                <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">革命烈士公祭活动</div>-->
+                <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">志愿名人</div>-->
+                <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">欧阳俊男</div>-->
+                <!--<div class="volun_content col-xs-12 col-sm-12 col-md-12 col-lg-12">-->
+                    <!--<div class="zan_volun col-xs-6 col-sm-6 col-md-6 col-lg-6"><b class="zan_volun_img"></b><span class="zan_volun_num">12</span></div>-->
+                    <!--<div class="share_volun col-xs-6 col-sm-6 col-md-6 col-lg-6"><b class="share_volun_img"></b><span class="share_volun_num">455</span></div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="volun_person_img col-xs-3 col-sm-3 col-md-3 col-lg-3">-->
+                <!--<img src="img/volun1.jpg" alt="" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">-->
+                <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">革命烈士公祭活动</div>-->
+                <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">志愿名人</div>-->
+                <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">欧阳俊男</div>-->
+                <!--<div class="volun_content col-xs-12 col-sm-12 col-md-12 col-lg-12">-->
+                    <!--<div class="zan_volun col-xs-6 col-sm-6 col-md-6 col-lg-6"><b class="zan_volun_img"></b><span class="zan_volun_num">12</span></div>-->
+                    <!--<div class="share_volun col-xs-6 col-sm-6 col-md-6 col-lg-6"><b class="share_volun_img"></b><span class="share_volun_num">455</span></div>-->
+                <!--</div>-->
+            </div>
+            <div id="person_listPage">
+                <!--<ul class="pagination col-xs-12 col-sm-12 col-md-12 col-lg-12"><li><a href="#"><< 返回</a></li>-->
+                    <!--<li><a href="#">1</a></li>-->
+                    <!--<li><a href="#">2</a></li>-->
+                    <!--<li><a href="#">3</a></li>-->
+                    <!--<li><a href="#">4</a></li>-->
+                    <!--<li><a href="#">5</a></li>-->
+                    <!--<li><a href="#">下一页 >></a></li>-->
+                <!--</ul>-->
+            <!--</div>-->
+        </div>
+    </div>
+    <div class="volun_person_right col-xs-12 col-sm-4 col-md-4 col-lg-4">
+        <div class="group_news col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <h3 class="col-xs-5 col-sm-5 col-md-5 col-lg-5">各区动态</h3>
+            <ul class="group_news_content col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <li ng-repeat="obj in news"><a href="#/news_detail/{{obj.id}}" ng-bind="obj.title"></a></li>
+            </ul>
+            <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11" style="text-align: right">
+                <a href="">更多>></a>
+            </div>
+        </div>
+        <div class="group_news col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <h3 class="col-xs-5 col-sm-5 col-md-5 col-lg-5">活动信息</h3>
+            <ul class="group_news_content col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <li ng-repeat="obj in campaigns"><a href="#/news_detail/{{obj.id}}" ng-bind="obj.title"></a></li>
+            </ul>
+            <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11" style="text-align: right">
+                <a href="">更多>></a>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function(){
+        $(".bread .g_clc").each(function(i,v){
+            $(v).on("click",function(){
+                $(".bread .g_clc").each(function(index,value){
+                    $(value).css("color","grey");
+                });
+                $(v).css("color","#e84c3d");
+            });
+        });
+    });
+</script>
+<div ng-include="'tpl/include/footer.html'"></div>

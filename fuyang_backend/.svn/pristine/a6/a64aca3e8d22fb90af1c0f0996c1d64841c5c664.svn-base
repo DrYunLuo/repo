@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge.chrome=1"/>
+    <title>后台管理</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/system.css">
+    <script src="js/jquery-1.11.3.js"></script>
+    <script src="js/bootstrap.js"></script>
+</head>
+<body>
+    <div id="header">
+        <div class="container">
+            <h1 style="width:300px;text-align: center;background: #333;margin: 0 auto;border-radius: 10px;color: #eee;">后台处理页面</h1>
+        </div>
+    </div>
+    <div id="function">
+        <div class="container">
+            <ul class="func">
+            	<li><a class="btn btn-default">管理志愿者</a></li>
+                <li><a class="btn btn-default">管理组织</a></li>
+                <li><a class="btn btn-default">管理活动</a></li>
+                <li><a class="btn btn-default">管理帖子</a></li>
+                <li><a class="btn btn-default">发布新闻</a></li>
+                <li><a class="btn btn-default">发送系统消息</a></li>
+            </ul>
+        </div>
+    </div>
+    <div id="view">
+        <div class="container">
+        	<div class="checked_volunteer  current">
+                <table class="table">
+                    <thead class="thea">
+                        <th class="special">个人志愿者</th>
+                        <th class="short">审核状态</th>
+                        <th class="anniu">是否通过</th>
+                    </thead>
+                    <!--<tr>
+                        <td class="special"><a href="volunteer.html" class="active_name">志愿者姓名</a></td>
+                        <td class="short">
+                            <span class="shenhe">未审核</span>
+                        </td>
+                        <td class="anniu">
+                            <div class="container">
+                                <a onclick="messagesubmit.checkfunc()" class="btn check">通过</a>
+                                <a class="btn no_check">不通过</a>
+                            </div>
+                        </td>
+                    </tr>-->
+                </table>
+                <div class="nav">
+                    <ul>
+                        <li><a href="">1</a></li>
+                        <li><a href=""> >> </a></li>
+                    </ul>
+                </div>
+                <!--<a class="btn" href="active.html" style="display:block;margin: 0 auto;">添加志愿者</a>-->
+            </div>
+            <div class="checked_group">
+                <table class="table">
+                    <thead class="thea">
+                        <th class="special">组织标题</th>
+                        <th class="short">审核状态</th>
+                        <th class="anniu">是否通过</th>
+                    </thead>
+                    <tr>
+                        <td class="special"><a href="group_name.html" class="active_name">组织名称</a></td>
+                        <td class="short">
+                            <span class="shenhe">未审核</span>
+                        </td>
+                        <td class="anniu">
+                            <div class="container">
+                                <a onclick="messagesubmit.checkfunc()" class="btn check">通过</a>
+                                <a class="btn no_check">不通过</a>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <div class="nav">
+                    <ul>
+                        <li><a href="">1</a></li>
+                        <li><a href=""> >> </a></li>
+                    </ul>
+                </div>
+                <!--<a class="btn" href="active.html" style="display:block;margin: 0 auto;">添加组织</a>-->
+            </div>
+            <div class="checked_act">
+                <table class="table">
+                    <thead class="thea">
+                        <th class="special">活动标题</th>
+                        <th class="short">审核状态</th>
+                        <th class="anniu">是否通过</th>
+                    </thead>
+                    <tr>
+                        <td class="special"><a href="active.html" class="active_name">活动名称</a></td>
+                        <td class="short">
+                            <span class="shenhe">未审核</span>
+                        </td>
+                        <td class="anniu">
+                            <div class="container">
+                                <a onclick="messagesubmit.checkfunc()" class="btn check">通过</a>
+                                <a class="btn no_check">不通过</a>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <div class="nav">
+                    <ul>
+                        <li><a href="">1</a></li>
+                        <li><a href=""> >> </a></li>
+                    </ul>
+                </div>
+                <!--<a class="btn" href="active.html" style="display:block;margin: 0 auto;">添加活动</a>-->
+            </div>
+            <div class="checked_card">
+                <table class="table">
+                    <thead>
+                    <th class="special">帖子标题</th>
+                    <th class="so_short">审核状态</th>
+                    <th class="anniu">是否通过</th>
+                    </thead>
+                    <tr>
+                        <td class="special"><a>大家快来看啊</a></td>
+                        <td class="so_short">
+                            <span class="shenhe">未审核</span>
+                        </td>
+                        <td class="anniu">
+                            <div class="container">
+                                <a onclick="messagesubmit.checkActive()" class="btn check">通过</a>
+                                <a class="btn  no_check">不通过</a>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <div class="nav">
+                    <ul>
+                        <li><a href="">1</a></li>
+                        <li><a href=""> >> </a></li>
+                    </ul>
+                </div>
+                <!--<a class="btn" onclick="messagesubmit.doSubmit()" style="display:block;margin: 0 auto;">确认</a>-->
+            </div>
+            <div class="acts_news">
+                <table class="table">
+                    <thead>
+                        <th class="special">新闻标题</th>
+                        <th class="so_short">是否为热点新闻</th>
+                    </thead>
+                    <tr>
+                        <td class="special"><a>大家快来看啊</a></td>
+                        <td class="so_short">
+                            <span class="shenhe"></span>
+                        </td>
+                    </tr>
+                </table>
+                <div class="nav">
+                    <ul>
+                        <li><a href="">1</a></li>
+                        <li><a href=""> >> </a></li>
+                    </ul>
+                </div>
+                <form action="/system_manager/news/add" id="form" method="post" enctype="multipart/form-data"></form>
+                <div class="redian" style="width:100%;line-height: 30px;margin: 10px 0;">
+                    <span style="display: inline-block;background: #aaaaaa;border-radius: 5px;padding: 2px 5px;">设置为热点新闻</span>
+                    <input form="form" name="hottest" type="checkbox" style="display: inline-block;width: 30px;">
+                </div>
+                <div class="container" style="margin-bottom: 10px;">
+                    <span style="line-height:3rem;float:left;display:inline-block;width:10%;height:3rem;">新闻标题:&nbsp;&nbsp;</span>
+                    <input form="form" style="float:left;width:55%;height: 3rem; display: inline-block;" name="title" type="text">
+                    <span style="line-height:3rem;float:left;display:inline-block;text-align:right;margin-left:5%;width:10%;height:3rem;">发布时间:&nbsp;&nbsp;</span>
+                    <input type="text" value="00:00" style="float:left;border:0px solid transparent;background-color:#eee;font-size:18px;color:red;width:15%;height: 3rem; display: inline-block;"/>
+                    <span style="margin-top:10px;line-height:3rem;float:left;display:inline-block;width:10%;height:3rem;">新闻摘要:</span>
+                    <input type="text" style="margin-top:10px;float:left;display:inline-block;width:80%;height:3rem;" />
+                    <textarea form="form" name="content" class="dimension" style="width:95%; height:60%;margin-top: 10px; resize: none;" cols="30" rows="10"></textarea>
+                    <br>
+                    <span style="line-height:2rem;display:block;float:left;width:10%;height:2rem;">新闻图片:&nbsp;&nbsp;</span>
+                    <input type="file" name="news_photo" form="form" class="" style="display:block;float:left;width:50%;height:2rem;">
+                	<span style="margin-left:5%;line-height:2rem;display:block;float:left;width:10%;height:2rem;">上传者:</span>
+                	<input type="text" value="冯超" style="font-size:18px;color:blue;background-color:#eee;border:0px solid transparent;display:block;float:left;width:20%;height:2rem;"/>
+                </div>
+                <div class="container">
+                    <input class="btn" form="form" type="submit" style="display:block;margin: 0 auto;" value="发布新闻"/>
+                </div>
+            </div>
+
+            <!--message信息id没设置-->
+            <div class="send_system_message">
+                <textarea class="information" style="width:95%; height:60%; margin-top: 20px; resize: none;" cols="30" rows="10"></textarea>
+                <a data-message-id="message_id" class="btn" onclick="messagesubmit.pushMessage()" style="display:block;margin: 0 auto;">发送消息</a>
+            </div>
+        </div>
+        <!--<div class="form-group" style="margin-top: 10px;      ">-->
+            <!--<label for="inputfile" class="col-sm-2 control-label" style="margin-top: 8px;padding-right: 0px;-->
+    <!--text-align: center;">用户密码:</label>-->
+            <!--<div class="col-sm-10">-->
+                <!--<input style="width: 50%;" type="password" name="uoload" class="form-control" id="inputfile" placeholder="请填写密码">-->
+            <!--</div>-->
+        <!--</div>-->
+    </div>
+    <div class="container">
+        <div class="modal fade" id="backgroun">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                                class="sr-only">Close</span></button>
+                        <h3 class="modal-title">简介</h3>
+                    </div>
+                    <div class="modal-body">
+                        <p style="font-size: 2rem;" id="user_description">提交成功&hellip;</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" style="font-size: 2rem;">关闭
+                        </button>
+                        <!--<button type="button" class="btn btn-primary" style="font-size: 2rem;">Save changes</button>-->
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+    </div>
+    <script>
+        function hah() {
+            $('#backgroun').modal('show');
+        }
+        $(".func>li>a").eq(0).css("background-color","#555");
+        $(".func>li>a").click(function(){
+            var index=$(this).parent().index();
+            $(".func>li>a").each(function(index,value){
+            	$(value).css({"background-color":"#999","border-radius":"3px"});
+            });
+            $(this).css({"background-color":"#555","border-radius":"3px"});
+            $(".container>div").eq(index).addClass("current").siblings().removeClass("current");
+        })
+        $(function () {
+            $('#form').attr('action',"/system_manager/news/add?token="+localStorage.getItem('token'));
+        })
+        var messagesubmit={
+            doSubmit:function(){
+                var content=$('textarea[class=dimension]').val();
+                var news_theme=$('input[name=news_theme]').val();
+                var filed=$('input[name=news_photo]').val();
+                var checked=$('input[name=checked]').val();
+                if(checked){
+                    checked=true;
+                }else {
+                    checked=false;
+                }
+                $.post("/system_manager/news/add?token="+localStorage.getItem("token"),{
+                    content:content,
+                    title:news_theme,
+                    filePath:filed,
+                    hottest:checked,
+                    url:''
+                },function(data){
+                    consolo.log(data);
+                    if (!data.success){
+                        alert(data.error.message);
+                        return
+                    }else {
+                        var checkbox = $(".dianjai input[type=checkbox]").val();
+                        if (checkbox) {
+                            $(".acts_news .shenhe").text("是");
+                        } else {
+                            $(".acts_news .shenhe").text("否");
+                        }
+                        $('.acts_news .special a').html(news_theme);
+                        $('#backgroun').modal('show');
+                    }
+                });
+            },
+            pushMessage:function(){
+                var content=$('.information').val();
+                var message_id=Math.random();
+                $("[data-message-id]").data(message_id);
+                var uid=message_id;
+                $.post("/system_manager/message/push?token="+localStorage.getItem("token"),{
+                    content:content,
+                    uid:uid
+                },function (data) {
+                    console.log(data);
+                    if (!data.success) {
+                        alert(data.error.message);
+                        return
+                    }else{
+                        $('#backgroun').modal('show');
+                        $('.information').text('');
+                    }
+                });
+            },
+            checkPost:function(){
+                var postId=$(".postName").attr("data-post-id");
+                console.log(postId);
+                $.post("/system_manager/post/waiting/pass?token="+localStorage.getItem("token"),{
+                    pass:1,
+                    postId:postId
+                },function (data) {
+                    console.log(data);
+                    if(!data.success){
+                        alert(data.error.message);
+                        return;
+                    }else{
+                        $(this).parent().parent().parent().remove();
+                    }
+                });
+            },
+            checkActive:function(){
+                var activeId=$(".active_Name").attr("data-active-id");
+                $.post("/system_manager/post/waiting/pass?token="+localStorage.getItem('token'),{
+                    pass:-1,
+                    activeId:activeId
+                },function (data) {
+                    console.log(data);
+                    if(!data.success){
+                        alert(data.error.message);
+                        return;
+                    }
+                    $(this).parent().parent().parent().remove();
+                });
+            }
+        }
+    </script>
+    
+<script src="volunteer.js"></script>    
+</body>
+</html>

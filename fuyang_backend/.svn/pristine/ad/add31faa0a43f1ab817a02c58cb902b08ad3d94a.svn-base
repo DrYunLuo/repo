@@ -1,0 +1,160 @@
+package com.yichuang.fuyang.web.common;
+
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
+import org.quartz.Job;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
+import org.springframework.stereotype.Controller;
+
+import com.yichuang.fuyang.entity.Accounts;
+import com.yichuang.fuyang.entity.Campaignrecords;
+import com.yichuang.fuyang.entity.Campaigns;
+import com.yichuang.fuyang.entity.Creditrecord;
+import com.yichuang.fuyang.entity.Groups;
+import com.yichuang.fuyang.entity.Volunteers;
+import com.yichuang.fuyang.service.CampaignrecordsService;
+import com.yichuang.fuyang.service.CampaignsService;
+import com.yichuang.fuyang.util.Utils;
+import com.yichuang.fuyang.util.YCConstants;
+
+@Controller
+public class GrantVTBJob implements Job{
+		/**
+		 * 发放活动积分
+		 * 
+		 * 更新Campaigns  更新campayflag updateAt
+		 * 更新Campaignrecords 更新payflag updateAt
+		 * 更新Accounts   更新 credit updateAt 
+		 * 更新Volunteers 更新serviceTime updateAt campaignTotal
+		 * 更新groups  更新serviceTime updateAt campaignTotal
+		 * 添加creditrecord   添加 id   volunteerId  time  creditrecord  VTValue
+		 * 
+		 * 
+		 * 操作结果
+		 * 查询不到活动 没有活动需要处理       
+		 * 查询到活动 活动中没有需要处理的志愿者 
+		 * 查询到活动 部分志愿者修改成功  campaigns groups表未修改 下次调用依然需要处理此活动
+		 * 查询到活动 全部志愿者修改成功  
+		 */
+		private String parseStr ="yyyy-MM-dd hh:mm:ss";
+		@Override  
+		public void execute(JobExecutionContext context) throws JobExecutionException{
+	    	//System.out.println("积分发放 - executing its JOB at " + new Date());
+	    	
+	    	//获取spring上下文
+	    	ApplicationContext ac = new FileSystemXmlApplicationContext("classpath:spring-*.xml");
+	    	CampaignsService campaignsService = (CampaignsService) ac.getBean("CampaignsService");
+	    	CampaignrecordsService campaignrecordsService = (CampaignrecordsService) ac.getBean("CampaignrecordsService");
+	    
+			//定义志愿者获取VT币值
+			double countResult;
+			//定义符合条件志愿者数
+			int duration = 0;
+			//定义活动签到开始时间
+			Date startTime = null ;
+			//定义活动签到结束时间
+			Date endTime = null;
+			//定义志愿者签到时间
+			String enterTime;
+			//定义志愿者签退时间
+			String leaveTime;
+			//定义volunteers
+			Volunteers volunteers = new Volunteers();
+			//定义groups
+			Groups groups = new Groups();
+			//定义accounts
+			Accounts accounts = new Accounts();
+			//定义Creditrecord 积分发放记录
+			Creditrecord creditrecord = new Creditrecord();
+			//定义组织
+			Campaigns campaigns = null;
+			//查询待处理的活动参与记录
+
+			Campaignrecords campaignrecords_temp = new Campaignrecords();
+			
+			Campaigns campaignInside = new Campaigns();
+			campaignInside.setStatus(YCConstants.SYSTEM_STRING_ONE);
+	 		campaignInside.setCamPayFlag(YCConstants.SYSTEM_INT_ZERO);
+			campaignrecords_temp.setCampaigns(campaignInside);
+			
+			campaignrecords_temp.setIscalc(YCConstants.SYSTEM_STRING_ONE);
+			campaignrecords_temp.setPayFlag(YCConstants.SYSTEM_INT_ZERO);
+			List<Campaignrecords> list = campaignrecordsService.unpaidCamRecords(campaignrecords_temp);
+			
+			//如果查询为空 ,没有需要发放积分的参与记录。则终止本次作业
+			if(list == null || list.size() < 1 ){
+				return;
+			}
+			
+			//遍历参与记录，发放积分等
+			for(Campaignrecords campaignrecords : list){
+				
+				//获取campaigns相关信息
+				campaigns = campaignrecords.getCampaigns();
+				if(campaigns == null){
+					return;
+				}
+				duration = campaigns.getDuration();
+				
+				//获取活动签到 开始 结束 时间
+				startTime = Utils.stringToDate(campaigns.getStartTime(), parseStr);
+				endTime = Utils.stringToDate(campaigns.getEndTime(), parseStr);
+				
+				//给creditrecord设置campaignId属性
+				creditrecord.setCampaignId(campaigns.getId());
+				
+				//给groups设置groupId属性
+				groups.setId(campaigns.getGroupId());
+				
+				
+				//获取志愿者签到签退时间
+				enterTime = campaignrecords.getEnterTime();
+				leaveTime = campaignrecords.getLeaveTime();
+				
+				if(enterTime == null || leaveTime == null){
+					continue;
+				}
+				
+				//如果签到时间符合 则发放积分
+				if(Utils.stringToDate(enterTime, parseStr).getTime() <= startTime.getTime() && Utils.stringToDate(leaveTime, parseStr).getTime() >= endTime.getTime()){
+					//给volunteers设置serviceTime属性
+					volunteers.setServiceTime(duration);
+					volunteers.setCampaignTotal(YCConstants.SYSTEM_INT_ONE);
+					
+					//计算积分 并给creditrecord设置VTValue,creditrecord属性 给accounts设置credit属性
+					countResult =duration*(YCConstants.VT_PER_ACTIVITY);
+					
+					//给creditrecord设置VTValue creditrecord credit  campaignId属性
+					creditrecord.setVTValue(countResult);
+					creditrecord.setCreditrecord(YCConstants.SYSTEM_SEND+countResult);
+					
+					//给groups设置servicetime属性
+					groups.setServerTime(duration);
+					
+					//给 accounts设置credit属性
+					accounts.setCredit((int)countResult);
+				}
+				
+				//事务 更新Campaigns Campaignrecords Accounts Volunteers groups表  添加creditrecord表
+				campaignrecordsService.tx_camRecIntegral(campaignrecords,volunteers
+						,accounts,creditrecord,groups);
+				
+				//1.修改Campaigns  更新camPayFlag  updatedAt
+				campaigns.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+				campaigns.setCamPayFlag(YCConstants.SYSTEM_INT_ONE);
+				
+				campaignsService.updateCampaignById(campaigns);
+				
+			}
+		}
+	  
+	}  
+

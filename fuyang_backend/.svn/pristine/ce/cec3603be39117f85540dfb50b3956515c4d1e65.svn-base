@@ -1,0 +1,757 @@
+package com.yichuang.fuyang.web;
+
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.quartz.Job;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.yichuang.fuyang.entity.Accounts;
+import com.yichuang.fuyang.entity.Campaignrecords;
+import com.yichuang.fuyang.entity.Campaigns;
+import com.yichuang.fuyang.entity.Creditrecord;
+import com.yichuang.fuyang.entity.Groups;
+import com.yichuang.fuyang.entity.User;
+import com.yichuang.fuyang.entity.Volunteers;
+import com.yichuang.fuyang.service.CampaignrecordsService;
+import com.yichuang.fuyang.service.CampaignsService;
+import com.yichuang.fuyang.service.PropertyService;
+import com.yichuang.fuyang.service.UserService;
+import com.yichuang.fuyang.util.DefaultResponse;
+import com.yichuang.fuyang.util.JsonResult;
+import com.yichuang.fuyang.util.Utils;
+import com.yichuang.fuyang.util.YCConstants;
+
+@RequestMapping("/records")
+@Controller
+public class CampaignrecordsController implements Job{
+	
+	@Autowired
+	private CampaignrecordsService campaignrecordsService;
+	
+	@Autowired
+	private PropertyService propertyService;
+	
+	@Autowired
+	private CampaignsService campaignsService;
+	
+	@Autowired
+	private UserService userService;
+	
+	
+	/**
+	 * 加入活动
+	 * @param volunteerId
+	 * @param campaignId
+	 * @return
+	 */
+	@RequestMapping("/partTake")
+	@ResponseBody
+	public JsonResult<Map<String, Object>> partTake(String volunteerId,String campaignId,String token,String keyParams){
+		JsonResult checkJsonResult = Utils.checkKeyParams(volunteerId+campaignId+propertyService.KEY, keyParams);
+		if(checkJsonResult != null){
+			return checkJsonResult;
+		}
+		if(StringUtils.isEmpty(campaignId)|| StringUtils.isEmpty(volunteerId) || StringUtils.isEmpty(token)){
+			return new JsonResult<Map<String,Object>>(DefaultResponse.PARAM_NULL_ERROR,null);
+		}
+		JsonResult<Map<String, Object>> jsonResult= null;
+		User user = new User();
+		user.setVolunteerId(volunteerId);
+		//根据志愿者id查询用户
+		List<User> list = userService.getUserByVolunId(user);
+		//对比token
+		if(list != null && list.size() > 0 ){
+			String userToken = list.get(0).getToken();
+			if(!token.equals(userToken)){
+				jsonResult = new JsonResult<Map<String,Object>>(DefaultResponse.TOKEN_NULL_ERROR,null);
+			}else {
+				try{
+					Map<String, Object> returnMap = campaignrecordsService.partTake(volunteerId,campaignId);
+					//参加活动返回码
+					String partStatus = String.valueOf(returnMap.get("status"));
+					switch(partStatus){
+						case "0":
+							jsonResult = new JsonResult<Map<String,Object>>(DefaultResponse.SUCCESS,returnMap);
+							break;
+						case "1":
+							jsonResult = new JsonResult<Map<String,Object>>(DefaultResponse.ALREADY_START,returnMap);
+							break;
+						case "2":
+							jsonResult = new JsonResult<Map<String,Object>>(DefaultResponse.FULL_NUMBER,returnMap);
+							break;
+						case "3":
+							jsonResult = new JsonResult<Map<String,Object>>(DefaultResponse.ALREADY_PART_REJECT,returnMap);
+							break;
+						case "4":
+							jsonResult = new JsonResult<Map<String,Object>>(DefaultResponse.ALREADY_PART_PASS,returnMap);
+							break;
+						case "5":
+							jsonResult = new JsonResult<Map<String,Object>>(DefaultResponse.ALREADY_PART_NOAUDIT,returnMap);
+							break;
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+					jsonResult = new JsonResult<Map<String,Object>>(DefaultResponse.INSERT_ERROR,null);
+				}
+			}
+		}
+		return jsonResult;
+	}
+	
+	/**
+	 * 组织查询待审核  志愿者参加活动记录 接口 LH
+	 * @param pageNo
+	 * @param pageSize
+	 * @param campaignId
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	@RequestMapping("/unreviewedCam")
+	@ResponseBody
+	public JsonResult<PageInfo<Campaignrecords>> getCamRecByIscalc(Integer pageNo,Integer pageSize,Campaignrecords campaignrecord,String keyParams){
+		pageNo = pageNo == null ? 1 : pageNo;
+		pageSize = pageSize == null ? 10 : pageSize;
+		
+		JsonResult<PageInfo<Campaignrecords>> result = null;
+		try {
+			//接口验证
+			if(campaignrecord == null){
+				result = new JsonResult<PageInfo<Campaignrecords>>(DefaultResponse.PARAM_NULL_ERROR,null);
+			}
+			
+			JsonResult<PageInfo<Campaignrecords>> checkResult = Utils.checkKeyParams(campaignrecord.getGroupId()+campaignrecord.getIscalc()+propertyService.KEY, keyParams);
+			if(checkResult != null){
+				result = checkResult;
+			}else{
+				
+				PageHelper.startPage(pageNo, pageSize);
+				//查询
+				List<Campaignrecords> list = campaignrecordsService.getCamRecByIscalc(campaignrecord);
+				PageInfo<Campaignrecords> page = new PageInfo<Campaignrecords>(list);
+				result = new JsonResult<PageInfo<Campaignrecords>>(DefaultResponse.SUCCESS,page);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			result = new JsonResult<PageInfo<Campaignrecords>>(DefaultResponse.OPERATE_ERROR,null);
+		}
+		return result ;
+		
+	}
+	/**
+	 * 单表查询活动参与记录
+	 * @param pageNo
+	 * @param pageSize
+	 * @param campaignId
+	 * @return
+	 */
+	@RequestMapping("/getCamRec")
+	@ResponseBody
+	public JsonResult<PageInfo<Campaignrecords>> getCamRec(Integer pageNo,Integer pageSize,Campaignrecords campaignrecord,String keyParams){
+		pageNo = pageNo == null ? 1 : pageNo;
+		pageSize = pageSize == null ? 10 : pageSize;
+		
+		JsonResult<PageInfo<Campaignrecords>> result = null;
+		try {
+//			//接口验证
+//			if(campaignrecord == null){
+//				result = new JsonResult<PageInfo<Campaignrecords>>(DefaultResponse.PARAM_NULL_ERROR,null);
+//			}
+//			
+//			JsonResult<PageInfo<Campaignrecords>> checkResult = Utils.checkKeyParams(campaignrecord.getGroupId()+campaignrecord.getIscalc()+propertyService.KEY, keyParams);
+//			if(checkResult != null){
+//				result = checkResult;
+//			}else{
+				
+				PageHelper.startPage(pageNo, pageSize);
+				//查询
+				List<Campaignrecords> list = campaignrecordsService.getCamRec(campaignrecord);
+				PageInfo<Campaignrecords> page = new PageInfo<Campaignrecords>(list);
+				result = new JsonResult<PageInfo<Campaignrecords>>(DefaultResponse.SUCCESS,page);
+//			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			result = new JsonResult<PageInfo<Campaignrecords>>(DefaultResponse.OPERATE_ERROR,null);
+		}
+		return result ;
+		
+	}
+	
+	
+	/**
+	 * 组织同意  志愿者参加活动 	LH
+	 * @param volunteerId
+	 * @param campaignId
+	 * @param keyParams
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	@RequestMapping("/reviewedCam")
+	@ResponseBody
+	public JsonResult<Integer> updateCamRecIscalc(Campaignrecords campaignrecord,String keyParams){
+		
+		JsonResult<Integer> result = null;
+		
+		//申请记录ID
+		String campaignrecordId = campaignrecord.getId();
+		//审批状态
+		String iscalc = campaignrecord.getIscalc();
+		//接口验证
+		JsonResult<Integer> checkResult = Utils.checkKeyParams(campaignrecordId+iscalc+propertyService.KEY, keyParams);
+		if(checkResult != null){
+			return  checkResult;
+		}
+		
+		if(StringUtils.isEmpty(campaignrecordId) || StringUtils.isEmpty(iscalc)){
+			return  new JsonResult<Integer>(DefaultResponse.PARAM_NULL_ERROR,null);
+		}
+			
+		try {
+			//审核
+			Integer i =campaignrecordsService.updateCamRecIscalc(campaignrecord);
+			List<Campaigns> campaignsList  = campaignsService.getCampaignInfoId(campaignrecord.getCampaignId());
+			if(campaignsList != null && campaignsList.size()>0){
+				Campaigns getCampaigns = campaignsList.get(0);
+				getCampaigns.setMemberCount(getCampaigns.getMemberCount()+1);
+				campaignsService.updateCampaignsById(getCampaigns);
+			}
+			if( i > 0){
+				result =  new JsonResult<Integer>(DefaultResponse.SUCCESS,i);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return   new JsonResult<Integer>(DefaultResponse.OPERATE_ERROR,null);
+		}
+		return result;
+	}
+	
+
+	/**
+	 *志愿者参加活动签到和签退	zhuoming
+	 * @param volunteerId
+	 * @param campaignId
+	 * @param enterTime
+	 * @param leaveTime
+	 * @param keyParams
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	@RequestMapping("/updateCamRec")
+	@ResponseBody
+	public JsonResult<Integer> updateCamRec(Campaignrecords campaignrecord,String keyParams){
+		
+		JsonResult<Integer> result = null;
+		
+		//申请记录ID
+		String campaignId = campaignrecord.getCampaignId();
+		String volunteerId = campaignrecord.getVolunteerId();
+		String enterTime = campaignrecord.getEnterTime();
+		String leaveTime = campaignrecord.getLeaveTime();
+		//接口验证
+		JsonResult<Integer> checkResult = Utils.checkKeyParams(campaignId+volunteerId+propertyService.KEY, keyParams);
+		if(checkResult != null){
+			return  checkResult;
+		}
+		
+		if(StringUtils.isEmpty(campaignId) || StringUtils.isEmpty(volunteerId)){
+			return  new JsonResult<Integer>(DefaultResponse.PARAM_NULL_ERROR,null);
+		}
+			
+		try {
+			campaignrecordsService.updateCamRecDynamic(campaignrecord);
+			Campaigns campaigns = new Campaigns();
+			campaigns.setId(campaignrecord.getCampaignId());
+			campaigns.setAttendanceNum(campaigns.getAttendanceNum()+1);
+			//签到，活动签到人数加1 
+			if(enterTime != null){
+				campaignsService.updateCampaignDynamic(campaigns);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return   new JsonResult<Integer>(DefaultResponse.OPERATE_ERROR,null);
+		}
+		return new JsonResult<Integer>(DefaultResponse.SUCCESS,null);
+	}
+	
+	/**
+	 * 是否参加过活动的记录
+	 * @param campaignrecords
+	 * @return
+	 */
+	@RequestMapping("judge")
+	@ResponseBody
+	public JsonResult<String> judge(String volunteerId,String campaignId,String keyParams){
+		JsonResult checkJsonResult = Utils.checkKeyParams(volunteerId+campaignId+propertyService.KEY, keyParams);
+		if(checkJsonResult != null){
+			return checkJsonResult;
+		}
+		if(campaignId == null || campaignId.trim() == "" 
+				|| volunteerId == null || volunteerId.trim() == ""){
+			return new JsonResult<String>(DefaultResponse.PARAM_NULL_ERROR,null);
+		}
+		Campaignrecords campaignrecords = new Campaignrecords();
+		campaignrecords.setCampaignId(campaignId);
+		campaignrecords.setVolunteerId(volunteerId);
+		try {
+			Campaignrecords campaignrecords2 = campaignrecordsService.findByCidVid(campaignrecords);
+			if(campaignrecords2 == null){
+				return new JsonResult<String>(DefaultResponse.RESULT_NULL_ERROR,null);
+			}
+			return new JsonResult<String>(DefaultResponse.SUCCESS,campaignrecords2.getId());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new JsonResult<String>(DefaultResponse.QUERY_ERROR,null);
+		}
+	}
+	
+	
+	@SuppressWarnings("null")
+	@RequestMapping("volunRecords")
+	@ResponseBody
+	public JsonResult<Map<String, List<Campaigns>>> volunRecords(Campaignrecords campaignrecords,Integer pageNo,Integer pageSize) throws ParseException{
+		if(StringUtils.isEmpty(campaignrecords.getVolunteerId())){
+			return new JsonResult<Map<String,List<Campaigns>>>(DefaultResponse.PARAM_NULL_ERROR,null);
+		}
+		
+		//获取当前时间
+		Calendar nowCalendar = Calendar.getInstance();
+		Calendar camCalendar = Calendar.getInstance();
+		//System.out.println(nowCalendar+"----------------");
+		Map<String,List<Campaigns>> map = new HashMap<String, List<Campaigns>>();
+		//未开始活动
+		List<Campaigns> unStart = new ArrayList<Campaigns>(); 
+		//已结束的活动
+		List<Campaigns> end = new ArrayList<Campaigns>();
+		//正在进行中的活动
+		List<Campaigns> on = new ArrayList<Campaigns>();
+		Campaigns campaigns = new Campaigns();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		campaignrecords.setIscalc(YCConstants.AUDIT_TURE);
+		PageInfo<Campaignrecords> pageInfo = campaignrecordsService.findVolunRecords(campaignrecords, pageNo, pageSize);
+		List<Campaignrecords> recordsList = pageInfo.getList();
+		if(recordsList != null && recordsList.size() > 0){
+			
+			for(int i = 0;i < recordsList.size();i++){
+				//根据活动记录的活动id获取活动信息
+//				campaigns.setId(recordsList.get(i).getCampaignId());
+				List<Campaigns> campaignsList = campaignsService.getCampaignInfoId(recordsList.get(i).getCampaignId());
+				if(campaignsList != null && campaignsList.size() > 0){
+					campaigns = campaignsList.get(0);
+					camCalendar.setTime(sdf.parse(campaigns.getStartTime()));
+					//活动开始时间与当前时间的对
+					Integer integer = nowCalendar.compareTo(camCalendar);
+					camCalendar.setTime(sdf.parse(campaigns.getEndTime()));
+					//活动结束时间与当前时间的对比
+					Integer jInteger = nowCalendar.compareTo(camCalendar);
+					if(integer < 0 && jInteger < 0){
+						unStart.add(campaigns);
+					}
+					
+					else if(jInteger < 0 && integer < 0){
+						end.add(campaigns);
+					}
+					else if(integer >= 0 && jInteger <= 0) {
+						on.add(campaigns);
+					}
+				}
+			}
+			map.put("unstart", unStart);
+			map.put("over", end);
+			map.put("ongoing", on);
+			return new JsonResult<Map<String,List<Campaigns>>>(map);
+		}else{
+			return new JsonResult<Map<String,List<Campaigns>>>(DefaultResponse.RESULT_NULL_ERROR,null);
+		}
+	}
+
+	
+	@RequestMapping("volunRecordsIscalc")
+	@ResponseBody
+	public JsonResult<Map<String, List<Campaigns>>> volunRecordsIscalc(Campaignrecords campaignrecords,Integer pageNo,Integer pageSize){
+		if(StringUtils.isEmpty(campaignrecords.getVolunteerId())){
+			return new JsonResult<Map<String, List<Campaigns>>>(DefaultResponse.PARAM_NULL_ERROR,null);
+		}
+		//审核不通过
+		List<Campaigns> notAudit = new ArrayList<Campaigns>(); 
+		//审核中
+		List<Campaigns> audit = new ArrayList<Campaigns>();
+		Campaigns campaigns = new Campaigns();
+		Map<String,List<Campaigns>> map = new HashMap<String, List<Campaigns>>();
+		try {
+			campaignrecords.setIscalc(YCConstants.AUDIT_FASLE);
+			PageInfo<Campaignrecords> unInfo = campaignrecordsService.findVolunRecords(campaignrecords, pageNo, pageSize);
+			List<Campaignrecords> recordsList = unInfo.getList();
+			if(!CollectionUtils.isEmpty(recordsList)){
+				for(int i = 0;i < recordsList.size();i++){
+//					campaigns.setId(recordsList.get(i).getCampaignId());
+					List<Campaigns> campaignsList = campaignsService.getCampaignInfoId(recordsList.get(i).getCampaignId());
+					if(!CollectionUtils.isEmpty(campaignsList)){
+						notAudit.add(campaignsList.get(0));
+					}
+				}
+			}
+			campaignrecords.setIscalc(YCConstants.AUDIT_NOAUDIT);
+			PageInfo<Campaignrecords> pageInfo = campaignrecordsService.findVolunRecords(campaignrecords, pageNo, pageSize);
+			List<Campaignrecords> pageList = pageInfo.getList();
+			if(!CollectionUtils.isEmpty(pageList)){
+				for(int i = 0;i < pageList.size();i++){
+					campaigns.setId(pageList.get(i).getCampaignId());
+					List<Campaigns> campaignsList = campaignsService.getCampainName(campaigns);
+					if(!CollectionUtils.isEmpty(campaignsList)){
+						audit.add(campaignsList.get(0));
+					}
+				}
+			}
+			if(CollectionUtils.isEmpty(notAudit) && CollectionUtils.isEmpty(audit)){
+				return new JsonResult<Map<String, List<Campaigns>>>(DefaultResponse.RESULT_NULL_ERROR,null);
+			}
+			map.put("notAudit", notAudit);
+			map.put("audit", audit);
+			return new JsonResult<Map<String, List<Campaigns>>>(DefaultResponse.SUCCESS,map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new JsonResult<Map<String, List<Campaigns>>>(DefaultResponse.QUERY_ERROR,null);
+		}
+	} 
+	
+	
+	/**
+	 * 获取所有记录
+	 * @param campaignrecords
+	 * @param pageNo
+	 * @param pageSize
+	 * @return
+	 */
+	@RequestMapping("getAllRecords")
+	@ResponseBody
+	public JsonResult<PageInfo<Campaignrecords>> getAllRecords(Campaignrecords campaignrecords,Integer pageNo,Integer pageSize){
+		if(StringUtils.isEmpty(campaignrecords.getVolunteerId())){
+			return new JsonResult<PageInfo<Campaignrecords>>(DefaultResponse.PARAM_NULL_ERROR,null);
+		}
+		try{
+			PageInfo<Campaignrecords> pageInfo = campaignrecordsService.findVolunRecords(campaignrecords, pageNo, pageSize);
+			return new JsonResult<PageInfo<Campaignrecords>>(DefaultResponse.SUCCESS,pageInfo);
+		}catch(Exception e){
+			e.printStackTrace();
+			return new JsonResult<PageInfo<Campaignrecords>>(DefaultResponse.QUERY_ERROR,null);
+		}
+	}
+	
+	
+	/**
+	 * 发放活动积分
+	 * 
+	 * 更新Campaigns  更新campayflag updateAt
+	 * 更新Campaignrecords 更新payflag updateAt
+	 * 更新Accounts   更新 credit updateAt 
+	 * 更新Volunteers 更新serviceTime updateAt campaignTotal
+	 * 更新groups  更新serviceTime updateAt campaignTotal
+	 * 添加creditrecord   添加 id   volunteerId  time  creditrecord  VTValue
+	 * 
+	 * 
+	 * 操作结果
+	 * 查询不到活动 没有活动需要处理       
+	 * 查询到活动 活动中没有需要处理的志愿者 
+	 * 查询到活动 部分志愿者修改成功  campaigns groups表未修改 下次调用依然需要处理此活动
+	 * 查询到活动 全部志愿者修改成功  
+	 */
+	@RequestMapping("ceshi")
+	@ResponseBody
+	public boolean Integral(){
+		//定义每小时VT币
+		String awardPerHour;
+		//定义志愿者获取VT币值
+		double countResult;
+		//定义符合条件志愿者数
+		int duration = 0;
+		//定义活动签到开始时间
+		Date startTime = null ;
+		//定义活动签到结束时间
+		Date endTime = null;
+		//定义志愿者签到时间
+		String enterTime;
+		//定义志愿者签退时间
+		String leaveTime;
+		//定义volunteers
+		Volunteers volunteers = new Volunteers();
+		//定义groups
+		Groups groups = new Groups();
+		//定义accounts
+		Accounts accounts = new Accounts();
+		//定义Creditrecord 积分发放记录
+		Creditrecord creditrecord = new Creditrecord();
+		//定义组织
+		Campaigns campaigns ;
+		
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		
+		//设置查询条件
+		Campaignrecords campaignrecords_temp = new Campaignrecords();
+		
+		campaignrecords_temp.getCampaigns().setStatus(YCConstants.SYSTEM_STRING_ONE);
+		campaignrecords_temp.getCampaigns().setCamPayFlag(YCConstants.SYSTEM_INT_ZERO);
+		campaignrecords_temp.setIscalc(YCConstants.SYSTEM_STRING_ONE);
+		campaignrecords_temp.setPayFlag(YCConstants.SYSTEM_INT_ZERO);
+		//查询符合条件的campaignrecords 信息
+		List<Campaignrecords> list = campaignrecordsService.unpaidCamRecords(campaignrecords_temp);
+		
+		//如果查询为空 ,没有需要发放积分的参与记录。则返回false
+		if(list == null || list.size() < 1 ){
+			return false;
+		}
+		
+		for(Campaignrecords campaignrecords : list){
+			
+			//获取campaigns相关信息
+			campaigns = campaignrecords.getCampaigns() == null 
+					? new Campaigns() : campaignrecords.getCampaigns();
+					
+			if(campaigns == null){
+				return false;
+			}
+			duration = campaigns.getDuration();
+			
+			
+			
+			//获取活动签到 开始 结束 时间
+			try {
+				startTime = dateFormat.parse(campaigns.getStartTime());
+				endTime = dateFormat.parse(campaigns.getEndTime());
+			} catch (ParseException e) {
+				e.printStackTrace();
+				return false;
+			}
+			
+			//给creditrecord设置campaignId属性
+			creditrecord.setCampaignId(campaigns.getId());
+			
+			//给groups设置groupId属性
+			groups.setId(campaigns.getGroupId());
+			
+			
+			//获取志愿者签到签退时间
+			enterTime = campaignrecords.getEnterTime();
+			leaveTime = campaignrecords.getLeaveTime();
+			
+		
+			
+			//如果签到时间符合 则发放积分
+			if(Utils.stringToDate(enterTime, "yyyy-MM-dd hh:mm:ss").getTime() > startTime.getTime() && Utils.stringToDate(leaveTime, "yyyy-MM-dd hh:mm:ss").getTime() < endTime.getTime()){
+				//志愿者不符合条件  则VT币发放为0 不增加服务时长
+				creditrecord.setVTValue(YCConstants.SYSTEM_INT_ZERO);
+				creditrecord.setCreditrecord(YCConstants.SYSTEM_SEND_ZERO);
+				
+				accounts.setCredit(YCConstants.SYSTEM_INT_ZERO);
+				
+				volunteers.setServiceTime(YCConstants.SYSTEM_INT_ZERO);
+				volunteers.setCampaignTotal(YCConstants.SYSTEM_INT_ZERO);
+				
+				groups.setServerTime(YCConstants.SYSTEM_INT_ZERO);
+				
+			}else{
+				//给volunteers设置serviceTime属性
+				volunteers.setServiceTime(campaigns.getDuration());
+				volunteers.setCampaignTotal(YCConstants.SYSTEM_INT_ONE);
+				
+				//计算积分 并给creditrecord设置VTValue,creditrecord属性 给accounts设置credit属性
+				awardPerHour = campaigns.getAwardPerHour() == null ? "0" : campaigns.getAwardPerHour();
+				countResult =Math.floor( campaigns.getDuration()* (Double.parseDouble(awardPerHour)));
+				
+				//给creditrecord设置VTValue creditrecord credit  campaignId属性
+				creditrecord.setVTValue(countResult);
+				creditrecord.setCreditrecord(YCConstants.SYSTEM_SEND+countResult);
+				
+				//给groups设置servicetime属性
+				groups.setServerTime(duration);
+				
+				//给 accounts设置credit属性
+				accounts.setCredit((int)countResult);
+			}
+			
+			//事务 更新Campaigns Campaignrecords Accounts Volunteers groups表  添加creditrecord表
+			campaignrecordsService.tx_camRecIntegral(campaignrecords,volunteers
+					,accounts,creditrecord,groups);
+			
+			
+		}
+		
+		List<Campaigns> camList = campaignsService.paidCam();
+		
+		if(list == null || list.size() < 1){
+			return false;
+		}
+		
+		for(Campaigns cam : camList){
+			//1.修改Campaigns  更新camPayFlag  updatedAt
+			cam.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+			cam.setCamPayFlag(YCConstants.SYSTEM_INT_ONE);
+			
+			campaignsService.updateCampaignById(cam);
+		}
+		
+		return true;
+		
+	}
+	@RequestMapping("testGrantVTB")
+	@Override
+	@ResponseBody
+	public void execute(JobExecutionContext context) throws JobExecutionException{
+		//System.out.println("开始发放积分 at" +new Date());
+		//定义每小时VT币
+		String awardPerHour;
+		//定义志愿者获取VT币值
+		double countResult;
+		//定义符合条件志愿者数
+		int duration = 0;
+		//定义活动签到开始时间
+		Date startTime = null ;
+		//定义活动签到结束时间
+		Date endTime = null;
+		//定义志愿者签到时间
+		String enterTime;
+		//定义志愿者签退时间renwu
+		String leaveTime;
+		//定义volunteers
+		Volunteers volunteers = new Volunteers();
+		//定义groups
+		Groups groups = new Groups();
+		//定义accounts
+		Accounts accounts = new Accounts();
+		//定义Creditrecord 积分发放记录
+		Creditrecord creditrecord = new Creditrecord();
+		//定义组织
+		Campaigns campaigns ;
+		
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		
+		//设置查询条件
+		Campaignrecords campaignrecords_temp = new Campaignrecords();
+		
+		Campaigns campaignInside = new Campaigns();
+		campaignInside.setStatus(YCConstants.SYSTEM_STRING_ONE);
+ 		campaignInside.setCamPayFlag(YCConstants.SYSTEM_INT_ZERO);
+		campaignrecords_temp.setCampaigns(campaignInside);
+		
+		campaignrecords_temp.setIscalc(YCConstants.SYSTEM_STRING_ONE);
+		campaignrecords_temp.setPayFlag(YCConstants.SYSTEM_INT_ZERO);
+		//查询符合条件的campaignrecords 信息
+		List<Campaignrecords> list = campaignrecordsService.unpaidCamRecords(campaignrecords_temp);
+		
+		//如果查询为空 ,没有需要发放积分的参与记录。则返回false
+		if(list == null || list.size() < 1 ){
+			return;
+		}
+		
+		for(Campaignrecords campaignrecords : list){
+			
+			//获取campaigns相关信息
+			campaigns = campaignrecords.getCampaigns() == null 
+					? new Campaigns() : campaignrecords.getCampaigns();
+					
+			if(campaigns == null){
+				return;
+			}
+			duration = campaigns.getDuration();
+			
+			
+			
+			//获取活动签到 开始 结束 时间
+			try {
+				startTime = dateFormat.parse(campaigns.getStartTime());
+				endTime = dateFormat.parse(campaigns.getEndTime());
+			} catch (ParseException e) {
+				e.printStackTrace();
+				return;
+			}
+			
+			//给creditrecord设置campaignId属性
+			creditrecord.setCampaignId(campaigns.getId());
+			
+			//给groups设置groupId属性
+			groups.setId(campaigns.getGroupId());
+			
+			
+			//获取志愿者签到签退时间
+			enterTime = campaignrecords.getEnterTime();
+			leaveTime = campaignrecords.getLeaveTime();
+			
+			//System.out.println("活动ID------------"+campaigns.getId());
+			//System.out.println("startTime 活动开始------------"+startTime);
+			//System.out.println("endTime 活动结束时间------------"+endTime);
+			//System.out.println("enterTime  签到时间------------"+enterTime);
+			//System.out.println("leaveTime  签退时间------------"+leaveTime);
+			
+			//如果签到时间符合 则发放积分
+			if(Utils.stringToDate(enterTime, "yyyy-MM-dd hh:mm:ss").getTime() > startTime.getTime() && Utils.stringToDate(leaveTime, "yyyy-MM-dd hh:mm:ss").getTime() < endTime.getTime()){
+				//志愿者不符合条件  则VT币发放为0 不增加服务时长
+				creditrecord.setVTValue(YCConstants.SYSTEM_INT_ZERO);
+				creditrecord.setCreditrecord(YCConstants.SYSTEM_SEND_ZERO);
+				
+				accounts.setCredit(YCConstants.SYSTEM_INT_ZERO);
+				
+				volunteers.setServiceTime(YCConstants.SYSTEM_INT_ZERO);
+				volunteers.setCampaignTotal(YCConstants.SYSTEM_INT_ZERO);
+				
+				groups.setServerTime(YCConstants.SYSTEM_INT_ZERO);
+				
+			}else{
+				//给volunteers设置serviceTime属性
+				volunteers.setServiceTime(campaigns.getDuration());
+				volunteers.setCampaignTotal(YCConstants.SYSTEM_INT_ONE);
+				
+				//计算积分 并给creditrecord设置VTValue,creditrecord属性 给accounts设置credit属性
+				awardPerHour = campaigns.getAwardPerHour() == null ? "0" : campaigns.getAwardPerHour();
+				countResult =Math.floor( campaigns.getDuration()* (Double.parseDouble(awardPerHour)));
+				
+				//给creditrecord设置VTValue creditrecord credit  campaignId属性
+				creditrecord.setVTValue(countResult);
+				creditrecord.setCreditrecord(YCConstants.SYSTEM_SEND+countResult);
+				
+				//给groups设置servicetime属性
+				groups.setServerTime(duration);
+				
+				//给 accounts设置credit属性
+				accounts.setCredit((int)countResult);
+			}
+			
+			//事务 更新Campaigns Campaignrecords Accounts Volunteers groups表  添加creditrecord表
+			campaignrecordsService.tx_camRecIntegral(campaignrecords,volunteers
+					,accounts,creditrecord,groups);
+			
+			
+		}
+		
+		List<Campaigns> camList = campaignsService.paidCam();
+		
+		if(list == null || list.size() < 1){
+			return;
+		}
+		
+		for(Campaigns cam : camList){
+			//1.修改Campaigns  更新camPayFlag  updatedAt
+			cam.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+			cam.setCamPayFlag(YCConstants.SYSTEM_INT_ONE);
+			
+			campaignsService.updateCampaignById(cam);
+		}
+		
+		//System.out.println("发放积分结束 at" +new Date());
+	}
+}

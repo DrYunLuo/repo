@@ -1,0 +1,115 @@
+<div ng-include="'tpl/include/header.html'" ng-init="campaign=true"></div>
+<div id="act_detail_main" class="active_content" ng-controller="actDetailCtrl">
+    <div class="container" style="padding-top:20px">
+        <div id="main_top">
+            <div id="group_pic">
+                <img ng-src="{{activity.image}}" />
+            </div>
+            <div id="group_info">
+                <h2 ng-bind="activity.title"></h2>
+                <table>
+                    <tr>
+                        <td colspan="2">
+                            活动时间：<span ng-bind="activity.startTime"></span> 至 <span ng-bind="activity.endTime"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            发起组织：<span ng-bind="activity.hostUnit"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            总奖励VT币：<span ng-bind="activity.award"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            活动地点：<span ng-bind="activity.location"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            联 系 人：<span ng-bind="activity.pricipalName"></span>
+                        </td>
+                        <td>
+                            联系电话：<span ng-bind="activity.pricipalTel"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            招募人数：<span ng-bind="activity.limit"></span>人
+                        </td>
+                        <td>
+                            报名人数：<span ng-bind="activity.memberCount"></span>人
+                        </td>
+                    </tr>
+                </table>
+                <button ng-click="joinAct()"  id="obtn">申请加入</button>
+            </div>
+           <!-- <div id="hot_groups">
+                <div class="top">
+                    <span>热门组织</span>
+                </div>
+                <ul>
+                    <li><a href="">团颍泉区委联合泉河湾爱心协会</a></li>
+                    <li><a href="">团颍泉区委联合泉河湾爱心协会</a></li>
+                    <li><a href="">团颍泉区委联合泉河湾爱心协会</a></li>
+                    <li><a href="">团颍泉区委联合泉河湾爱心协会</a></li>
+                </ul>
+            </div>-->
+        </div>
+        <div id="main_content" class="row">
+            <div class="active_mydv1 col-xs-12 col-sm-8 col-md-8 col-lg-8">
+                <div id="main_tabs">
+                    <img src="img/login_logo.png"><span>活动内容</span>
+                </div>
+                <br/>
+                <p ng-bind="activity.description">
+                </p>
+            </div>
+            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                <div id="right_container">
+                    <div class="content_box">
+                        <!-- 各区动态-->
+                        <div id="regional">
+                            <div class="title row">
+                                <h3 class="col-xs-6 col-sm-6 col-md-6 col-lg-6">各区动态</h3>
+                                <h5 class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="text-align: right">-<a href="#/2/news_list">MORE</a>-</h5>
+                            </div>
+                            <ul>
+                                <li ng-repeat="obj in news | limitTo:3">
+                                    <a href="#/news_detail/{{obj.id}}" ng-bind="obj.title"></a>
+                                    <p ng-bind="obj.summary"></p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="content_box">
+                        <!-- 活动信息-->
+                        <div id="activeInfo">
+                            <div class="title row">
+                                <h3 class="col-xs-6 col-sm-6 col-md-6 col-lg-6">活动信息</h3>
+                                <h5 class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="text-align: right">-<a href="#/3/news_list">MORE</a>-</h5>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" align="center">
+                                    <a href="#/news_detail/{{campaigns[0].id}}">
+                                        <img ng-src="{{campaigns[0].titleImgUrl}}" height="150"/>
+                                    </a>
+                                </div>
+                            </div>
+                            <ul>
+                                <li ng-repeat="obj in campaigns | limitTo:2">
+                                    <a href="#/news_detail/{{obj.id}}" ng-bind="obj.title"></a>
+                                    <p ng-bind="obj.summary"></p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div ng-include="'tpl/include/footer.html'"></div>

@@ -1,0 +1,92 @@
+@charset "utf-8";
+
+
+#page {
+    height: 50px;
+    display: table;
+    margin: 0 auto;
+}
+
+.page {
+    text-align: center;
+}
+
+.fl {
+    float: left;
+}
+
+.fr {
+    float: right;
+}
+
+.pagingUl {
+    float: right;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    height: 30px;
+}
+
+.pagingUl li {
+    float: left;
+    width: 25px;
+    height: 25px;
+    background: #fff;
+    text-align: center;
+    margin-right: 5px;
+    border-radius: 5px;
+    border:1px solid #ddd;
+}
+
+.pagingUl li a {
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    line-height: 25px;
+    color: #666;
+    font-size: 16px;
+    border-radius: 5px
+}
+
+.prv,
+.next {
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    line-height: 25px;
+    cursor: pointer;
+    background: #fff;
+    padding: 0 5px;
+    border-radius: 5px;
+    border:1px solid #ddd;
+}
+
+.prv {
+    margin-right: 10px;
+}
+
+.first,
+.last {
+    width: 50px;
+    height: 25px;
+    font-size: 12px;
+    text-align: center;
+    line-height: 25px;
+    cursor: pointer;
+    background: #fff;
+    padding: 0 5px;
+    border-radius: 5px;
+    border:1px solid #ddd;
+    margin-right: 10px;
+}
+
+.prv:hover,
+.next:hover,
+.first:hover,
+.last:hover,
+.pagingUl li a:hover,
+.activP {
+    background-color: #E84C3D !important;
+    color: #fff!important;
+}

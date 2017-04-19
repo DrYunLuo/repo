@@ -1,0 +1,52 @@
+
+.active_mydv1{
+    margin-top:20px;
+    background:#eeeeee;
+}
+.active_content p{
+    margin:0;
+    padding:0;
+    color:#444444;
+    text-indent: 2em;
+}
+/********************大屏的样式***********************/
+@media all and (min-width:1000px){
+    .active_content p{
+        font-size:14px;
+        line-height:30px;
+    }
+    .active_content p.active_myp{
+        margin-top:40px;
+    }
+    .active_mydv1{
+        padding:10px 20px 70px 20px;
+    }
+}
+/********************中屏的样式***********************/
+@media all and (max-width:999px) and (min-width:769px){
+    .active_content p{
+        font-size:14px;
+        line-height:30px;
+    }
+    .active_content p.active_myp{
+        margin-top:40px;
+    }
+    .active_mydv1{
+        margin:0;
+        padding:10px 20px 70px 20px;
+    }
+}
+/********************小屏的样式***********************/
+@media all and (max-width:768px){
+    .active_content p{
+        font-size:12px;
+        line-height:25px;
+    }
+    .active_content p.active_myp{
+        margin-top:20px;
+    }
+    .active_mydv1{
+        margin:0;
+        padding:10px 10px 30px 10px;
+    }
+}

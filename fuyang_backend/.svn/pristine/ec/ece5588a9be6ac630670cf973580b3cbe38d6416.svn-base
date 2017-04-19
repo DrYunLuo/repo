@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>活动详情</title>
+    <link rel="stylesheet" href="css/active_details.css"/>
+    <script src="js/jquery-1.11.3.js"></script>
+    <style>
+        html{
+             font-size:18px;
+        }
+        @media all and (max-width:1000px){
+            html{
+                font-size:10px;
+            }
+            
+        }
+    </style>
+</head>
+<body>
+    <!--<header>-->
+        <!--&lt;!&ndash;<a class="mylink1" href=""><img src="images/活动详情页_03.png" alt=""/></a>&ndash;&gt;-->
+        <!--&lt;!&ndash;<h1>活动详情</h1>&ndash;&gt;-->
+        <!--&lt;!&ndash;<a class="mylink2" href=""><img src="images/活动详情页_05.png" alt=""/></a>&ndash;&gt;-->
+    <!--</header>-->
+    <img style="display:block;border-bottom:10px solid #e8f3f7;" width="100%" src="" alt=""/>
+    <h1 class="myh1">互联网入口大局已定的背景下是你时候等级</h1>
+    <article>
+        <section>
+            <aside class="myaside1">
+                <div></div>
+                <p>参与人数</p>
+                <p id="join_people">155305</p>
+            </aside>
+            <aside class="myaside2">
+                <div></div>
+                <p>活动时间</p>
+                <p id="date">15</p>
+            </aside>
+            <aside class="myaside3">
+                <div></div>
+                <p>剩余时间</p>
+                <p id="remaining">5</p>
+            </aside>
+
+        </section>
+    </article>
+    <hr class="myhr1"/>
+    <p class="myp1">啥都看见哈市卡缴纳水电费和十八个红包飞个打扫房间摩擦的框架内才比你长部门风采撒地方好女孩的是否被vcdafhnchbf答复俺的沙发上阿斯蒂芬爱迪生放大啊啊阿斯蒂芬的撒啊第三方士大夫阿斯蒂芬撒多少分电风扇啊多少。</p>
+    <hr class="myhr1"/>
+    <div class="object">
+        <p><span>受益对象:</span>
+        <span id="target">阜阳市秦州区农村留守儿童</span></p>
+        <p><span>发起组织:</span>
+            <span id="target_people">阜阳褒扬英烈志愿者协会</span></p>
+        <p><span>联系人:</span>
+            <span id="contact">冯超</span></p>
+        <p><span>联系方式:</span>
+            <span id="infor">18256130322</span></p>
+        <p><span>活动地点:</span>
+            <span id="active">烈</span></p>
+        <p><span>活动人数:</span>
+            <span id="person">10人</span></p>
+        <p><span>活动时间:</span>
+            <span id="active_date">2016-12-10</span></p>
+        <p><span>奖励积分:</span>
+            <span id="integral">10分</span></p>
+        <p><span>活动进行状态:</span>
+            <span id="have">正在进行中</span></p>
+    </div>
+    <p class="myp2">备注:活动已通过审核,已参加人数为<span id="yicanjia">80</span>人,人数上限<span id="total_people">500</span>人</p>
+    <!--<p class="myp2">备注:<span></span></p>-->
+    <button id="btn1">立即报名</button>
+</body>
+<script>
+
+$(function(){
+    function GetQueryString(name)
+    {
+        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if(r!=null)return  unescape(r[2]); return null;
+    }
+    //渲染头像
+    var cid = GetQueryString("id");
+    var vid = GetQueryString("token");
+    var s;
+    function time(dateString) { 
+        if (dateString) { 
+            var arr1 = dateString.split(" "); 
+            var sdate = arr1[0].split('-'); 
+            var date = new Date(sdate[0], sdate[1], sdate[2]); 
+            return date; 
+        } 
+    }
+    $.get("/fuyang_backend/campaigns/getCampaignInfoId?id="+cid,function(result){
+        console.log(result);
+       	//获取活动结束时间的变量
+       	var endtime=time(result.data[0].endTime);
+      	//获取活动开始时间的变量
+      	console.log(endtime);
+       	var starttime=time(result.data[0].startTime);
+      	var active_date=Math.floor((endtime-starttime)/(1000*60*60*24));
+      	var current_date=new Date().getTime();
+      	if(current_date<=0){
+      		current_date=0;
+      	}
+      	var remain_date=Math.floor((endtime-current_date)/(1000*60*60*24));
+      	if(remain_date<=0){
+      		remain_date=0;
+      	}
+      	console.log(Math.floor((endtime-starttime)/(1000*60*60*24)));
+        if(parseInt(result.data[0].status)==0){
+            s='未开始';
+        }else if(parseInt(result.data[0].status)==1){
+            s='正在进行中';
+        }else if(parseInt(result.data[0].status)==2){
+            s='已结束';
+        }
+        $("img").attr("src",result.data[0].thumb);
+        $(".myh1").text(result.data[0].title);
+        $("#join_people").text(result.data[0].memberCount);
+        $("#date").text(active_date+'天');
+        $("#remaining").text(remain_date+'天');
+        $(".myp1").text(result.data[0].description);
+        $("#target").text(result.data[0].benefitObject);
+        $("#target_people").text(result.data[0].groupsList[0].name);
+        $("#contact").text(result.data[0].pricipalName);
+        $("#infor").text(result.data[0].pricipalTel);
+        $("#active").text(result.data[0].location);
+        $("#person").text(result.data[0].memberCount+'人');
+        $("#active_date").text(active_date+'天');
+        $("#integral").text(result.data[0].award+'分');
+        $("#have").text(s);
+        $("#yicanjia").text(result.data[0].memberCount);
+        $("#total_people").text(result.data[0].limit);
+
+    });
+	
+	
+    $("#btn1").on("click",function(){
+    		if(s=='已结束'){
+        		alert('报名时间已过，请等待下次机会!!!');
+        		return;
+        	};
+    		if(s!='已结束'){
+    	        $.post("/fuyang_backend/records/partTake",{
+    	        	volunteerId:vid,
+    	        	campaignId:cid
+    	        },function(data){
+    	        	console.log(data);
+    	        	if(data.message==="已经参与过该活动"){
+    	        		alert('你已经报名过该活动');
+    	        		console.log(data.state);
+    	        		return;
+    	        	}
+    	        	if(data.message==="志愿者不存在" || data.message==="活动不存在"){
+    	        		alert('志愿者或活动不存在');
+    	        		return;
+    	        	}
+    	        	if(data.message==="志愿者id或活动id为空"){
+    	        		alert('志愿者id或活动id为空');
+    	        		return;
+    	        	}
+    	        	if(data.state==0){
+    	        		alert('报名成功,待审核');
+    	        		console.log(data.state);
+    	        	}
+    	        });
+    	        
+        	} 	
+    });
+});
+</script>
+</html>

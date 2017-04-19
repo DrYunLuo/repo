@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.yichuang.fuyang.dao.TestUserDao">
+	<insert id="save" parameterType="com.yichuang.fuyang.entity.TestUser">
+	  insert into testuser
+	       (id,
+	        name,
+	        creatAt)
+	   values
+	    (#{id},#{name},#{creatAt})
+	</insert>
+	<!-- 根据用户名查询 -->
+
+    <select id="selectUserByUserName"  resultMap="BaseResultMap">
+      SELECT *
+      FROM testuser
+      ORDER BY id
+   </select>
+   <resultMap type="com.yichuang.fuyang.entity.TestUser" id="BaseResultMap">    
+  </resultMap>
+	 
+</mapper>
+
+
+
+
+
+
+

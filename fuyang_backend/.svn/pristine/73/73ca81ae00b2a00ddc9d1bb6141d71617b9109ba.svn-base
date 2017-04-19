@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+ <mapper namespace="com.yichuang.fuyang.dao.GroupsDao">
+ 
+ <!-- 查询组织排行 -->
+ <select id="getRankingGroups" resultMap="BaseResultMap">
+	  SELECT id,`name`,logo,description,imageUrl,createdAt,contactsname,volTotal,address,campaignCount,registrationDate,groupCode FROM groups WHERE `status` = '1'
+ </select>
+ 
+ <!-- 根据id查询组织 -->
+ <select id="getGroupsById" parameterType="string" resultType="com.yichuang.fuyang.entity.Groups">
+ 	select * from groups where id = #{id}
+ </select>
+ 
+
+
+<!-- 更新组织热门度 -->
+<update id="updateRecommend" parameterType="string">
+	update groups set recommend = recommend+1 where id=#{id}
+</update>
+
+<!-- 注册志愿者 -->
+ <insert id="saveGroups" parameterType="com.yichuang.fuyang.entity.Groups">
+ 	insert into groups 
+ 	(id,name,description,institution,registrationDate,
+ 	filed,imageUrl,phonenumber,campaignCount,createdAt,
+ 	updatedAt,EnglishName,contactWork,address,regionid,
+ 	email,web,domains,contactsname,contactstel,status,
+ 	contactspost,contactsIscard,businessScope,groupType,totalAssert,
+ 	volTotal,logo,notes,loginTime,
+ 	groupTypeId,groupCode,telephone,uid,pwd,inTime,checkBy,officeAddressImg)
+ 	values(#{id},#{name},#{description},#{institution},#{registrationDate},
+ 	#{filed},#{imageUrl},#{phonenumber},#{campaignCount},#{createdAt},
+ 	#{updatedAt},#{EnglishName},#{contactWork},#{address},#{regionid},
+ 	#{email},#{web},#{domains},#{contactsname},#{contactstel},#{status},
+ 	#{contactspost},#{contactsIscard},#{businessScope},#{groupType},#{totalAssert},
+ 	#{volTotal},#{logo},#{notes},#{loginTime},
+ 	#{groupTypeId},#{groupCode},#{telephone},#{uid},#{pwd},#{inTime},#{checkBy},#{officeAddressImg})
+ </insert>
+ 
+<!-- 更新组织token -->
+ <update id="updateToken" parameterType="string">
+ 	update groups set token={#token} where id={#id}
+ </update>
+ <resultMap type="com.yichuang.fuyang.entity.Groups" id="BaseResultMap">
+    <!-- column:库表的字段名 property:实体类里的属性名 -->
+    <id column="id" property="id" />
+    <result column="name" property="name" />
+    <result column="createdAt" property="createdAt" />
+ </resultMap>
+ 
+<!-- 管理员查询待审核组织 -->
+<select id="getGroupsByStatus" parameterType="com.yichuang.fuyang.entity.Groups" resultType="com.yichuang.fuyang.entity.Groups">
+	select * from groups 
+	<where>
+		<if test="status != null and status != ''">
+			`status` = #{status}
+		</if>
+		<if test="checkBy != null and checkBy!= ''">
+			and checkBy = #{checkBy}
+		</if>
+	</where>
+</select> 
+ 
+ <!-- 管理员审核组织 -->
+ <update id="updateGroupsStatus" parameterType="com.yichuang.fuyang.entity.Groups">
+ 		update groups 
+ 		<set>
+ 		  <if test="status != null and status != ''">
+ 		  	status = #{status},
+ 		  </if>
+ 		  <if test="notes != null and notes != ''">
+ 		  	notes = #{notes},
+ 		  </if>
+ 		</set>
+ 		 where id=#{id}
+ </update>
+ 
+ <!-- 根据组织类型或名称查询组织列表  -->
+ <select id="getGroupListByTypeOrName" parameterType="com.yichuang.fuyang.entity.Groups" resultType="com.yichuang.fuyang.entity.Groups">
+ 	SELECT * FROM groups AS g
+ 	<where>
+ 		<if test="name != null and name != ''">
+ 			g.`name` like '%${name}%'
+ 		</if>
+ 		<if test="groupType != null and groupType != ''">
+ 			and g.`groupType`=#{groupType}
+ 		</if>
+ 	</where>
+ </select>
+ 
+ 
+ <!-- 根据id更新活动数 -->
+ <update id="updateCamCount" parameterType="string">
+ 	update groups set campaignCount = campaignCount+1
+ </update>
+ 
+ <!-- 根据组织名称模糊查询组织 -->
+ <select id="search" parameterType="String" resultMap="BaseResultMap">
+ 	select id,name from groups where name like '%${name}%' and `status`='1'
+ </select>
+ 
+ <!--<update id="updateCamCount" parameterType="com.yichuang.fuyang.entity.Groups">
+ 	update groups 
+ 	<set>
+ 		<if test = "campaignCount != null && campaignCount !=''">
+ 			campaignCount = campaignCount + #{campaignCount}
+ 		</if>
+ 	</set>
+ 	where id=#{id}
+ </update>-->
+ 
+ <!-- 根据组织id获取活动详情列表 -->
+<select id="getCampaignListByGroupId" parameterType="com.yichuang.fuyang.entity.Groups" resultType="com.yichuang.fuyang.entity.Campaigns">
+	SELECT c.* FROM campaigns AS c,groups AS g
+	WHERE c.`groupId`=g.`id` AND g.`id`=#{id}
+</select>
+ 
+<!-- 根据id修改组织信息 -->
+<update id="updateGroupById" parameterType="com.yichuang.fuyang.entity.Groups">
+	update groups
+	<set>
+		<if test="name != null and name != ''">name = #{name},</if>
+		<if test="description != null and description != ''">description = #{description},</if>
+		<if test="institution != null and institution != ''">institution = #{institution},</if>
+		<if test="registrationDate != null and registrationDate != ''">registrationDate = #{registrationDate},</if>
+		<if test="filed != null and filed != ''">filed = #{filed},</if>
+		<if test="imageUrl != null and imageUrl != ''">imageUrl = #{imageUrl},</if>
+		<if test="phonenumber != null and phonenumber != ''">phonenumber = #{phonenumber},</if>
+		<if test="contactWork != null and contactWork != ''">contactWork = #{contactWork},</if>
+		<if test="address != null and address != ''">address = #{address},</if>
+		<if test="regionid != null and regionid != ''">regionid = #{regionid},</if>
+		<if test="email != null and email != ''">email = #{email},</if>
+		<if test="web != null and web != ''">web = #{web},</if>
+		<if test="domains != null and domains != ''">domains = #{domains},</if>
+		<if test="contactsname != null and contactsname != ''">contactsname = #{contactsname},</if>
+		<if test="contactstel != null and contactstel != ''">contactstel = #{contactstel},</if>
+		<if test="contactspost != null and contactspost != ''">contactspost = #{contactspost},</if>
+		<if test="contactsIscard != null and contactsIscard != ''">contactsIscard = #{contactsIscard},</if>
+		<if test="businessScope != null and businessScope != ''">businessScope = #{businessScope},</if>
+		<if test="groupType != null and groupType != ''">groupType = #{groupType},</if>
+		<if test="logo != null and logo != ''">logo = #{logo},</if>
+		<if test="groupCode != null and groupCode != ''">groupCode = #{groupCode},</if>
+		<if test="telephone != null and telephone != ''">telephone = #{telephone},</if>
+		<if test="inTime != null and inTime != ''">inTime = #{inTime},</if>
+		<if test="volTotal != null ">volTotal = volTotal + #{volTotal},</if>
+		<if test="updatedAt != null and updatedAt != ''">updatedAt = #{updatedAt}</if>
+	</set>
+	where id = #{id}
+</update>
+
+<!-- 更新组织信息 -->
+<update id="updateGroup" parameterType="com.yichuang.fuyang.entity.Groups">
+	update groups
+	<set>
+		<if test="serverTime != null">serverTime = serverTime +  #{serverTime},</if>
+		<if test="campaignCount != null">campaignCount = campaignCount + #{campaignCount},</if>
+		<if test="updatedAt != null">updatedAt = #{updatedAt}</if>
+	</set>
+	where id = #{id}
+</update> 
+ 
+ </mapper>
+ 

@@ -1,0 +1,74 @@
+package com.yichuang.fuyang.web;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.mysql.jdbc.Util;
+import com.yichuang.fuyang.entity.China;
+import com.yichuang.fuyang.service.ChinaService;
+import com.yichuang.fuyang.service.PropertyService;
+import com.yichuang.fuyang.util.DefaultResponse;
+import com.yichuang.fuyang.util.JsonResult;
+import com.yichuang.fuyang.util.Utils;
+
+@Controller
+@RequestMapping("china")
+public class ChinaController {
+	
+	@Autowired
+	private ChinaService chinaService;
+	@Autowired
+	private PropertyService propertyService;
+
+	/**
+	 * 根据pid获取地区列表
+	 * @param pid
+	 * @return
+	 */
+	@RequestMapping("findByPid")
+	@ResponseBody
+	public JsonResult<List<China>> findByPid(Integer pid,String keyParams){
+		JsonResult checkJsonResult = Utils.checkKeyParams(pid+propertyService.KEY, keyParams);
+		if(checkJsonResult != null){
+			return checkJsonResult;
+		}
+		if(pid == null || pid == 0){
+			return new JsonResult<List<China>>(DefaultResponse.PARAM_NULL_ERROR,null);
+		}
+		try {
+			List<China> list = chinaService.findByPid(pid);
+			return new JsonResult<List<China>>(list);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new JsonResult<List<China>>(DefaultResponse.QUERY_ERROR,null);
+		}
+	}
+	
+	/**
+	 * 根据地区名称获取地区id
+	 * @param name
+	 * @return
+	 */
+	@RequestMapping("findByName")
+	@ResponseBody
+	public JsonResult<China> findByName(String name,String keyParams){
+		JsonResult checkJsonResult = Utils.checkKeyParams(name+propertyService.KEY, keyParams);
+		if(checkJsonResult != null){
+			return checkJsonResult;
+		}
+		if(name == null || name.trim() == ""){
+			return new JsonResult<China>(DefaultResponse.PARAM_NULL_ERROR,null);
+		}
+		try {
+			China china = chinaService.findByName(name);
+			return new JsonResult<China>(china);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new JsonResult<China>(DefaultResponse.QUERY_ERROR,null);
+		}
+	}
+}

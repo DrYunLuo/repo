@@ -1,0 +1,22 @@
+<div ng-include="'tpl/include/header.html'"></div>
+<div class="container" ng-controller="newsListCtrl3">
+    <div id="box_left">
+        <ul>
+            <li><a href="#/1/news_list">通知公告</a></li>
+            <li><a href="#/2/news_list">各区动态</a></li>
+            <li><a href="#/3/news_list" class="active">活动信息</a></li>
+        </ul>
+    </div>
+    <div id="box_right">
+        <p>活动信息</p>
+        <div id="list_box">
+            <ul>
+                <li ng-repeat="obj in campaigns"><a href="#/news_detail/{{obj.id}}" ng-bind="obj.title"></a> <span style="float: right;" ng-bind="obj.createdAt"></span></li>
+            </ul>
+        </div>
+        <div id="newslist_page3">
+
+        </div>
+    </div>
+</div>
+<div ng-include="'tpl/include/footer.html'"></div>

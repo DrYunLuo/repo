@@ -1,0 +1,71 @@
+<!-- 创建活动-->
+<div id="create_active" ng-controller="createActCtrl">
+    <div class="container">
+        <form method="post" enctype="multipart/form-data">
+            <div class="first-row">
+                <div class="fl">
+                	<input type="file" name='file' id="campaignImg" onchange="uploadActPic()"/>
+                	<input type="hidden" id="imageUrl" value=""/>
+                	<p>上传标志图</p>
+                    <div id="actPicView"></div>
+                </div>
+                <ul class="fr">
+                    <li>
+                        <p>活动主题:<input type="text" id="theme"/></p>
+                        <div class="dn" style="font-size:8px;color:red;">请输入合法主题格式</div>
+                    </li>
+                    <li>
+                        <p>主办单位:<input type="text" id="hostUnit"/></p>
+                        <div class="dn" style="font-size:8px;color:red;">请输入正确主办单位</div>
+                    </li>
+                    <li>
+                        <p>开始时间:<input style="line-height:20px;" type="date" id="startTime"/></p>
+                        <div class="dn" style="font-size:8px;color:red;">请输入正确开始时间</div>
+                    </li>
+                    <li>
+                        <p>结束时间:<input style="line-height:20px;" type="date" id="endTime"/></p>
+                        <div class="dn" style="font-size:8px;color:red;">请输入正确结束时间</div>
+                    </li>
+                    <li>
+                        <p>联&nbsp; 系&nbsp;人:<input type="text" id="pricipalName"/></p>
+                        <div class="dn" style="font-size:8px;color:red;">请输入正确联系人</div>
+                    </li>
+                    <li>
+                        <p>联系电话:<input type="text" id="pricipalTel"/></p>
+                        <div class="dn" style="font-size:8px;color:red;">请输入正确练习电话</div>
+                    </li>
+                    <li>
+                        <p>活动地点:<input type="text" id="location"/></p>
+                        <div class="dn" style="font-size:8px;color:red;">请输入正确活动地点</div>
+                    </li>
+                    <li>
+                        <p>活动奖励备注:<input type="text" id="rewardsAdditional"/></p>
+                        <div class="dn" style="font-size:8px;color:red;">请输入正确活动奖励</div>
+                    </li>
+                    <li>
+                        <p>活动时长（ 小时/人）:<input type="text" id="duration"/></p>
+                        <div class="dn" style="font-size:8px;color:red;">请输入正确活动时长</div>
+                    </li>
+                    <li>
+                        <p>限制人数:<input type="text" id="limit"/></p>
+                        <div class="dn" style="font-size:8px;color:red;">请输入正确限制人数</div>
+                    </li>
+                    <li>
+                        <p>审核部门：<select name="checkBy" id="checkBy" style="width:50%;height:25px;padding:0 5px">
+                            <option value="17358039824" selected>民政局</option>
+                            <option value="17358039822">文明办</option>
+                            <option value="17358039823">团市委</option>
+                        </select></p>
+                    </li>
+                </ul>
+            </div>
+            <div class="second">
+                <textarea name="description" id="description" cols="72" rows="4" placeholder="活动描述"></textarea>
+            </div>
+            <div class="third">
+                <button class="bt-submit">提交</button>
+                <span class="dn" style="font-size:8px;color:red;">信息填写不正确!!!</span>
+            </div>
+        </form>
+    </div>
+</div>

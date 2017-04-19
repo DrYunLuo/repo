@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+ <mapper namespace="com.yichuang.fuyang.dao.PostAtomsbbsDao">
+ 	<!-- 发表评论 -->
+ 	<insert id="addAtoms" parameterType="com.yichuang.fuyang.entity.PostAtomsbbs">
+ 		insert into postatomsbbs (id,postId,volunteerId,content,createTime,photo,realname)
+ 		values(#{id},#{postId},#{volunteerId},#{content},#{createTime},#{photo},#{realname})
+ 	</insert>
+ 	
+ 	
+ 	<!-- 获取帖子评论根据帖子id -->
+ 	<select id="findPostAtomsbbsByPostId" parameterType="string" resultMap="BaseResultMap">
+ 	SELECT pab.*  FROM postbbs AS pb,postatomsbbs AS pab
+	WHERE pb.`id`=pab.`postId` AND pab.`postId`=#{postId}
+ 	</select>
+ 	
+ 	<!-- 根据帖子id获取评论总数 -->
+ 	<select id="atomsTotal" parameterType="string" resultType="integer">
+ 	SELECT COUNT(pab.`id`) FROM postbbs AS pb,postatomsbbs AS pab
+WHERE pb.`id`=pab.`PostId` AND pab.`postId`=#{postId}
+ 	</select>
+ 	
+ 	<resultMap type="com.yichuang.fuyang.entity.PostAtomsbbs" id="BaseResultMap">
+ 		<id property="id" column="id"/>
+ 	</resultMap>
+ 	
+ 	<!-- 评论总数 -->
+ 	<select id="getAtomsTotal" resultType="integer">
+ 		select count(id) from postatomsbbs
+ 	</select>
+ 	
+ 	
+ 	<select id="findAtomsList" parameterType="com.yichuang.fuyang.entity.PostAtomsbbs" resultMap="BaseResultMap">
+ 		select * from postatomsbbs 
+ 		<where>
+ 			<if test="volunteerId != null || volunteerId != ''">
+ 				volunteerId = #{volunteerId}
+ 			</if>
+ 		</where>
+ 	</select>
+ </mapper>

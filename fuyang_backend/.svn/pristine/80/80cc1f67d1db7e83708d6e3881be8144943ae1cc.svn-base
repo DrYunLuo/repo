@@ -1,0 +1,98 @@
+<div id="actList" ng-controller="actListCtrl">
+    <table class="manageTable" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <!-- <th style="width:10%;border:1px solid #d2d2d2;"><input type="checkbox" ng-click="checkAll()" ng-model="isCkeck"/></th> -->
+                <th style="width:25%;border:1px solid #d2d2d2;">活动名称</th>
+                <th style="width:20%;border:1px solid #d2d2d2;">发布时间</th>
+                <th style="width:25%;border:1px solid #d2d2d2;">类型</th>
+                <th colspan="3" style="width:20%;border:1px solid #d2d2d2;">状态</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="data in allCampaign track by $index">
+                <!-- <td><input type="checkbox" ng-model="data.check"/></td> -->
+                <td ng-bind="data.title"></td>
+                <td ng-bind="data.createdAt"></td>
+                <td></td>
+                <td ng-if="data.status==2">待审核</td>
+                <td ng-if="data.status==1">已经完成</td>
+                <td ng-if="data.status==0"><a ng-click="actlist()" style="color: red;">未通过/修改</a><!--<span ng-bind="data.id" style="display: none"></span>--></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!--修改发布-->
+   <div class="container" ng-repeat="data in allCampaign track by $index" id="create_activity" style="display: none" >
+          <form method="post" enctype="multipart/form-data" role="form" class="form-horizontal">
+              <div class="first-row form-group">
+                  <div class="fl">
+                      <input type="file" name='file' id="campaignImg" onchange="uploadActPic()"/>
+                      <img alt=""  style="width: 200px;" class="imageurl">
+                      <input type="hidden" id="imageUrl" value=""/>
+                      <!--<p>上传标志图</p>-->
+                      <div id="actPicView"></div>
+                  </div>
+                  <ul class="fr">
+                      <li>
+                          <p>活动名称:<input type="text" value="{{data.title}}" id="title" /><span ng-bind="actlist.title"></span></p>
+                          <div class="dn" style="font-size:8px;color:red;">请输入合法主题格式</div>
+                      </li>
+                      <li>
+                          <p>主办单位:<input type="text" value="{{data.hostUnit}}" id="hostUnit"/></p>
+                          <div class="dn" style="font-size:8px;color:red;">请输入正确主办单位</div>
+                      </li>
+                      <li>
+                          <p>开始时间:<input id="startTime" value="{{data.startTime}}" style="line-height:20px;" type="text" placeholder="请选择"  readonly></p>
+                      </li>
+                      <li>
+                          <p>结束时间:<input id="endTime" value="{{data.endTime}}" style="line-height:20px;" type="text" placeholder="请选择"  readonly></p>
+                          <div class="dn" style="font-size:8px;color:red;">请输入正确结束时间</div>
+                      </li>
+                      <li>
+                          <p>联&nbsp; 系&nbsp;人:<input type="text" id="pricipalName" value="{{data.pricipalName}}" /></p>
+                          <div class="dn" style="font-size:8px;color:red;">请输入正确联系人</div>
+                      </li>
+                      <li>
+                          <p>联系电话:<input type="text" id="pricipalTel" value="{{data.pricipalTel}}" /></p>
+                          <div class="dn" style="font-size:8px;color:red;">请输入正确练习电话</div>
+                      </li>
+                      <li>
+                          <p>活动地点:<input type="text" id="location" value="{{data.location}}" /></p>
+                          <div class="dn" style="font-size:8px;color:red;">请输入正确活动地点</div>
+                      </li>
+                      <li>
+                          <p>活动奖励备注:<input type="text" id="rewardsAdditional" value="{{data.rewardsAdditional}}" /></p>
+                          <div class="dn" style="font-size:8px;color:red;">请输入正确活动奖励</div>
+                      </li>
+                      <li>
+                          <p>活动时长（ 小时/人）:<input type="text" id="duration" value="{{data.duration}}"/></p>
+                          <div class="dn" style="font-size:8px;color:red;">请输入正确活动时长</div>
+                      </li>
+                      <li>
+                          <p>限制人数:<input type="text" id="limit" value="{{data.limit}}" /></p>
+                          <div class="dn" style="font-size:8px;color:red;">请输入正确限制人数</div>
+                      </li>
+                      <li>
+                          <p>审核部门：<select name="checkBy" id="checkBy" style="width:50%;height:25px;padding:0 5px" >
+                              <option value="17358039824" selected>民政局</option>
+                              <option value="17358039822">文明办</option>
+                              <option value="17358039823">团市委</option>
+                          </select></p>
+                      </li>
+                  </ul>
+              </div>
+              <div class="second">
+                  <textarea name="description" id="description" value="{{data.description}}" cols="72" rows="4"></textarea>
+              </div>
+              <div class="third">
+                  <button class="bt-submit" ng-click="updatasubmit()" >提交</button>
+                  <span class="dn" style="font-size:8px;color:red;">信息填写不正确!!!</span>
+              </div>
+          </form>
+      </div>
+
+    <div id="actManagePage">
+
+    </div>
+</div>

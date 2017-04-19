@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+ <mapper namespace="com.yichuang.fuyang.dao.CodeDao">
+ 	<!-- 获取论坛帖子类型 -->
+ 	<select id="getPostTypeList" resultMap="BaseResultMap">
+ 		select * from code_value where code_type='post_type'
+ 	</select>
+ 	
+ 	<resultMap type="com.yichuang.fuyang.entity.Code" id="BaseResultMap">
+ 		<id property="codeId" column="code_id"/>
+ 		<result property="codeType" column="code_type"/>
+ 		<result property="codeValue" column="code_value"/>
+ 		<result property="codeValueName" column="code_value_name"/>
+ 	</resultMap>
+ </mapper>

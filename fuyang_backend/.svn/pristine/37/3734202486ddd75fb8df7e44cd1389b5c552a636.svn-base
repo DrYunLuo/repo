@@ -1,0 +1,134 @@
+<div ng-include="'tpl/include/header.html'"></div>
+<div id="group_detail_main" ng-controller="groupDetailCtrl">
+    <div class="container" style="padding-top:20px">
+        <div id="main_top">
+            <div id="group_pic">
+                <img src="img/org_pic.jpg"/>
+            </div>
+            <div id="group_info">
+                <h2>阜阳褒扬英烈志愿者协会</h2>
+                <table>
+                    <tr>
+                        <td>
+                            团队类型：<span>志愿者协会</span>
+                        </td>
+                        <td>
+                            法人代表：<span>胡青</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            成立时间：<span>2016年10月13号</span>
+                        </td>
+                        <td>
+                            联系电话：<span>15512351211</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            团队人数：<span>200</span>人
+                        </td>
+                        <td>
+                            所属区域：<span>颍州区</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            活动数量：<span>254</span>个
+                        </td>
+                        <td>
+                            服务时长：<span>45642</span>小时
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">协会地址：<span>安徽省阜阳市颍州区烈士革命纪念馆和平公园</span></td>
+                    </tr>
+                </table>
+                <button>申请加入</button>
+            </div>
+            <div id="hot_groups">
+                <div class="top">
+                    <span>热门组织</span>
+                </div>
+                <ul>
+                    <li><a href="">团颍泉区委联合泉河湾爱心协会</a></li>
+                    <li><a href="">团颍泉区委联合泉河湾爱心协会</a></li>
+                    <li><a href="">团颍泉区委联合泉河湾爱心协会</a></li>
+                    <li><a href="">团颍泉区委联合泉河湾爱心协会</a></li>
+                </ul>
+            </div>
+        </div>
+        <div id="main_content">
+            <div id="main_tabs">
+                <span class="group_actlist current">团队活动</span>
+                <span class="group_desc">团队介绍</span>
+            </div>
+            <div>
+                <div id="group_actlist" class="db">
+                    <ul>
+                        <li>
+                            <div class="act_pic">
+                                <img src="img/org_act_01.jpg"/>
+                            </div>
+                            <div class="act_summary">
+                                <h3><span>革命烈士公祭活动</span> &nbsp;&nbsp;距离结束还有<span>2</span>天</h3>
+                                <p>活动时间：<span>2017年2月28日 周三</span></p>
+                                <p>发起组织：<span>阜阳褒扬英烈志愿者协会</span></p>
+                                <p>发 起 人：<span>胡青</span></p>
+                                <div>
+                                    感兴趣人数：<span class="notice">10237</span>人 &nbsp;&nbsp;&nbsp;
+                                    参与人数：<span class="notice">2771</span>人
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="act_pic">
+                                <img src="img/org_act_02.jpg"/>
+                            </div>
+                            <div class="act_summary">
+                                <h3><span>革命烈士公祭活动</span> &nbsp;&nbsp;距离结束还有<span>2</span>天</h3>
+                                <p>活动时间：<span>2017年2月28日 周三</span></p>
+                                <p>发起组织：<span>阜阳褒扬英烈志愿者协会</span></p>
+                                <p>发 起 人：<span>胡青</span></p>
+                                <div>
+                                    感兴趣人数：<span class="notice">10237</span>人 &nbsp;&nbsp;&nbsp;
+                                    参与人数：<span class="notice">2771</span>人
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="act_pic">
+                                <img src="img/org_act_03.jpg"/>
+                            </div>
+                            <div class="act_summary">
+                                <h3><span>革命烈士公祭活动</span> &nbsp;&nbsp;距离结束还有<span>2</span>天</h3>
+                                <p>活动时间：<span>2017年2月28日 周三</span></p>
+                                <p>发起组织：<span>阜阳褒扬英烈志愿者协会</span></p>
+                                <p>发 起 人：<span>胡青</span></p>
+                                <div>
+                                    感兴趣人数：<span class="notice">10237</span>人 &nbsp;&nbsp;&nbsp;
+                                    参与人数：<span class="notice">2771</span>人
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <div id="actlist_page">
+
+                    </div>
+                </div>
+                <div id="group_desc" class="dn">
+                    <p>时逢中国共产党建党95周年暨阜阳烈士纪念馆开馆60周年之际，阜阳市首家以褒扬英烈，宣传革命精神，弘扬革命传统的组织“阜阳褒扬英烈志愿者协会”正式成立。6月16日上午，阜阳英烈志愿者协会成立大会在阜阳市民政局七楼会议室隆重召开。市民政局汪亚副局长、市民政局民间组织管理办公室郏振林主任、阜阳烈士纪念馆唐涛馆长以及阜阳市老年学会、阜阳老知青协会、阜阳蓝天救援队、阜阳颍淮公益志愿者协会等社会组织的社会各界人士参加本次成立大会。</p>
+
+                        <img src="img/summary.jpg"/>
+                        <p>6月16日上午，阜阳英烈
+                    志愿者协会成立大会在阜阳市
+                    民政局七楼会议室隆重召开。</p>
+                        <p>市民政局汪亚副局长在大会上发表讲话。汪亚首先对与会社会各界人士为推进阜阳市精神文明建设工作作出的付出和努力表示肯定。随后，汪亚表示市民政局将对协会的发展提供大力支持，并对协会近期工作提出四点希望，希望广大志愿者要把褒扬英烈行动做到实处，围绕党的十八大倡导爱国、文明、和谐、诚信、友善、敬业社会核心价值观要求，不断推进阜阳市精神文明建设，增进国民爱国主义情怀。（记者 李思祺 实习记者 王访贤）</p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="js/group_detail.js"></script>
+<div ng-include="'tpl/include/footer.html'"></div>

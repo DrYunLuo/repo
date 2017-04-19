@@ -1,0 +1,142 @@
+package com.yichuang.fuyang.entity;
+
+import java.io.Serializable;
+import java.math.BigInteger;
+import java.util.Date;
+
+/**
+ * 个人账户
+ * @author Administrator
+ *
+ */
+public class Accounts implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2140591764377483643L;
+
+	private String id;
+	private Integer mark;
+	private Date lastMarkTime;
+	private BigInteger stepCount;
+	private Date lastStepTime; //当天步数提交时间
+	private Date createdAt;
+	private Date updatedAt;
+	private String volunteerId; //志愿者id
+	private Integer credit; //积分
+	private Integer currentStep; //当天提交的步数
+	private String sevenDay;
+	private int donatCredit;//今日捐赠已获得积分
+	
+	private Volunteers volunteers;
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public Integer getMark() {
+		return mark;
+	}
+
+	public void setMark(Integer mark) {
+		this.mark = mark;
+	}
+
+	public Date getLastMarkTime() {
+		return lastMarkTime;
+	}
+
+	public void setLastMarkTime(Date lastMarkTime) {
+		this.lastMarkTime = lastMarkTime;
+	}
+
+	public BigInteger getStepCount() {
+		return stepCount;
+	}
+
+	public void setStepCount(BigInteger stepCount) {
+		this.stepCount = stepCount;
+	}
+
+	public Date getLastStepTime() {
+		return lastStepTime;
+	}
+
+	public void setLastStepTime(Date lastStepTime) {
+		this.lastStepTime = lastStepTime;
+	}
+
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Date getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(Date updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+
+	public String getVolunteerId() {
+		return volunteerId;
+	}
+
+	public void setVolunteerId(String volunteerId) {
+		this.volunteerId = volunteerId;
+	}
+
+	public Integer getCredit() {
+		return credit;
+	}
+
+	public void setCredit(Integer credit) {
+		this.credit = credit;
+	}
+
+	public Integer getCurrentStep() {
+		return currentStep;
+	}
+
+	public void setCurrentStep(Integer currentStep) {
+		this.currentStep = currentStep;
+	}
+
+	public String getSevenDay() {
+		return sevenDay;
+	}
+
+	public void setSevenDay(String sevenDay) {
+		this.sevenDay = sevenDay;
+	}
+
+	public Volunteers getVolunteers() {
+		return volunteers;
+	}
+
+	public void setVolunteers(Volunteers volunteers) {
+		this.volunteers = volunteers;
+	}
+
+	public int getDonatCredit() {
+		return donatCredit;
+	}
+
+	public void setDonatCredit(int donatCredit) {
+		this.donatCredit = donatCredit;
+	}
+
+	
+	
+	
+	
+}

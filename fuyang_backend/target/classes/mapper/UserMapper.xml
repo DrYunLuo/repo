@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.yichuang.fuyang.dao.UserDao">
+	<resultMap type="com.yichuang.fuyang.entity.User" id="BaseResultMap">
+   		<!-- column:库表的字段名 property:实体类里的属性名 -->
+   		<id column="id" property="id" />
+ 	</resultMap>
+	
+	<!-- 注册志愿者 -->
+	<update id="updateVolun" parameterType="hashmap" >
+		update users set volunteerId = #{volunteerId} where id = #{id}	
+	</update>
+	
+	<!-- 根据志愿者id更新组织id -->
+	<update id="updateByVid" parameterType="hashmap" >
+		update users set  groupId=#{groupId} where volunteerId=#{volunteerId}
+	</update>
+	
+	<update id="updateUserType" parameterType="com.yichuang.fuyang.entity.User" >
+		update users set 
+			<if test="groupId != null and groupId != ''"> groupId=#{groupId},</if>
+			`type`=#{type}
+		  where phone=#{phone}
+	</update>
+	
+	
+	<!-- 增加用户 -->
+	<insert id="addUser" parameterType="com.yichuang.fuyang.entity.User"  >
+		 insert into users
+	       (id,
+	        phone,
+	        username,
+	        password,
+	        wechatId,
+	        type,
+	        nickname,
+	        createdAt,
+	        updatedAt,
+	        volunteerId,
+	        groupId,
+	        token)
+	   values
+	    (#{id},#{phone},#{username},#{password},#{wechatId},#{type},#{nickname},
+	     #{createdAt},#{updatedAt},#{volunteerId},#{groupId},#{token})
+	</insert>
+	
+	<!-- 用户注册 -->
+	<insert id="saveUser" parameterType="com.yichuang.fuyang.entity.User">
+	  insert into users
+	       (id,
+	        phone,
+	        username,
+	        password,
+	        wechatId,
+	        type,
+	        nickname,
+	        createdAt,
+	        updatedAt,
+	        groupId,
+	        token)
+	   values
+	    (#{id},#{phone},#{username},#{password},#{wechatId},#{type},#{nickname},
+	     #{createdAt},#{updatedAt},#{groupId},#{token})
+	</insert>
+	<!-- MyBatis 根据SQL结果集的列名注入到
+	User 对象对应的Bean属性 -->
+	<select id="findUserByPhone"
+		parameterType="string"
+		resultType="com.yichuang.fuyang.entity.User">
+		select 
+			id,
+	        phone,
+	        password,
+	        wechatId,
+	        type,
+	        nickname,
+	        createdAt,
+	        updatedAt,
+	        volunteerId,
+	        groupId,
+	        token
+		from
+			users
+		where
+			phone=#{phone}
+	</select>
+	
+	<!-- 获取所有新闻 -->
+ 	<select id="getUserDynamic" parameterType="string" resultMap="BaseResultMap">
+  		select * from users where phone=#{_parameter}
+  	</select>
+	
+	<!-- 根据昵称获取用户 -->
+	<select id="findUserByNickname"
+		parameterType="string"
+		resultType="com.yichuang.fuyang.entity.User">
+		select 
+			id,
+	        phone,
+	        password,
+	        wechatId,
+	        type,
+	        nickname,
+	        createdAt,
+	        updatedAt,
+	        volunteerId,
+	        groupId,
+	        token
+		from
+			users
+		where
+			nickname=#{nickname}
+	</select>
+	
+	<!-- 根据名字搜索用户 -->
+	<select id="findUserByName"
+		parameterType="string"
+		resultType="com.yichuang.fuyang.entity.User">
+		select * from users
+		where phone=#{_parameter}
+	</select>
+	
+	<!-- 更新token -->
+	<update id="updateToken">
+	    update users 
+	    set token = #{token}
+	    where id = #{id}
+	</update>
+	
+	<!-- 根据id获取用户 -->
+	<select id="getUserById" parameterType="com.yichuang.fuyang.entity.User" resultType="com.yichuang.fuyang.entity.User">
+		select * from users 
+		<where>
+			<if test="volunteerId != null and volunteerId !=''">volunteerId = #{volunteerId}</if>
+			<if test="id != null and id != ''">and id = #{id}</if>
+			<if test="token != null and token != ''">and token = #{token}</if>
+		</where>
+	</select>
+	
+	<!-- 用户退出 -->
+	<update id="updateTokenToNull" parameterType="string">
+		UPDATE users SET token = NULL WHERE id = #{userId}
+	</update>
+	
+	<!-- 根据手机号更新审核后的user表 -->
+	<update id="updateByPhone" parameterType="hashmap" >
+		update users set volunteerId = #{volunteerId},`type` = '1' where phone = #{phone}
+	</update>
+	
+	
+	<!-- 管理后台修改密码     LH-->
+	<update id="updateUserById" parameterType="com.yichuang.fuyang.entity.User" >
+		update users 
+		<set>
+			<if test="photo != null and photo != ''">photo = #{photo},</if>
+			<if test="sex != null and sex != ''">sex = #{sex},</if>
+			<if test="birth != null and birth != ''">birth = #{birth},</if>
+			<if test="address != null and address != ''">address = #{address},</if>
+			<if test="email != null and email != ''">email = #{email},</if> 
+			<if test="password != null and password != null">password = #{password},</if>
+			<if test="phone!= null and phone != ''">phone = #{phone},</if>
+			<if test="wechatId != null and wechatId != ''">wechatId = #{wechatId},</if>
+			<if test="type != null and type != ''">type = #{type},</if>
+			<if test="nickname!= null and nickname != ''">nickname = #{nickname},</if>
+			<if test="volunteerId!= null and volunteerId != ''">volunteerId = #{volunteerId},</if>
+			<if test="groupId!= null and groupId != ''">groupId = #{groupId},</if>
+			<if test="token!= null and token != ''">token = #{token},</if>
+			<if test="username!= null and  username != ''">username = #{username},</if>
+			<if test="voteDate != null and voteDate != ''"> voteDate = #{voteDate},</if>
+			<if test="signDate != null and signDate != ''"> signDate = #{signDate},</if>
+			<if test="shareCamDate != null and shareCamDate != ''"> shareCamDate = #{shareCamDate},</if>
+			<if test="shareAppDate != null and shareAppDate != ''">shareAppDate = #{shareAppDate},</if>
+			<if test="taskFinishedDate != null and taskFinishedDate != ''">taskFinishedDate=#{taskFinishedDate},</if>
+			<if test="volunteerId != null and volunteerId != null">volunteerId = #{volunteerId},</if>
+			<if test="updatedAt!= null and updatedAt != ''">updatedAt = #{updatedAt}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<!-- 根据用户token查找用户Id   LH -->
+	<select id="getUserIdByToken" parameterType="String" resultType="com.yichuang.fuyang.entity.User">
+			select id,username,phone,volunteerId,groupId,nickname,type,token,password from users where  token  =  #{token}
+	</select>
+
+	<!-- 根据id更新任务时间表 -->
+	<update id="updateDateByid" parameterType="com.yichuang.fuyang.entity.User">
+		update users
+		<set>
+			<if test="voteDate != null"> voteDate = #{voteDate},</if>
+			<if test="signDate != null"> signDate = #{signDate},</if>
+			<if test="shareCamDate != null"> shareCamDate = #{shareCamDate},</if>
+			<if test="shareAppDate != null">shareAppDate = #{shareAppDate},</if>
+			<if test="taskFinishedDate != null">taskFinishedDate=#{taskFinishedDate},</if>
+			<if test="volunteerId != null and volunteerId !=''">volunteerId=#{volunteerId}</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>
+
+
+
+
+
+
+

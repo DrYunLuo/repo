@@ -1,0 +1,45 @@
+<!-- 审核组织-->
+<div id="org_review" ng-controller="orgReviewCtrl">
+    <div class="table_box">
+        <table id="example1" class="table" cellspacing="0">
+            <thead>
+            <tr>
+            	<td colspan="2">
+            		审核状态
+            	</td>
+            	<td colspan="2">
+            		<div class="dropdown" style="width:100%;">
+						  <button style="width:100%;" class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+							      请选择组织状态
+							    <span class="caret"></span>
+						  </button>
+						  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+							    <li><a ng-click="groupStatus(3)" data-status='3'>全部</a></li>
+							    <li><a ng-click="groupStatus(0)" data-status='0'>不通过</a></li>
+							    <li><a ng-click="groupStatus(1)" data-status='1'>已审核</a></li>							   
+							    <li><a ng-click="groupStatus(2)" data-status='2'>未审核</a></li>
+						  </ul>
+					</div>	
+            	</td>          	
+            </tr>
+            <tr>
+                <td>参加组织名称</td>
+                <td>组织性质</td>
+                <td>审核状态</td>
+                <td>备注</td>
+            </tr>
+            </thead>
+            <tbody id="tbody">
+            <tr ng-repeat="obj in groupList track by $index">
+                <td><a href="#/orgReviewDetail/{{obj.id}}" ng-bind="obj.name"></a></td>
+                <td ng-bind="obj.groupType"></td>
+                <td class="notice" ng-bind="obj.status"></td>
+                <td ng-bind="obj.notes"></td>
+            </tr>
+            </tbody>
+        </table>
+        <div id="org_rpage"></div>
+        
+        <div style="clear:both;"></div>
+    </div>
+</div>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.yichuang.fuyang.dao.PostAtomsDao">
+	<insert id="savePostAtoms" parameterType="com.yichuang.fuyang.entity.PostAtoms">
+	  insert into postatoms
+	       (id,
+            content,
+            time,
+            createdAt,
+            updatedAt,
+            VolunteerId,
+            PostId,
+            NewId,
+            postatomsId)
+	   values
+	    (#{id},#{content},#{time},#{createdAt},#{updatedAt},#{VolunteerId},#{PostId},#{NewId},#{postatomsId})
+	</insert>
+	
+	
+	<!-- 根据用户名查询帖子评论  -->
+    <select id="selectPostAtoms" parameterType="string" resultMap="other">
+      SELECT p.*,v.`photo`,v.`realname`,v.`nickname` FROM postatoms p 
+      LEFT JOIN volunteers v ON p.`VolunteerId`=v.`id` 
+      WHERE p.`PostId` = #{postid}
+   </select>
+   <resultMap type="com.yichuang.fuyang.entity.PostAtomExt" id="other"> 
+	<id column="id" property="id" />
+	<result column="content" property="content"/>
+	<result column="time" property="time"/> 
+	<result column="createdAt" property="createdAt"/> 
+	<result column="updatedAt" property="updatedAt"/> 
+	<result column="VolunteerId" property="VolunteerId"/> 
+	<result column="PostId" property="PostId"/> 
+	<result column="NewId" property="NewId"/> 
+	<result column="postatomsId" property="postatomsId"/> 
+	<association property="volunteers" javaType="com.yichuang.fuyang.entity.Volunteers">
+  			<result column="photo" property="photo"/>
+  			<result column="realname" property="realname"/>
+  			<result column="nickname" property="nickname"/>
+  	</association>
+  </resultMap>
+	 
+	 <!-- 查询帖子评论数 -->
+	 <select id="findAtomsSum" parameterType="com.yichuang.fuyang.entity.PostAtoms" resultType="integer">
+	 	select count(id) from postatoms where postId=#{postId}
+	 </select>
+</mapper>
+
+
+
+
+
+
+

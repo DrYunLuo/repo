@@ -1,0 +1,121 @@
+package com.yichuang.fuyang.web;
+
+
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.yichuang.fuyang.entity.User;
+import com.yichuang.fuyang.service.GroupsService;
+import com.yichuang.fuyang.service.NameOrPasswordException;
+import com.yichuang.fuyang.service.PropertyService;
+import com.yichuang.fuyang.service.UserService;
+import com.yichuang.fuyang.util.DefaultResponse;
+import com.yichuang.fuyang.util.JsonResult;
+import com.yichuang.fuyang.util.Utils;
+
+
+/**
+ * 组件扫描
+ */
+@Controller
+@RequestMapping("/account")
+public class LoginController {
+
+	@Autowired
+	private UserService userService;
+	@Autowired
+	private GroupsService groupsService;
+	@Autowired
+	private PropertyService propertyService;
+	
+
+	/*
+	 * 用户登录
+	 */
+	@RequestMapping("/login")
+	@ResponseBody
+	public JsonResult<User> login(String name, String password,String keyParams) {
+		JsonResult<User> result = null;
+		try {
+			JsonResult<User> checkResult = Utils.checkKeyParams(name+password+propertyService.KEY, keyParams);
+			if(checkResult != null){
+				result = checkResult;
+			}else{
+				User user = userService.login(name, password);
+				result = new JsonResult<User>(user);
+			}
+			return result;
+		} catch (NameOrPasswordException e) {
+			e.printStackTrace();
+			return new JsonResult<User>(e.getField(), e.getMessage(), null);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new JsonResult<User>(e);
+		}
+	}
+	
+	/**
+	 * 注册用户
+	 * @param phone
+	 * @param password
+	 * @param keyParams
+	 * @return
+	 */
+	@RequestMapping("/regist")
+	@ResponseBody
+	public JsonResult<String> regist(String phone, String password,String nickname,String keyParams) {
+		
+			JsonResult<String> checkResult = Utils.checkKeyParams(phone+password+propertyService.KEY, keyParams);
+			if(checkResult != null){
+				return  checkResult;
+			}
+			String pwdString = Utils.md5salt(password);
+			try{
+				userService.saveUser(phone,pwdString,nickname,null);
+				return new JsonResult<String>(DefaultResponse.SUCCESS,null);
+		} catch (NameOrPasswordException e) {
+			e.printStackTrace();
+			return new JsonResult<String>(e.getField(), e.getMessage(), null);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new JsonResult<String>(e);
+		}
+	}
+	
+	/**
+	 *  根据token 退出登录
+	 * @param session 设置会话失效
+	 * @param token 登录识别信息置空
+	 * @return message 作为标识信息
+	 */
+	@RequestMapping("/logout")
+	@ResponseBody
+	public JsonResult<Void> logout(@RequestParam("uid")String userId,String keyParams) {
+		
+		
+		JsonResult<Void> result = null;
+		try {
+			JsonResult<Void> checkResult = Utils.checkKeyParams(userId+propertyService.KEY, keyParams);
+			if(checkResult != null){
+				result = checkResult;
+			}else{
+				
+				userService.updateTokenToNull(userId);
+				result = new JsonResult<Void>(0, "退出成功", null);
+			}
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new JsonResult<Void>(1, "退出失败", null);
+		
+	}
+	
+	
+	
+	
+}

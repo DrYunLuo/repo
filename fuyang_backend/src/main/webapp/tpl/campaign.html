@@ -1,0 +1,115 @@
+<div ng-include="'tpl/include/header.html'" ng-init="campaign=true"></div>
+<div id="groups_main" ng-controller="campaignCtrl">
+    <div class="container" style="padding-top:15px;">
+        <!-- 头部-->
+        <div class="content_box">
+            <div id="org_header">
+                <div class="title row">
+                    <h3 class="col-xs-6 col-sm-6 col-md-6 col-lg-6">活动详情</h3>
+                </div>
+                <div class="title row">
+                    <h5 class="col-xs-10 col-sm-10 col-md-10 col-lg-10">ACTIVITIES DETAILS</h5>
+                </div>
+                <div class="selectClass row">
+                    <ul class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <li><a class="active" ng-click="allactivity()">全部</a></li>
+                        <li><a class="" ng-click="todayactivity()">今日</a></li>
+                        <li><a class="" ng-click="weekactivity()">本周</a></li>
+                        <li><a class="" ng-click="monthactivity()">本月</a></li>
+                        <li><a class="" ng-click="newactivity()">最新</a></li>
+                        <li><a class="" ng-click="hotactivity()">最热</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div id="left_container" class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+                <div id="groups_detail">
+                    <div class="media" ng-repeat="obj in list track by $index">
+                        <a class="media-left" href="#/active_detail/{{obj.id}}">
+                            <img ng-src="{{obj.image}}" alt="" width="200" height="140">
+                        </a>
+                        <div class="media-body">
+                            <h4 class="media-heading"><a href="#/active_detail/{{obj.id}}" ng-bind="obj.title"></a></h4>
+                            <div class="person campaign_person">
+                                活动时间: &nbsp;<span ng-bind="obj.startTime"></span> 至 <span ng-bind="obj.endTime"></span>&nbsp;
+                            </div>
+                            <div class="groups_description campaign_description">
+                                发起组织:
+                                <span class="description" ng-bind="obj.hostUnit">阜阳褒扬英烈志愿者协会</span>
+                            </div>
+                            <div class="campaign_leader">
+                                发起人: <span ng-bind="obj.pricipalName"></span>
+                            </div>
+                            <div class="campaign_mess">
+                                参与人数：<span class="status" ng-bind="obj.memberCount"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="campaign_page" style="overflow: hidden;display: table;margin: 20px auto;">
+
+                </div>
+            </div>
+            <div id="right_container" class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                <div class="search_groups row">
+                    <div class="dropdown col-xs-5 col-sm-5 col-md-5 col-lg-5">
+                        <select class="group_selec" name="" id="groupTypes">
+                            <option value="">请选择</option>
+                        </select>
+                    </div>
+                    <div class="search col-xs-7 col-sm-7 col-md-7 col-lg-7">
+                        <input placeholder="请输入关键词" type="text" id="groupKeyword" class="groups_keyword col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <span onclick="searchActivity()"></span>
+                    </div>
+                </div>
+                <div class="create_group">
+                    <button ng-click="createAct()">发起组织活动<span></span></button>
+                </div>
+                <div class="content_box">
+                    <!-- 各区动态-->
+                    <div id="regional">
+                        <div class="title row">
+                            <h3 class="col-xs-6 col-sm-6 col-md-6 col-lg-6">各区动态</h3>
+                            <h5 class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="text-align: right">-<a href="#/2/news_list">MORE</a>-</h5>
+                        </div>
+                        <ul>
+                            <li ng-repeat="obj in news | limitTo:3">
+                                <a href="#/news_detail/{{obj.id}}" ng-bind="obj.title"></a>
+                                <p ng-bind="obj.summary"></p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="content_box">
+                    <!-- 活动信息-->
+                    <div id="activeInfo">
+                        <div class="title row">
+                            <h3 class="col-xs-6 col-sm-6 col-md-6 col-lg-6">活动信息</h3>
+                            <h5 class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="text-align: right">-<a href="#/3/news_list">MORE</a>-</h5>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" align="center">
+                                <a href="#/news_detail/{{campaigns[0].id}}">
+                                    <img ng-src="{{campaigns[0].titleImgUrl}}" height="150"/>
+                                </a>
+                            </div>
+                        </div>
+                        <ul>
+                            <li ng-repeat="obj in campaigns | limitTo:2">
+                                <a href="#/news_detail/{{obj.id}}" ng-bind="obj.title"></a>
+                                <p ng-bind="obj.summary"></p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $("#org_header ul li").on('click','a',function(){
+        $(this).addClass('active').parent().siblings().children('.active').removeClass('active');
+    });
+</script>
+<div ng-include="'tpl/include/footer.html'"></div>

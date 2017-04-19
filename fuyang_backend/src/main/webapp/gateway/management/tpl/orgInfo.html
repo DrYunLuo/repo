@@ -1,0 +1,69 @@
+<!-- 组织信息-->
+<div id="org_info" ng-controller="orgInfoCtrl">
+    <div class="content_box">
+        <p>基本信息</p>
+        <div class="content">
+            <div class="row">
+                <div class="col-lg-6">
+                    组织名称：<span ng-bind="org.name"></span>
+                </div>
+                <div class="col-lg-6">
+                    组织代码：<span ng-bind="org.groupCode">15461</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    组织类型：<span ng-bind="org.groupTypeId">公益</span>
+                </div>
+                <div class="col-lg-6">
+                    组织状态：<span class="notice" ng-bind="status">审核中</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    组织电话：<span ng-bind="org.telephone"></span>
+                </div>
+                <div class="col-lg-6">
+                    联 系 人：<span ng-bind="org.contactsname"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    组织地址：<span ng-bind="org.address"></span>
+                </div>
+                <div class="col-lg-6">
+                    所属组织：<span ng-bind="org.institution"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    组织网站：<span ng-bind="org.web"></span>
+                </div>
+                <div class="col-lg-6">
+                    组织人数：<span ng-bind="org.volTotal"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    组织邮箱：<span ng-bind="org.email"></span>
+                </div>
+                <div class="col-lg-6">
+                    所在区域：<span ng-bind="org.regionid"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content_box">
+        <p>组织活动</p>
+        <div class="content">
+            <div class="row">
+                <div class="col-lg-6">
+                    已发布活动：<span class="notice" ng-bind="org.campaignCount">251</span> 个
+                </div>
+                <div class="col-lg-6">
+                    总服务时长：<span class="notice" ng-bind="org.serverTime">12312</span> 小时
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

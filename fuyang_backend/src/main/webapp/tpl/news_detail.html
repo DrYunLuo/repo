@@ -1,0 +1,79 @@
+<div ng-include="'tpl/include/header.html'"></div>
+<!--********************暖春行动********************-->
+<div id="warm" ng-controller="newsDetailCtrl">
+    <div class="container" style="padding-top:15px;">
+        <!-- 导航-->
+        <ul class="breadcrumbs">
+            <li><a href="#/start">首页</a></li>
+            <li>&gt;</li>
+            <li><a href="#/{{newsType}}/news_list" ng-bind="newsDetail.newsType"></a></li>
+            <li>&gt;</li>
+            <li>正文</li>
+        </ul>
+        <div class="row">
+            <!--********************左边内容********************-->
+            <div class="warm_left col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                <!--********************新闻标题部分********************-->
+                <div class="news_title">
+                    <h3 ng-bind="newsDetail.title">关于开展2017年阜阳青年志愿者服务春运 “暖冬行动”
+                        <!--<span>(阅读数：106次）</span>-->
+                    </h3>
+                    <ul>
+                        <li class="newsType"><span ng-bind="newsDetail.newsType"></span></li>
+                        <li class="newsAuthor"><span ng-bind="newsDetail.author"></span></li>
+                        <li class="newsDate"><span ng-bind="newsDetail.createdAt"></span></li>
+                    </ul>
+                </div>
+                <!-- 新闻摘要-->
+                <div class="newsSummary">
+                    <b>摘要：</b><span ng-bind="newsDetail.summary"></span>
+                </div>
+                <!--********************新闻内容********************-->
+                <div id="news_content">
+
+                </div>
+            </div>
+            <!--********************右边内容********************-->
+            <div id="right_container" class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                <div class="content_box">
+                    <!-- 各区动态-->
+                    <div id="regional">
+                        <div class="title row">
+                            <h3 class="col-xs-6 col-sm-6 col-md-6 col-lg-6">各区动态</h3>
+                            <h5 class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="text-align: right">-<a href="#/2/news_list">MORE</a>-</h5>
+                        </div>
+                        <ul>
+                            <li ng-repeat="obj in news | limitTo:3">
+                                <a href="#/news_detail/{{obj.id}}" ng-bind="obj.title"></a>
+                                <p ng-bind="obj.summary"></p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="content_box">
+                    <!-- 活动信息-->
+                    <div id="activeInfo">
+                        <div class="title row">
+                            <h3 class="col-xs-6 col-sm-6 col-md-6 col-lg-6">活动信息</h3>
+                            <h5 class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="text-align: right">-<a href="#/3/news_list">MORE</a>-</h5>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" align="center">
+                                <a href="#/news_detail/{{campaigns[0].id}}">
+                                    <img ng-src="{{campaigns[0].titleImgUrl}}" height="150"/>
+                                </a>
+                            </div>
+                        </div>
+                        <ul>
+                            <li ng-repeat="obj in campaigns | limitTo:2">
+                                <a href="#/news_detail/{{obj.id}}" ng-bind="obj.title"></a>
+                                <p ng-bind="obj.summary"></p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div ng-include="'tpl/include/footer.html'"></div>

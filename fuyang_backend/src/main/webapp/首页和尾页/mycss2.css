@@ -1,0 +1,135 @@
+*{
+	margin:0;
+	padding:0;
+}
+input{
+	outline:0;
+}
+.hidden{
+	display:none;
+}
+/*****************************头部**********************************/
+.first{
+	width:100%;
+	background:#e5e5e5;
+	border-bottom:1px solid #aaaaaa;
+}
+.first:after{
+	content:"";
+	display:block;
+	clear:both;
+}
+.header{
+	width:90%;
+	margin:0 auto;
+}
+.header li{
+	float:left;
+}
+.header .myli1{
+	display:none;
+}
+.header .mya1{
+	padding-left:3px;
+	padding-right:3px;
+}
+.header .mya2:hover{
+	color:#444444;
+}
+/*****************************支援阜阳logo部分**********************************/
+.twice{
+	background:#e5e5e5;
+	width:100%;
+}
+.twice:after{
+	content:"";
+	display:block;
+	clear:both;
+}
+.logo{
+	width:90%;
+	margin:0 auto;
+}
+.col-xs-0{
+	display:none;
+}
+.logo .mydv1{
+	margin:0;
+	padding:0;
+}
+.logo .myul1 li{
+	margin:0;
+	padding:5px;
+	display:block;
+	float:left;
+}
+.logo .myul1 li:nth-child(1),.logo .myul1 li:nth-child(3),.logo .myul1 li:nth-child(5),.logo .myul1 li:nth-child(7),.logo .myul1 li:nth-child(9),.logo .myul1 li:nth-child(11){
+	width:30%;
+	text-align:center;
+}
+.logo .myul1 li:nth-child(6){
+	display:none;
+}
+.logo .myul1 li:nth-child(7){
+	clear:both;
+}
+.logo li a{
+	line-height:30px;
+}
+/*****************************头图**********************************/
+.third{
+	width:100%;
+}
+.third:after{
+	content:"";
+	display:block;
+	clear:both;
+}
+.third img{
+	width:100%;
+}
+.third a img{
+	width:40%;
+	height:40%;
+	margin:50% 20%;
+}
+
+/******************************footer部分***************************/
+footer{
+	margin-top:10px;
+	padding-top:5px;
+	width:100%;
+	background:#e84c3d;
+}
+footer:after{
+	display:block;
+	content:"";
+	clear:both;
+}
+.myfooter{
+	width:90%;
+	margin:0 auto;
+}
+.myfooter p{
+	color:#fceceb;
+}
+.myfooter a{
+	color:#fceceb;
+	margin-right:5px;
+}
+.myfooter .mydv1 .myp1{
+	padding-left:5px;
+}
+.myfooter .mydv1{
+	padding-top:10px;
+}
+.myfooter .thumbnail{
+	padding-bottom:5px;
+}
+.myfooter .mydv2{
+	padding-top:10px;
+	padding-left:0;
+}
+
+
+

@@ -1,0 +1,26 @@
+package com.yichuang.fuyang.service;
+
+import com.github.pagehelper.PageInfo;
+import com.yichuang.fuyang.entity.Posts;
+
+public interface PostsService {
+	/**
+	 * 发表帖子
+	 * @param posts
+	 */
+	void savePosts(Posts posts);
+	
+	/**
+	 * 帖子列表
+	 * @param pageNo 数量
+	 * @param pageSize 页数
+	 * @return
+	 */
+	PageInfo<Posts> queryPosts(Integer pageNo,Integer pageSize);
+	
+	/**
+	 * 点赞
+	 * @param id：表示帖子ID
+	 */
+	Posts updatePostsZan(String id) throws YichuangException;
+}

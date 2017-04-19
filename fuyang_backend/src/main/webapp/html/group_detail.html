@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <script src="js/jquery-1.11.3.js"></script>
+    <title>详情</title>
+    <style>
+       *{
+       		font-family:"微软雅 黑";
+       		font-size:18px;
+       		color:#000;
+       		margin:0;
+       		padding:0;
+       }
+       body{
+       		width:100%;
+       		
+       }
+       .container{
+       	width:90%;
+       	margin:0 auto;
+       }
+       .picture{
+       		margin-top:10px;
+       		width:100%;
+       }
+       .picture img{
+       		width:100%;
+       		vertical-align:bottom;
+       		border:0;
+       }
+       .mydv1{
+       		width:90%;
+     	}
+     	h2{
+     		font-size:20px;
+     		font-weight:normal;
+     	}
+     	.btn{
+     		width:60%;
+     		height:35px;
+     		background-color:#ff5424;
+     		position:absolute;
+     		bottom:20px;
+     		left:calc(50% - 30%);
+     		border:0;
+     		border-radius:10px;
+     	}
+    </style>
+</head>
+<body>
+     <div class="container">
+     	<div class="picture">
+     		<img src="" alt="图片加载失败"/>
+     	</div>
+        <h2>标题</h2>
+        <div>法人:小白</div>
+        <div>地址:阜阳市和平公园</div>
+        <div>协会人数:30人</div>
+        <div>成立时间 : 1994年12月5日</div>
+        <p>哈哈哈</p>
+    </div>
+        <button class="btn" onclick="jionGroup()">申请加入</button>
+    <script>
+        function GetqueryString(name){
+            var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if(r!=null)return  unescape(r[2]); return null;
+        }
+        var gid=GetqueryString("gid");
+        var vid=GetqueryString("uid");
+        $(function () {
+            $.get('/fuyang_backend/groups/getGroupById?id=1bc00835-d72f-46db-982d-7e207a89392e', function (data) {
+                console.log(data);
+                $(".container").empty().append('<div class="picture"><img src="'+data.data[0].imageUrl+'" alt="图片加载失败"/> </div><h2>'+data.data[0].name+'</h2> <br/> <div>成立时间 : 1994年12月5日</div> <div>法人:'+data.data[0].contactsname+'</div> <div>地址:'+data.data[0].address+'</div> <div>协会人数:'+data.data[0].volTotal+'人</div> <p class="content">'+data.data[0].notes+'</p>');
+            })
+        })
+        function jionGroup(){
+        	$.post('/fuyang_backend/volunteers/joinGroup',{
+            	GroupId:gid,
+            	id:vid,
+            },function(data){
+            	console.log(data);
+            });
+        }
+    </script>
+</body>
+</html>

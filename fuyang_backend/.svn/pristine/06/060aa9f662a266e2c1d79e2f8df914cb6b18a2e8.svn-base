@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.yichuang.fuyang.dao.PostsDao">
+	<insert id="savePosts" parameterType="com.yichuang.fuyang.entity.Posts">
+	  insert into posts
+	       (id,       
+            content,
+            url,
+            time,
+            zan,
+            pass,
+            createdAt,
+            updatedAt,
+            VolunteerId,
+            PostPlateId)
+	   values
+	    (#{id},#{content},#{url},#{time},#{zan},#{pass},#{createdAt},#{updatedAt},#{VolunteerId},#{PostPlateId})
+	</insert>
+	
+	
+	<!-- 帖子查询-->
+   <select id="selectPosts"  resultMap="other">
+      SELECT p.* , v.realname,v.photo
+      FROM posts p, volunteers v where p.VolunteerId = v.id 
+   </select>
+   
+   
+   <resultMap type="com.yichuang.fuyang.entity.Posts" id="BaseResultMap">
+      <id column="id" property="id"/>    
+   </resultMap>
+   
+   <!-- 更新赞 -->
+   <update id="updateZan" parameterType="String">
+       update posts 
+       set zan=zan+1,updatedAt=(select now())
+       where id=#{id}
+   </update> 
+   
+   <resultMap type="com.yichuang.fuyang.entity.Posts" id="other"> 
+	<id column="id" property="id" />
+	<result column="content" property="content"/>
+	<result column="url" property="url"/>
+	<result column="time" property="time"/>
+	<result column="zan" property="zan"/>
+	<result column="pass" property="pass"/>
+	<result column="createdAt" property="createdAt"/>
+	<result column="updatedAt" property="updatedAt"/>
+	<result column="VolunteerId" property="VolunteerId"/>
+	<result column="PostPlateId" property="PostPlateId"/>
+	<collection property="listVolunteers" ofType="com.yichuang.fuyang.entity.Volunteers">
+		<id column="VolunteerId" property="id" />
+		<result column="realname" property="realname" />
+		<result column="photo" property="photo" />
+	</collection>
+  </resultMap>
+ 
+  
+  <!-- 根据id查询帖子 -->
+  <select id="selectByPostsId" parameterType="string" resultMap="BaseResultMap">
+      select * from posts where id = #{id}
+  </select>
+  
+  
+  <!-- 更新帖子 -->
+  <update id="updatePosts" parameterType="Posts">
+       update posts
+       <set>
+        <if test="content!=null and content!=''">
+            content = #{content},
+        </if>
+        <if test="url!=null and url!=''">
+            url = #{url},
+        </if>
+        <if test="zan!=null and zan!=''">
+            zan = #{zan},
+        </if>
+        <if test="pass!=null and pass!=''">
+            pass = #{pass},
+        </if>
+      </set>
+       where id = #{id}
+  </update>
+</mapper>
+
+
+
+
+
+
+

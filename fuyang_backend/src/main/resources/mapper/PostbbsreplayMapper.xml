@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+ <mapper namespace="com.yichuang.fuyang.dao.PostbbsreplayDao">
+ 	
+ 	<!-- 论坛帖子评论回复 -->
+ 	<insert id="addPostbbsReplay" parameterType="com.yichuang.fuyang.entity.Postbbsreplay">
+ 		insert into postbbsreplay (id,content,volunteerId,postatomsbbsId,replayTime,photo,realname)
+ 		values(#{id},#{content},#{volunteerId},#{postatomsbbsId},#{replayTime},#{photo},#{realname})
+ 	</insert>
+ 		
+ 	<!-- 根据评论id获取回复列表 -->	
+ 	<select id="findByPostAtomsbbs" parameterType="string" resultMap="BaseResultMap">
+ 		select p.id,p.content,p.volunteerId,p.postatomsbbsId,p.replayTime,v.photo,v.realname,v.nickname from postbbsreplay p LEFT JOIN volunteers v ON v.id = p.volunteerId 
+ 		where postatomsbbsId = #{postatomsbbsId}
+ 	</select>
+ 	
+ 	<resultMap type="com.yichuang.fuyang.entity.Postbbsreplay" id="BaseResultMap">
+ 		<id property="id" column="id"/>
+ 		<result column="content" property="content"/> 
+		<result column="volunteerId" property="volunteerId"/> 
+		<result column="postatomsbbsId" property="postatomsbbsId"/>
+		<result column="replayTime" property="replayTime"/> 
+		<association property="volunteers" javaType="com.yichuang.fuyang.entity.Volunteers">
+	  			<result column="photo" property="photo"/>
+	  			<result column="realname" property="realname"/>
+	  			<result column="nickname" property="nickname"/>
+	  	</association>
+ 	</resultMap>
+ </mapper>

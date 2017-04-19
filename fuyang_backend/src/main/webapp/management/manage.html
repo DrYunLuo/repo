@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-cn" ng-app="myApp">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="js/jquery-1.11.3.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/ajaxfileupload.js"></script>
+    <title>管理员管理中心</title>
+
+    <!--[if IE 8]>
+    <script src="js/es5-shim.min.js"></script>
+    <![endif]-->
+    <!-- Bootstrap -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/paging.css" rel="stylesheet"/>
+    <link href="css/manage.css?v=2000013" rel="stylesheet">
+    <link href="css/jedate.css" rel="stylesheet">
+    <link href="css/modalDialog.css" rel="stylesheet">
+
+
+    <!--[if lt IE 9]>
+    <script src="../js/jquery.JPlaceholder.js"></script>
+    <script src="../js/html5shiv.min.js"></script>
+    <script src="../js/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript" src="js/angular-route.js"></script>
+    <style>
+        #create_active .fr li{
+            height:45px;
+        }
+    </style>
+</head>
+<body ng-controller="parentCtrl">
+<div id="header">
+    <div class="container">
+        <a href="http://zyfy0558.com"><img class="logo" src="img/logo.png"/></a>
+        <p class="title">用户管理中心</p>
+    </div>
+</div>
+<div id="nav">
+    <div class="container">
+        <ul class="fl">
+            <li>
+                欢迎回来，<span ng-bind="user.username">admin</span>
+            </li>
+            <li>
+                <a href="http://zyfy0558.com">网站首页</a>
+            </li>
+            <li>
+                <a href="#" ng-click="logout()">注销</a>
+                /
+                <a href="#/modifyPwd" class="notice">修改密码</a>
+            </li>
+        </ul>
+        <ul class="fr">
+            <li>
+                	登录时间：2017年2月17日 星期三 <a style="color:red;" ng-click='changeHtml()' class="auditState"></a>
+            </li>
+        </ul>
+        	<div class="modal fade" id="motai" tabindex="-1" role="dialog">
+			  <div class="modal-dialog" role="document">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			        <h4 class="modal-title">Modal title</h4>
+			      </div>
+			      <div class="modal-body">
+			        <p ng-bind="notes"></p>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+			        <button type="button" class="btn btn-primary" onclick="changeEle()">编辑信息</button>
+			      </div>
+			    </div>
+  			  </div>
+			</div>
+        </div>
+</div>
+<div id="main">
+    <div class="container">
+        <div id="box_left">
+            <ul>
+                <li ng-class="{active:$first}" ng-repeat="menu in menus track by $index" ng-click="jump(menu.powerUrl)" ng-bind="menu.powerName"></li>
+            </ul>
+        </div>
+        <div id="box_right">
+            <div class="right_main" ng-view>
+				
+            </div>
+            <div class="footer">
+                <div class="copyright fl">
+                    <p class="notice">志愿阜阳&nbsp; |&nbsp; 联系电话：0558-2285707</p>
+                    <p>Copyright © 2016 http://zyfy0558.com</p>
+                </div>
+                <div class="address fr">
+                    <p>地址：安徽省阜阳市颍州区颍州南路和平公园内阜阳革命烈士纪念馆</p>
+                    <p></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--操作成功弹出框-->
+<div class="md-modal md-effect-1" id="modal-1">
+    <div class="md-content">
+        <div>
+            <p>操作成功</p>
+            <button class="md-close">确定</button>
+        </div>
+    </div>
+</div>
+<!--遮罩层-->
+<div class="md-overlay"></div>
+<script src="js/paging.js"></script>
+<script src="js/jquery.jedate.min.js"></script>
+<script src="../js/storageInfo.js"></script>
+<script charset="utf-8" src="editor/kindeditor.js"></script>
+<script charset="utf-8" src="editor/lang/zh_CN.js"></script>
+<script src="js/manage.js?v=2017022721"></script>
+</body>
+</html>

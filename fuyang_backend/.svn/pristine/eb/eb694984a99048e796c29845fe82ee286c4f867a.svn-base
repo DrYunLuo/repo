@@ -1,0 +1,69 @@
+<!-- 个人资料-->
+<div id="volun_info" ng-controller="volInfoCtrl">
+    <div class="content_box">
+        <p>基本信息</p>
+        <div class="content">
+            <div class="row">
+                <div class="col-lg-6">
+                    姓&nbsp;&nbsp;名：<span ng-bind="volunteer.realname"></span>
+                </div>
+                <div class="col-lg-6">
+                    性&nbsp;&nbsp;别：<span ng-bind="volunteer.sex"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    身&nbsp;&nbsp;高：<span></span>
+                </div>
+                <div class="col-lg-6">
+                    志愿状态：<span class="notice" ng-bind="status"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    电话号码：<span ng-bind="volunteer.tel"></span>
+                </div>
+                <div class="col-lg-6">
+                    志愿经历：<span ng-bind="volunteer.serviceTime"></span>个
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    家庭住址：<span ng-bind="volunteer.homeAddress"></span>
+                </div>
+                <div class="col-lg-6">
+                    所属组织：<span>青年者愿者协会</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    个人主页：<span></span>
+                </div>
+                <div class="col-lg-6">
+                    身份证号：<span ng-bind="volunteer.cardId"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    个人邮箱：<span ng-bind="volunteer.email"></span>
+                </div>
+                <div class="col-lg-6">
+                    所在区域：<span ng-bind="volunteer.regionId"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content_box">
+        <p>组织活动</p>
+        <div class="content">
+            <div class="row">
+                <div class="col-lg-6">
+                    已参加活动：<span class="notice" ng-bind="volunteer.campaignTotal"></span> 个
+                </div>
+                <div class="col-lg-6">
+                    总服务时长：<span class="notice" ng-bind="volunteer.serviceTime"></span> 小时
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

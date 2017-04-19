@@ -1,0 +1,254 @@
+*{
+    box-sizing:border-box;
+    padding:0;
+    margin:0;
+    font-family:Microsoft YaHei,Arial, Helvetica,"\534E\6587\9ED1\4F53", sans-serif;
+    font-size:20px;
+    color:#000;
+}
+
+ul,li {
+    list-style:none;
+}
+img {
+    border:none;
+    vertical-align: middle;
+    width:65px;
+}
+a {
+    color: #ccc;
+    text-decoration:none;
+    font-style:normal;
+}
+a:hover {
+    text-decoration:none;
+}
+i,em{
+    font-style:normal;
+}
+
+body{
+    min-width:320px;
+    max-width:1024px;
+    margin: 0 auto;
+    height:100%;
+    margin:0 auto;
+    background:#fff;
+}
+.container{
+    width:90%;
+    heigtht:100%;
+    margin: 0 auto;
+    padding: 0;
+}
+div{
+    width:100%;
+    height:100%;
+}
+p{
+    margin:0;
+    padding:0;
+}
+h2,h3,h4,h5,h6{
+    padding-left: 8px;
+}
+/**************header*****************/
+#header .container{
+    position: relative;
+}
+#header{
+    height: 14rem;
+}
+#header:after{
+    content: '';
+    display: block;
+    clear: both;
+}
+ div.content{
+     width:100%;
+ }
+#header .container #file_upload{
+    position: absolute;
+    width: 100%;
+    height: 10rem;
+    left: calc(50% - 50%);
+    opacity: 0;
+    z-index: 10;
+    border-width:0;
+}
+#header .container input.submit{
+    width: 100%;
+    height: 2rem;
+    position: absolute;
+    left: calc(50% - 50%);
+    bottom: 2px;
+    z-index: 10;
+    background-color: #e94c3d;
+    color: #ffffff;
+    border: 0;
+}
+#header .container img{
+    width: 100%;
+    position: absolute;
+    left:calc(50% - 50%);
+    height: 12rem;
+    border-width:0 !important;
+    z-index: 5;
+}
+#header .container span{
+    display:block;
+    width: 18%;
+    text-align: center;
+    position: absolute;
+    left: calc(50% - 10%);
+    bottom: 20px;
+    background-color: #cccccc;
+    border-radius: 10%;
+}
+#header .container div.submit{
+    margin-top: 10px;
+}
+#header .container .image_container span.select_photo{
+    width: 8rem;
+    height:2rem;
+    line-height: 2rem;
+    position: absolute;
+    left:calc(50% - 4rem);
+    top:calc(50% - 2rem);
+    border-radius: 5px;
+    background-color: #e94c3d;
+    color: #ffffff;
+    z-index: 2;
+}
+#main{
+    margin-top:10px;
+    display: none;
+}
+#main form div{
+    margin:20px 0;
+}
+#main div span{
+    display: inline-block;
+    width:30%;
+}
+#main div input{
+    width:60%;
+    height:40px;
+    border:0;
+    border-bottom:1px solid #ccc;
+    outline:none;
+}
+#main div input.man{
+    width:25px;
+    height:25px;
+}
+#main div input.women{
+    width:25px;
+    height:25px;
+    margin-left: 30px;
+}
+#main div select{
+    width:61%;
+    border:0;
+    outline: none;
+}
+select option{
+    font-size: 12px;
+}
+#main div.desease input{
+    width:25px;
+    height:25px;
+}
+#main div.desease div{
+    width:100%;
+
+}
+#main div.desease input[type=text]{
+    width:60%;
+    display: block;
+    margin-left:32%;
+    text-align: left;
+    height:45px;
+}
+#main div h4{
+    font-weight: normal;
+}
+#main div.interesting input{
+    width: 25px;
+    height:25px;
+    margin-left:40px;
+}
+#main #bt1{
+    display: block;
+    margin: 0 auto;
+    border-radius: 5px;
+    background: #e94c3d;
+    color: #fff;
+}
+#main div textarea {
+    width:90%;
+    margin-left: 20px;
+    border:0;
+    border-bottom:1px solid #ccc;
+    height: 6rem;
+}
+/*#main div.experience .experiences{*/
+    /*width:90%;*/
+    /*margin-left: 20px;*/
+    /*border:0;*/
+    /*border-bottom:1px solid #ccc;*/
+    /*height: 6rem;*/
+/*}*/
+#main div .sub{
+    width:100%;
+}
+#main div .sub input[type=submit]{
+    display: block;
+    margin: 0 auto;
+    height:60px;
+}
+#main div.interesting>div{
+    float: left;
+    width: 33%;
+}
+#main div.interesting:after{
+    content: '';
+    display: block;
+    clear: both;
+}
+#main div.interesting input{
+    display:block;
+    float: left;
+    width:20%;
+    margin:10px 0 0 0;
+}
+#main div.interesting span{
+    display: block;
+    float: left;
+    width:75%;
+    margin:10px 0 0 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

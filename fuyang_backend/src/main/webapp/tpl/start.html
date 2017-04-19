@@ -1,0 +1,487 @@
+<div ng-include="'tpl/include/header.html'" ng-init="start=true"></div>
+<div id="start_main" ng-controller="startCtrl">
+    <div class="container">
+        <!-- 志愿者服务时长-->
+        <div class="start_top">
+            <div class="top_left col-xs-6 col-sm-4 col-md-4 col-lg-4">
+                <img src="img/user.png" alt="">
+                <p>
+                    <b>志愿者</b>
+                    <br>
+                    <span ng-bind="volTotal"></span>
+                    人
+                </p>
+            </div>
+            <div class="top_center col-xs-6 col-sm-4 col-md-4 col-lg-4">
+                <img src="img/time.png" alt="">
+                <p>
+                    <b>服务时长</b>
+                    <br>
+                    <span ng-bind="volTotalTimes"></span>
+                    小时
+                </p>
+            </div>
+            <div class="top_right col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                <div class="same">
+                    <img src="img/app_andriod_big.png" width="100" class="big" alt="">
+                    <img src="img/ios.jpg" class="small" alt="">
+                </div>
+                <div class="same">
+                    <img src="img/app_andriod_big.png" width="100" class="big" alt="">
+                    <img src="img/andriod.jpg" class="small" alt="">
+                </div>
+            </div>
+        </div>
+        <div class="content_box">
+            <!-- 通知公告-->
+            <div id="announcement">
+                <div class="title row">
+                    <h3 class="col-xs-6 col-sm-6 col-md-6 col-lg-6">通知公告</h3>
+                </div>
+                <div class="title row">
+                    <h5 class="col-xs-7 col-sm-10 col-md-10 col-lg-10">ANNOUNCEMENTS</h5>
+                    <h5 class="col-xs-4 col-sm-2 col-md-2 col-lg-2" style="text-align: right">-<a href="#/1/news_list">更多</a>-</h5>
+                </div>
+                <div class="content row" style="padding: 0;"> 
+                    <div class="center_left col-xs-12 col-sm-5 col-md-5 col-lg-5">
+                        <div id="news_banner">
+                            <div id="news_carousel" class="carousel slide" data-ride="carousel" data-interval="3000">
+                                <!-- Indicators -->
+                                <ol class="carousel-indicators">
+                                    <li data-target="#news_carousel" data-slide-to="{{$index}}" ng-class="{active:$first}" ng-repeat="obj in imgs | limitTo:5"></li>
+                                </ol>
+
+                                <!-- Wrapper for slides -->
+                                <div class="carousel-inner" role="listbox">
+                                    <div class="item" ng-class="{active:$first}" ng-repeat="obj in imgs | limitTo:5" repeat-finish="renderFinish();">
+                                        <a href="#/news_detail/{{obj.id}}"><img ng-src="{{obj.titleImgUrl}}" alt="..."></a>
+                                        <div class="carousel-caption">
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Controls -->
+                                <a class="left carousel-control" href="" data-target="#news_carousel" role="button" data-slide="prev">
+                                    <img class="imgl" src="img/arrowl.png" alt="">
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="right carousel-control" href="" data-target="#news_carousel" role="button" data-slide="next">
+                                    <img class="imgr" src="img/arrowr.png" alt="">
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="center_right col-xs-12 col-sm-7 col-md-7 col-lg-7">
+                        <div class="row">
+                            <ul class="list">
+                                <li ng-repeat="obj in announcements">
+                                    <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                        <a href="#/news_detail/{{obj.id}}" ng-bind="obj.title"></a>
+                                    </div>
+                                    <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3" style="text-align: right">
+                                        <span ng-bind="obj.createdAt"></span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 各区动态-->
+            <div id="regionalDynamic">
+                <div class="title row">
+                    <h3 class="col-xs-6 col-sm-6 col-md-6 col-lg-6">各区动态</h3>
+                </div>
+                <div class="title row">
+                    <h5 class="col-xs-7 col-sm-10 col-md-10 col-lg-10">REGIONAL DYNAMIC</h5>
+                    <h5 class="col-xs-4 col-sm-2 col-md-2 col-lg-2" style="text-align: right">-<a href="#/2/news_list">更多</a>-</h5>
+                </div>
+                <div class="content">
+                    <div class="media" ng-repeat="obj in news | limitTo:2">
+                        <div class="media-left">
+                            <a href="#/news_detail/{{obj.id}}">
+                                <img class="media-object" ng-src="{{obj.titleImgUrl}}" >
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <h4 class="media-heading">
+                                <a href="#/news_detail/{{obj.id}}" ng-bind="obj.title"></a>
+                            </h4>
+                            <span ng-bind="obj.summary"></span>
+                            <b ng-bind="obj.createdAt"></b>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 活动新闻-->
+            <div id="activityInfo">
+                <div class="title row">
+                    <h3 class="col-xs-6 col-sm-6 col-md-6 col-lg-6">活动新闻</h3>
+                </div>
+                <div class="title row">
+                    <h5 class="col-xs-7 col-sm-10 col-md-10 col-lg-10">ACTIVITY INFORMATION</h5>
+                    <h5 class="col-xs-4 col-sm-2 col-md-2 col-lg-2" style="text-align: right">-<a href="#/3/news_list">更多</a>-</h5>
+                </div>
+                <div class="content">
+                    <div class="row">
+                        <div class="col-lg-6" ng-repeat="obj in campaigns | limitTo:2">
+                            <div class="media">
+                                <div class="media-left">
+                                    <a href="#/news_detail/{{obj.id}}">
+                                        <img class="media-object" ng-src="{{obj.titleImgUrl}}" >
+                                    </a>
+                                </div>
+                                <div class="media-body">
+                                    <h4 class="media-heading">
+                                        <a href="#/news_detail/{{obj.id}}" ng-bind="obj.title"></a>
+                                    </h4>
+                                    <span ng-bind="obj.summary"></span>
+                                </div>
+                            </div>
+                            <div style="clear: both"></div>
+                            <div ng-bind="obj.createdAt" style="text-align: right;color:#999;"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- 近期活动-->
+            <div id="qualityActivity">
+                <div class="title row">
+                    <h3 class="col-xs-6 col-sm-6 col-md-6 col-lg-6">近期活动</h3>
+                </div>
+                <div class="title row">
+                    <h5 class="col-xs-7 col-sm-10 col-md-10 col-lg-10">QUALITY ACTIVITIES</h5>
+                    <h5 class="col-xs-4 col-sm-2 col-md-2 col-lg-2" style="text-align: right">-<a href="#/campaign">更多</a>-</h5>
+                </div>
+                <div class="content">
+                    <div class="row">
+                        <div class="col-lg-6" ng-repeat="obj in qualityAct | limitTo:2">
+                            <div class="media">
+                                <div class="media-left">
+                                    <a href="#/active_detail/{{obj.id}}">
+                                        <img class="media-object" ng-src="{{obj.image}}">
+                                    </a>
+                                </div>
+                                <div class="media-body">
+                                    <h4 class="media-heading">
+                                        <a href="#/active_detail/{{obj.id}}" ng-bind="obj.title"></a>
+                                    </h4>
+                                    <div class="person campaign_person">
+                                        开始时间: <span ng-bind="obj.startTime"></span>
+                                    </div>
+                                    <div class="groups_description campaign_description">
+                                        活动地点：<span ng-bind="obj.location"></span>
+                                    </div>
+                                    <div class="campaign_leader">
+                                        发起人：<span ng-bind="obj.pricipalName"></span>
+                                    </div>
+                                    <div class="campaign_mess">
+                                        参与人数：<span class="status" ng-bind="obj.memberCount"></span>
+                                    </div>
+                                    <!-- 时间轴-->
+                                    <div class="timeline">
+                                        <!-- recruiting,ongoing,ended-->
+                                        <ul class="{{obj.activeState}}">
+                                            <li>
+                                                <p>招募中</p>
+                                                <b></b><i></i>
+                                            </li>
+                                            <li>
+                                                <p>进行中</p>
+                                                <b></b><i></i>
+                                            </li>
+                                            <li>
+                                                <p>已结束</p>
+                                                <b></b>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="clear: both"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6" ng-repeat="obj in qualityAct | limitTo:4">
+                            <div class="media" ng-show="$index>1">
+                                <div class="media-left">
+                                    <a href="#/active_detail/{{obj.id}}">
+                                        <img class="media-object" ng-src="{{obj.image}}" >
+                                    </a>
+                                </div>
+                                <div class="media-body">
+                                    <h4 class="media-heading">
+                                        <a href="#/active_detail/{{obj.id}}" ng-bind="obj.title"></a>
+                                    </h4>
+                                    <div class="person campaign_person">
+                                        开始时间: <span ng-bind="obj.startTime"></span>
+                                    </div>
+                                    <div class="groups_description campaign_description">
+                                        活动地点：<span ng-bind="obj.location"></span>
+                                    </div>
+                                    <div class="campaign_leader">
+                                        发起人：<span ng-bind="obj.pricipalName"></span>
+                                    </div>
+                                    <div class="campaign_mess">
+                                        参与人数：<span class="status" ng-bind="obj.memberCount"></span>
+                                    </div>
+                                    <!-- 时间轴-->
+                                    <div class="timeline">
+                                        <!-- recruiting,ongoing,ended-->
+                                        <ul class="{{obj.activeState}}">
+                                            <li>
+                                                <p>招募中</p>
+                                                <b></b><i></i>
+                                            </li>
+                                            <li>
+                                                <p>进行中</p>
+                                                <b></b><i></i>
+                                            </li>
+                                            <li>
+                                                <p>已结束</p>
+                                                <b></b>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="clear: both"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 志愿风采-->
+            <div id="presence">
+                <div class="title row">
+                    <h3 class="col-xs-6 col-sm-6 col-md-6 col-lg-6">志愿风采</h3>
+                </div>
+                <div class="title row">
+                    <h5 class="col-xs-7 col-sm-10 col-md-10 col-lg-10">VOLUNTEER ELEGANT DEMEANOUR</h5>
+                    <h5 class="col-xs-4 col-sm-2 col-md-2 col-lg-2" style="text-align: right">-<a href="#/volun">更多</a>-</h5>
+                </div>
+                <div class="content">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <a href="#/news_detail/{{campaigns[0].id}}">
+                                <img ng-src="{{campaigns[0].titleImgUrl}}"/>
+                            </a>
+                        </div>
+                        <div class="col-lg-6">
+                            <a href="#/news_detail/{{campaigns[1].id}}">
+                                <img ng-src="{{campaigns[1].titleImgUrl}}"/>
+                            </a>
+                        </div>
+                        <div class="col-lg-3">
+                            <a href="#/news_detail/{{campaigns[2].id}}">
+                                <img ng-src="{{campaigns[2].titleImgUrl}}"/>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 志愿排行榜-->
+            <div id="ranking">
+                <div class="row">
+                    <div class="ranking_area col-xs-12 col-sm-8 col-md-8 col-lg-8">
+                        <div class="title">
+                            <h4>志愿排行榜</h4>
+                            <ul>
+                                <li><a href="" id="groupTab" class="active">组织</a></li>
+                                <li>|</li>
+                                <li><a href="" id="volunTab">志愿者</a></li>
+                            </ul>
+                        </div>
+                        <div id="groupRanking" class="db">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>组织名称</th>
+                                    <th>活动个数</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td><div class="redColor">01</div><div class="redBorder"></div></td>
+                                    <td>
+                                        <a href="#/group_detail/{{groupsRank[0].id}}" ng-bind="groupsRank[0].name">
+
+                                        </a>
+                                    </td>
+                                    <td ng-bind="groupsRank[0].campaignCount"></td>
+                                </tr>
+                                <tr>
+                                    <td><div class="orangeColor">02</div><div class="orangeBorder"></div></td>
+                                    <td>
+                                        <a href="#/group_detail/{{groupsRank[1].id}}" ng-bind="groupsRank[1].name">
+
+                                        </a>
+                                    </td>
+                                    <td ng-bind="groupsRank[1].campaignCount"></td>
+                                </tr>
+                                <tr>
+                                    <td><div class="yellowColor">03</div><div class="yellowBorder"></div></td>
+                                    <td>
+                                        <a href="#/group_detail/{{groupsRank[2].id}}" ng-bind="groupsRank[2].name">
+
+                                        </a>
+                                    </td>
+                                    <td ng-bind="groupsRank[2].campaignCount"></td>
+                                </tr>
+                                <tr>
+                                    <td><div>04</div><div></div></td>
+                                    <td>
+                                        <a href="#/group_detail/{{groupsRank[3].id}}" ng-bind="groupsRank[3].name">
+
+                                        </a>
+                                    </td>
+                                    <td ng-bind="groupsRank[3].campaignCount"></td>
+                                </tr>
+                                <tr>
+                                    <td><div>05</div><div></div></td>
+                                    <td>
+                                        <a href="#/group_detail/{{groupsRank[4].id}}" ng-bind="groupsRank[4].name">
+
+                                        </a>
+                                    </td>
+                                    <td ng-bind="groupsRank[4].campaignCount"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="volunRanking" class="dn">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>志愿者姓名</th>
+                                    <th>服务时长</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td><div class="redColor">01</div><div class="redBorder"></div></td>
+                                    <td ng-bind="volunRank[0].realname"></td>
+                                    <td ng-bind="volunRank[0].serviceTime"></td>
+                                </tr>
+                                <tr>
+                                    <td><div class="orangeColor">02</div><div class="orangeBorder"></div></td>
+                                    <td ng-bind="volunRank[1].realname"></td>
+                                    <td ng-bind="volunRank[1].serviceTime"></td>
+                                </tr>
+                                <tr>
+                                    <td><div class="yellowColor">03</div><div class="yellowBorder"></div></td>
+                                    <td ng-bind="volunRank[2].realname"></td>
+                                    <td ng-bind="volunRank[2].serviceTime"></td>
+                                </tr>
+                                <tr>
+                                    <td><div>04</div><div></div></td>
+                                    <td ng-bind="volunRank[3].realname"></td>
+                                    <td ng-bind="volunRank[3].serviceTime"></td>
+                                </tr>
+                                <tr>
+                                    <td><div>05</div><div></div></td>
+                                    <td ng-bind="volunRank[4].realname"></td>
+                                    <td ng-bind="volunRank[4].serviceTime"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="sign_area col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                        <ul class="border col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                            <li class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                            	<img src="img/zyfyvolun.png"/>
+                                <a class="" href="sign_volun.html">个人注册</a>
+                            </li>
+                            <li class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                            	<img src="img/zyfygroup.png"/>
+                                <a href="sign_groups.html">组织注册</a>
+                            </li>
+                            <li class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                            	<img src="img/userlogin.png"/>
+                                <a href="login.html">用户登录</a>
+                            </li>
+                            <li class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                            	<img src="img/groupsearch.png"/>
+                                <a href="">组织查询</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- 公益人物-->
+            <div id="publicFigure" class="start_bottom">
+                <div class="title row">
+                    <h3 class="col-xs-6 col-sm-6 col-md-6 col-lg-6">公益人物</h3>
+                </div>
+                <div class="title row">
+                    <h5 class="col-xs-7 col-sm-10 col-md-10 col-lg-10">PUBLIC FIGURES</h5>
+                    <h5 class="col-xs-4 col-sm-2 col-md-2 col-lg-2" style="text-align: right">-<a href="#/4/news_list">更多</a>-</h5>
+                </div>
+                <div class="content">
+                    <div class="row">
+                        <!-- 志愿者-->
+                        <div class="volun_img col-xs-12 col-lg-7 col-lg-7 col-lg-7">
+                            <p>志愿者</p>
+                            <div class="row">
+                                <div class="col-xs-4 col-lg-4 col-lg-4 col-lg-4" ng-repeat="obj in volunteers">
+                                    <a href="">
+                                    	<div ng-if="!obj.photo"><img ng-src="img/120.jpg"></div>
+                                		<div ng-if="obj.photo"><img ng-src="{{obj.photo}}"></div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 志愿者故事-->
+                        <div class="col-xs-12 col-lg-5 col-lg-5 col-lg-5">
+                            <p>志愿者故事</p>
+                            <div class="row">
+                                <ul class="list">
+                                    <li ng-repeat="obj in volunStory | limitTo:3">
+                                        <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                            <a href="#/news_detail/{{obj.id}}" ng-bind="obj.title"></a>
+                                        </div>
+                                        <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3" style="text-align: right">
+                                            <span ng-bind="obj.createdAt"></span>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="media">
+                                <div class="media-left">
+                                    <a href="">
+                                        <img class="media-object" ng-src="{{volunStory[0].titleImgUrl}}" >
+                                    </a>
+                                </div>
+                                <div class="media-body">
+                                    <h4 class="media-heading">
+                                        <a href="#/news_detail/{{volunStory[0].id}}" ng-bind="volunStory[0].title"></a>
+                                    </h4>
+                                    <span ng-bind="volunStory[0].summary"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#ranking .title ul').on('click','a',function(){
+        $(this).addClass('active').parent().siblings().children('.active').removeClass('active');
+    });
+    $('#groupTab').click(function(){
+        $('#groupRanking').show();
+        $('#volunRanking').hide();
+    });
+    $('#volunTab').click(function(){
+        $('#groupRanking').hide();
+        $('#volunRanking').show();
+    });
+</script>
+<div ng-include="'tpl/include/footer.html'"></div>

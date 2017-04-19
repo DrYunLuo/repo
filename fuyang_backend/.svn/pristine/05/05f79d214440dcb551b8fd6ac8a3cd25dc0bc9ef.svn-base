@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+ <mapper namespace="com.yichuang.fuyang.dao.AnnouncementsDao">
+ 
+ <!-- 获取通知公告列表 -->
+ <select id="findAnnouncements" resultMap="getList">
+ 	select id,title,image,createdAt from Announcements 
+ </select>
+ <resultMap type="com.yichuang.fuyang.entity.Announcements" id="getList">
+ 	<id property="id" column="id"/>
+ 	<result property="title" column="title"/>
+ 	<result property="image" column="image"/>
+ </resultMap>
+ 
+ 
+ </mapper>

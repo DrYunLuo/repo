@@ -1,0 +1,87 @@
+#session 中取token
+SESSION_USER=userSession
+#用户类型志愿者
+USERTYPE_VOL=1
+#用户类型组织
+USERTYPE_GRO=2
+#用户类型管理员
+USERTYPE_MAN=3
+#签到积分值
+ACCOUNT_SIGNIN=1
+#分享活动
+ACCOUNT_SHARECAM=2
+#分享app
+ACCOUNT_SHAREAPP=3
+#完成任务
+ACCOUNT_TAST=10
+#政治面貌
+CODE_PARTY=party
+#民族
+CODE_RACEID=raceId
+#从业情况
+CODE_TRADEID=tradeId
+#最高学历
+CODE_EDUCATIONID=educationId
+#获取擅长技能
+CODE_SPECIALTY=specialty
+#获取志愿服务领域
+CODE_SERVICEAREA=serviceArea
+
+
+#约定key
+KEY = yichuangspace
+#组织注册图片
+#REMOTE_IMAGE_ORGANIZATIONS = /images/organizations/
+REMOTE_IMAGE_ORGANIZATIONS =  /opt/tomcat/apache-tomcat-7.0.33-32/webapps/fuyang_backend/images/organizations
+#志愿者头像
+#REMOTE_iMAGE_PHOTO = /images/photo/
+REMOTE_IMAGE_PHOTO =/opt/tomcat/apache-tomcat-7.0.33-32/webapps/fuyang_backend/images/photo
+
+#志愿者组织证件照
+#REMOTE_IMAGE_FOLDER = /images/identification/
+REMOTE_IMAGE_FOLDER = /opt/tomcat/apache-tomcat-7.0.33-32/webapps/fuyang_backend/images/identification
+#活动图片
+REMOTE_IMAGE_ACTIVE = /images/active/
+#新闻图片
+REMOTE_IMAGE_NEWS = /images/news/
+
+#新闻标题图片
+REMOTE_IMAGE_NEWS_TITLE = /opt/tomcat/apache-tomcat-7.0.33-32/webapps/fuyang_backend/image/news/title
+#新闻标题图片访问地址
+REMOTE_IMAGE_NEWS_LOOK = /image/news/title/
+#个人动态
+REMOTE_IMAGE_PERSON = /image/person/
+#论坛帖子
+REMOTE_IMAGE_POST = /opt/tomcat/apache-tomcat-7.0.33-32/webapps/fuyang_backend/images/post
+#新闻编辑器上传图片地址
+REMOTE_NEWS_EDITOR = /opt/tomcat/apache-tomcat-7.0.33-32/webapps/fuyang_backend/image/editor
+#活动相关图片
+REMOTE_IMAGE_ACTIVITY = /opt/tomcat/apache-tomcat-7.0.33-32/webapps/fuyang_backend/image/activity
+
+#新闻编辑器上传图片访问路径
+REMOTE_NEWS_EDITOR_LOOK = /image/editor/
+#组织注册上传图片访问路径
+REMOTE_IMAGE_ORGANIZATIONS_LOOK = /images/organizations/
+#活动图片访问路径
+REMOTE_IMAGE_ACTIVITY_LOOK = /image/activity/
+#志愿者头像访问地址
+REMOTE_IMAGE_PHOTO_LOOK=/images/photo/
+#论坛帖子图片访问地址
+REMOTE_IMAGE_POST_LOOK =/images/post/
+#志愿者组织证件照访问
+REMOTE_IMAGE_FOLDER_LOOK = /images/identification/
+#官网地址
+OFFICIAL_SITE = http://zyfy0558.com
+
+#头像上传远程主机信息
+REMOTE_IMAGE_IP = 192.168.8.20
+REMOTE_IMAGE_USERNAME = htmler
+REMOTE_IMAGE_PASSWORD = yichuang123456
+REMOTE_IMAGE_PORT =21
+
+#分享地址配置
+CAMPAIGHS_SHARE_URL = http://zyfy0558.com/html/campaignInfo.html
+NEWS_SHARE_URL = http://zyfy0558.com/html/news_detail.html
+
+
+

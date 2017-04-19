@@ -1,0 +1,50 @@
+<!-- 审核志愿者-->
+<div id="volun_review" ng-controller="volReviewCtrl">
+    <div class="table_box">
+    	<div class="table" style="border:none">
+	   		姓名：<input type="text" id="volunRealName">
+	   		手机号：<input type="text" id="volunTel" >
+	   		<input type="button" ng-click="searchVolun()" style="width:70px;" value="查询">
+	    </div>
+        <table id="example3" class="table" cellspacing="0">
+            <thead>
+            <tr>
+            	<td colspan="2">
+            		审核状态
+            	</td>
+            	<td colspan="2">
+            		<div class="dropdown" style="width:100%;">
+						  <button style="width:100%;" class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+							      请选择志愿者状态
+							    <span class="caret"></span>
+						  </button>
+						  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+							    <li><a ng-click="volStatus(3)" data-status='3'>全部</a></li>
+							    <li><a ng-click="volStatus(0)" data-status='0'>不通过</a></li>
+							    <li><a ng-click="volStatus(1)" data-status='1'>已审核</a></li>							   
+							    <li><a ng-click="volStatus(2)" data-status='2'>未审核</a></li>
+						  </ul>
+					</div>	
+            	</td>          	
+            </tr>
+            <tr>
+                <td>姓名</td>
+                <td>手机号</td>
+                <td>审核状态</td>
+                <td>备注</td>
+            </tr>
+            </thead>
+            <tbody id="volList">
+            <tr ng-repeat="obj in volunList track by $index">
+                <td>
+                    <a href="#/volunReviewDetail/{{obj.id}}" ng-bind="obj.realname" ng-click="getId(obj)"></a>
+                </td>
+                <td ng-bind="obj.tel"></td>
+                <td class="notice" ng-bind="obj.status"></td>
+                <td ng-bind="obj.notes"></td>
+            </tr>
+            </tbody>
+        </table>
+        <div id="volun_rpage"></div>
+    </div>
+</div>

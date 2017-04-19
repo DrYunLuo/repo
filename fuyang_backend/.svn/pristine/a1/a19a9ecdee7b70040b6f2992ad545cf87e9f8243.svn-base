@@ -1,0 +1,93 @@
+package com.yichuang.fuyang.util;
+
+public class YCConstants {
+	public static  String SHARE_NAME_CAMPAIGN = "campaign";
+	public static  String SHARE_NAME_NEWS = "news";
+	
+	/**
+	 * 审核标识--通过
+	 */
+	public static String AUDIT_TURE = "1";
+	
+	/**
+	 * 审核标识--不通过
+	 */
+	public static String AUDIT_FASLE = "0";
+	
+	/**
+	 * 审核标识--未审核 2
+	 */
+	public static String AUDIT_NOAUDIT = "2";
+	
+	/**
+	 * 志愿者审核成功之后赠送VTB数量
+	 */
+	public static int AUDIT_SEND_VTB = 5;
+	
+	/**
+	 * 志愿者捐赠物品成功之后赠送VTB数量
+	 */
+	public static int DONATE_GOODS_SEND_VTB = 1;
+	
+	/**
+	 * 志愿者捐赠物品时间间隔(单位:秒/s)
+	 */
+	public static int DONATE_GOODS_TIME_LIMIT = 5;
+
+	/**
+	 * 志愿者注册 存入session图片验证码
+	 */
+	public static String SESSION_CODE="sessionCode";
+	/**
+	 * 每人每小时赠送VT币数量
+	 */
+	public static int VT_PER_ACTIVITY = 10;
+	
+	/**
+	 * 用户类型--组织
+	 */
+	public static String USER_TYPE_GROUP = "2";
+	
+	/**
+	 * 码表值类型--组织类型
+	 */
+	public static String CODE_TYPE_GROUP = "groupType";
+	
+
+	
+	/********************************creditrecord表 ************************************/
+	//VT变动描述
+	public static String SYSTEM_SEND = "系统自动发放VT币";
+	
+	/**
+	 * 签到签退时间不合法备注
+	 */
+	public static String SYSTEM_SEND_ZERO = "由于您签到签退超时，未获取VT币";
+	
+	
+	
+	/**************************************************************************************/
+	public static int SYSTEM_INT_ZERO = 0 ;
+	//1
+	public static int SYSTEM_INT_ONE = 1 ;
+	//2
+	public static int SYSTEM_INT_TWO = 2;
+	
+	//"0"
+	public static String SYSTEM_STRING_ZERO = "0";
+	//"1"
+	public static String SYSTEM_STRING_ONE = "1";
+	//"2"
+	public static String SYSTEM_STRING_TWO = "2";
+	/**
+	 * 活动默认标题图片地址
+	 */
+	public static String CAMPAIGN_DEFAULT_TITLEIMG_URL = "http://zyfy0558.com/image/activity/campaignDefault.png";
+
+	
+	
+	
+	
+	
+	
+}

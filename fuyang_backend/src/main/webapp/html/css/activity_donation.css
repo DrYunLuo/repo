@@ -1,0 +1,248 @@
+*{
+    margin:0;
+    padding:0;
+    font-size:10px;
+    font-family:'Î¢ÈíÑÅºÚ';
+}
+article{
+    width:100%;
+}
+input{
+    outline:0;
+}
+article:after{
+    display:block;
+    clear:both;
+    content:"";
+}
+header{
+    width:100%;
+    font-size:2rem;
+    line-height:4rem;
+    color:#fcfbfb;
+    box-sizing:border-box;
+    position:relative;
+    background-size:2.5rem 2.5rem;
+    background:#e74e40;
+}
+header img{
+	width:1.5rem;
+	height:2rem;
+    position:absolute;
+    left:5%;
+    top:25%;
+}
+.myimg1{
+    display:block;
+    width:100%;
+}
+#wdwd{
+    width:100%;
+    position:relative;
+}
+#wdwd p{
+    position:absolute;
+    bottom:0;
+    left:center;
+    width:100%;
+    color:#eae5ce;
+    line-height:3rem;
+    font-size:2rem;
+    background-color:rgba(122,133,122,0.7);
+    text-indent:5%;
+}
+#wdwd:after{
+    content:"";
+    display:block;
+    clear:both;
+}
+.mydv1{
+    width:100%;
+    padding:4rem 5% 4rem 5%;
+    box-sizing:border-box;
+}
+.mydv1:after{
+    content:"";
+    display:block;
+    clear:both;
+}
+.mydv1 p:nth-child(1){
+    float:left;
+    width:80%;
+    height:20px;
+    position:relative;
+    background-color:#e1e1e1;
+    border:0px solid #c8c8c8;
+    box-sizing:border-box;
+}
+.mydv1 p:nth-child(1) span{
+    display:block;
+    background-color:#ec695d;
+    position:absolute;
+    width:65%;
+    left:0;
+    top:0x;
+    height:20px;
+}
+.mydv1 p:nth-child(2){
+    float:left;
+    width:15%;
+    height:3rem;
+    font-size:2rem;
+    color:#ec695d;
+    text-align:center
+}
+.mysec1{
+    width:90%;
+    margin-left:5%;
+    margin-right:5%;
+    margin-top:40px;
+    border:0px solid #fff;
+    position:relative;
+    height:100%;
+}
+
+.mysec1 div:nth-child(1){
+    width:32%;
+	position:absolute;
+	left:0;
+	bottom:0;
+    border-right:2px solid #989998;
+}
+.mysec1 div:nth-child(2){
+    width:32%;
+	position:absolute;
+	left:33%;
+	bottom:0;
+    border-right:2px solid #989998;
+}
+.mysec1 div:nth-child(3){
+    width:32%;
+    position:absolute;
+	left:66.7%;
+	bottom:0;
+
+}
+.mysec1 div p:nth-child(1){
+    color:#e95649;
+    font-size:2rem;
+    text-align:center;
+    width:100%;
+    line-height:3rem;
+}
+.mysec1 div p:nth-child(2){
+    width:100%;
+    color:#989998;
+    font-size:2rem;
+    line-height:3rem;
+    text-align:center;
+}
+.mydv2{
+    height:0.5rem;
+    background:#b6b6b6;
+    width:100%;
+    margin-top:7rem;
+}
+.mydv3{
+    height:1rem;
+    background:#e1e1e1;
+    width:100%;
+}
+h2{
+	 font-size:2rem;
+	 width:100%;
+	 color:grey;
+	 text-indent:10%;
+	 line-height:4rem;
+}
+footer{
+    background-color:rgba(122,122,122,0.8);
+    width:90%;
+    height:6rem;
+    padding-left:5%;
+    padding-right:5%;
+    padding-top:1rem;
+    position:fixed;
+    bottom:0px;
+    left:0;
+}
+footer input{
+    width:100%;
+    background-color:#e74e40;
+    font-size:2.5rem;
+    line-height:4rem;
+    height:4rem;
+    color:#f5f3eb;
+    border-radius:2rem;
+}
+.mydv4{
+    width:100%;
+    overflow:auto;
+}
+.mydv4 aside h3{
+    font-size:2.4rem;
+    width:100%;
+    background-size:2rem 2rem;
+    background-image:url("../../images/qq.png");
+    background-repeat:no-repeat;
+    background-position:6% 50%;
+    text-indent:15%;
+    box-sizing:border-box;
+    line-height:5rem;
+}
+.mydv4 aside div{
+    height:2px;
+    background:#e65345;
+    width:100%;
+}
+.mydv4 aside{
+    border-bottom:5px solid #e1e1e1;
+}
+.mydv4 aside img{
+    margin-left:5%;
+    margin-right:5%;
+    width:90%;
+    display:block;
+}
+.mydv4 aside p{
+    padding-left:5%;
+    padding-right:5%;
+    color:#a7a7a7;
+    line-height:3rem;
+    font-size:2rem;
+}
+.fff{
+    position:fixed;
+    z-index:10;
+    width:100%;
+    left:0;
+    bottom:-5rem;
+}
+.fff p{
+    height:6rem;
+    background-color:white;
+    font-size:1rem;
+    line-height:5rem;
+    color:grey;
+    padding-left:5%;
+    text-align:left;
+}
+.fff p span{
+	font-size:2rem;
+	color:#e74e40;
+}
+.fff .inp1{
+    width:30%;
+    height:3rem;
+    font-size:1.5rem;
+    line-height:3rem;
+    box-sizing:border-box;
+}
+.fff .inp2{
+    width:20%;
+    height:3rem;
+    background-color:rgb(231,78,64);
+    font-size:1rem;
+    line-height:3rem;
+    border-radius:1.5rem;
+}

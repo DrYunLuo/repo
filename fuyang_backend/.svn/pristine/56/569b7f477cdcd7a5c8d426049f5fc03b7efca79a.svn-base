@@ -1,0 +1,433 @@
+*{
+    margin:0;
+    padding: 0;
+    font-family: "微软雅黑", Helvetica, Arial, sans-serif;
+    /*font-size: 12px;*/
+    /*color: #444;*/
+    box-sizing: border-box;
+}
+a{
+    color: #444;
+}
+a:hover{
+    text-decoration: none;
+    color: #ee3e3c;
+}
+li{
+    list-style: none;
+}
+/*h1,h2,h3,h4,p,img,div,ul,li,ol,hr{*/
+    /*font-size: 1rem;*/
+/*}*/
+.container{
+    width:80%;
+    padding:0;
+}
+/******************* nav***********************/
+.mydv1 .myul1 li a.a_clc{
+    color:#444;
+}
+.mydv1 .myul1 li a.active{
+    text-decoration: none;
+    color:#e84c3d;
+}
+
+/****************banner************************/
+#banner{
+    width:100%;
+    border-bottom: 2px solid #e5e5e5;
+}
+.item{
+    width:100%;
+}
+.item img{
+    width:100%;
+}
+a.carousel-control{
+    line-height:100%;
+}
+.carousel-control img{
+    vertical-align: middle;
+    margin-top:80%;
+}
+#news_carousel .carousel-control img{
+    vertical-align: middle;
+    margin-top:160%;
+}
+/********************main**************************/
+#start_main{
+    width:100%;
+    background-color: #fafafa;
+}
+#start_main>.container{
+    width:100%;
+    border-top: 4px solid #f0f0f0;
+}
+/********top*********/
+#start_main .start_top{
+    width:80%;
+    margin: 0 auto;
+    overflow: hidden;
+    text-align: left;
+}
+.top_left{
+    border-right: 3px solid #e5e5e5;
+}
+#start_main .start_top div{
+    float: left;
+    border-bottom: 3px solid #e5e5e5;
+    text-align: center;
+    padding:5%;
+}
+#start_main .start_top div img{
+    vertical-align:middle;
+    float: left;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+#start_main .start_top div p{
+    float: left;
+    width:37%;
+    line-height:3.2rem;
+    font-size: 1.2rem;
+    border-left: 2px solid #e84c3d;
+    margin:0;
+    /*margin-top: 50px;*/
+}
+.more{
+    width:100%;
+    text-align: right;
+}
+
+/************center************/
+.start_center{
+    width:80%;
+    margin: 0 auto;
+    border-top:4px solid #f0f0f0;
+    overflow: hidden;
+}
+.start_center .title{
+    padding:1% 0 1% 1%;
+}
+.start_center .title h3{
+    background-color: #e84c3d;
+    border-top-left-radius:20px;
+    color: #ffffff;
+    text-align: center;
+    padding:1% 0;
+    font-size: 1.4rem;
+}
+ .center_right .list li{
+     width:100%;
+}
+.center_right .list li a{
+    padding-left:5%;
+    display: inline-block;
+    width:100%;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+    -o-text-overflow:ellipsis;
+    overflow:hidden;
+}
+.more{
+    display: inline-block;
+    width:90%;
+    text-align: right;
+    padding-right:12%;
+}
+/*********next*********/
+#start_main .start_next{
+    width:100%;
+    border-top: 4px solid #f0f0f0;
+}
+.start_next .title{
+    padding:1% 0 1% 1%;
+}
+.start_next div.title h3{
+    font-size: 1.4rem;
+    padding:2% 0;
+    background-color: #e84c3d;
+    text-align:center;
+    color: #ffffff;
+    border-top-left-radius:20px;
+}
+.area_mess{
+    padding-left:1%;
+}
+.area_mess li{
+    border-right:1px solid #444;
+}
+.area_mess li a{
+    display: inline-block;
+    width:90%;
+    white-space:nowrap;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    overflow: hidden;
+}
+.border{
+    width:100%;
+    margin-top: 15%;
+    border:1px solid #444;
+}
+.border a{
+    display:block;
+    background-color: #e84c3d;
+    border-radius:5px;
+    color: #ffffff;
+    width:90%;
+    line-height:30px;
+    margin:10% 0 5% 5%;
+    text-align: center;
+    position: relative;
+}
+.border a span{
+    display: inline-block;
+    width:24px;
+    height:22px;
+    position: absolute;
+    left:38%;
+    top:22%;
+}
+.border a .user_s{
+    background:url("../img/user_s.jpg") no-repeat center bottom;
+
+}
+.border a .group_s{
+    background:url("../img/group.jpg") no-repeat center bottom;
+}
+.border a .sign_s{
+     background:url("../img/login.jpg") no-repeat center bottom;
+ }
+.border a .search_s{
+    background:url("../img/search.jpg") no-repeat center bottom;
+}
+/**********bottom************/
+.start_bottom{
+    width:100%;
+    border-top: 4px solid #f0f0f0;
+}
+.start_bottom .title{
+    color: #ffffff;
+    padding: 1% 0;
+}
+.start_bottom .title h3{
+    background-color: #e84c3d;
+    border-top-left-radius: 20px;
+    text-align: center;
+    padding: 1% 0;
+    font-size: 1.4rem;
+}
+.start_bottom .volun_img{
+    width:100%;
+}
+.volun_img img{
+    width:22%;
+    margin-left:2%;
+}
+
+@media screen and (max-width: 768px) {
+    #news_carousel .item img{
+        height:130px;
+    }
+    #news_carousel .carousel-control img{
+        vertical-align: middle;
+        margin-top:100%;
+    }
+    #start_main .start_top div{
+        padding:2%;
+        border-bottom: 0;
+    }
+    #start_main .start_top div.top_right{
+        border-top:3px solid #e5e5e5;
+    }
+    #start_main .start_top div div{
+        width:50%;
+        padding:0 14%;
+        border-bottom: 0;
+    }
+    .campaign_mess li{
+        border:0;
+    }
+    .border{
+        border:0;
+        margin-top: 5%;
+    }
+    .border a{
+        line-height:40px;
+        margin-top: 5%;
+        font-size: 1.6rem;
+    }
+    .border a span{
+        left:25%;
+        top:22%;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    #news_carousel .item img{
+        height:250px;
+    }
+    #news_carousel .carousel-control img{
+        vertical-align: middle;
+        margin-top:230%;
+    }
+    #start_main .start_top div{
+        padding:5% 0;
+        border-bottom: 0;
+    }
+    #start_main .start_top div.top_center{
+        border-right:3px solid #e5e5e5;
+    }
+    #start_main .start_top div.top_right{
+        padding:1% 0;
+    }
+    #start_main .start_top div div{
+        width:50%;
+        padding:0 0;
+        border-bottom: 0;
+    }
+    .index_center .title h3{
+        padding:1% 0;
+    }
+    .border a{
+        font-size:1.5rem;
+    }
+    .border a span{
+        position: absolute;
+        left:22%;
+        top:8%;
+    }
+
+}
+@media screen and (min-width: 992px) {
+    #news_carousel .carousel-control img{
+        vertical-align: middle;
+        margin-top:200%;
+    }
+    #start_main .start_top div{
+        padding:5% 4%;
+        border-bottom: 0;
+    }
+
+    #start_main .start_top div.top_center{
+        border-right:3px solid #e5e5e5;
+    }
+    #start_main .start_top div.top_right{
+        padding:2% 0;
+    }
+    #start_main .start_top div div{
+        width:50%;
+        padding:0;
+        border-bottom: 0;
+        margin:0;
+    }
+    /*****************center***************/
+
+    #news_carousel .item img{
+        height:300px;
+    }
+    #start_main .center_left{
+        min-height:320px;
+    }
+    .center_right .list li{
+        line-height:10px;
+    }
+    .center_right a{
+        line-height:25px;
+    }
+    .area_mess li{
+        line-height:25px;
+    }
+    .area_mess li a{
+        line-height:25px;
+    }
+    .same{
+        margin-left:12%;
+    }
+    .father{
+        padding:0 0 0 15%;
+    }
+    /***********bottom**********/
+    .border{
+        margin-top: 15%;
+    }
+    .border a{
+        line-height:45px;
+        font-size: 1.6rem;
+        margin:13% 0 13% 5%;
+    }
+    .border a span{
+        position: absolute;
+        left:22%;
+        top:18%;
+    }
+}
+@media screen and (min-width: 1200px) {
+    #start_main .start_top div{
+        padding:5% 6%;
+        border-bottom: 0;
+    }
+    #news_carousel .carousel-control img{
+        vertical-align: middle;
+        margin-top:160%;
+    }
+    #start_main .start_top div.top_left{
+        padding-top:5%;
+    }
+    #start_main .start_top div.top_center{
+        border-right:3px solid #e5e5e5;
+    }
+    #start_main .start_top div.top_right{
+        padding:2% 0;
+    }
+    #start_main .start_top div div{
+        width:50%;
+        padding:0;
+        border-bottom: 0;
+    }
+    /**********center*************/
+
+    #news_carousel .item img{
+        height:300px;
+    }
+    .center_right .list li{
+        line-height:10px;
+    }
+    .center_right a{
+        line-height:30px;
+    }
+    .area_mess li{
+        line-height:30px;
+    }
+    .area_mess li a{
+        line-height:30px;
+    }
+    /***********bottom**********/
+    .border{
+        margin-top: 12%;
+    }
+    .border a{
+        line-height:45px;
+        font-size: 1.6rem;
+        margin:13% 0 13% 5%;
+    }
+    .border a span{
+        position: absolute;
+        left:22%;
+        top:18%;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

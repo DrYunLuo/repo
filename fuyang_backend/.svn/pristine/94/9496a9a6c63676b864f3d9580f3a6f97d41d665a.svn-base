@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <script type="text/javascript" src="js/jquery-1.11.3.js"></script>
+    <script type="text/javascript" src="js/jquery.form.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/sign_volun.css">
+    <title>志愿者注册</title>
+</head>
+<body>
+<div id="header" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="container">
+        <img src="img/logo.png" alt="">
+    </div>
+</div>
+<div id="nav" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="container">
+        <div class="gray col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="first active simple col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <h2 class="col-xs-12 col-sm-12 col-md-12 col-lg-12">注册账号</h2>
+            </div>
+            <div class="second">
+                <img src="img/arrow.png" alt="">
+            </div>
+            <div class="third simple col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <h2 class="col-xs-12 col-sm-12 col-md-12 col-lg-12">完善信息</h2>
+            </div>
+            <div class="forth">
+                <img src="img/arrow.png" alt="">
+            </div>
+            <div class="fiveth simple col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <h2 class="col-xs-12 col-sm-12 col-md-12 col-lg-12">注册完成</h2>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="main" ng-view>
+    <div class="container">
+        <div id="hidden1" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="text_container col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div>
+                    <div class="input-group">
+                        <span class="start"><b>*</b>手机号码&nbsp;&nbsp;&nbsp;</span>
+                        <input class="next check_phone" form="form1"   onblur="test(this)" type="tel" placeholder="请填写手机号码" required name="phone">
+                        &nbsp;
+                        &nbsp;
+                        <span class="last"></span>
+                    </div>
+                    <div class="input-group">
+                        <span class="start"><b>*</b>密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码&nbsp;&nbsp;&nbsp;</span>
+                        <input class="next pas1"  onblur="test(this)" form="form1" type="password" placeholder="请填写密码" required name="">
+                        &nbsp;
+                        &nbsp;
+                        <span class="last pas_first"></span>
+                    </div>
+                    <div class="input-group">
+                        <span class="start"><b>*</b>重复密码&nbsp;&nbsp;&nbsp;</span>
+                        <input id="pas2" class="next pas2" form="form1" onfocus="sub()" onblur="sub()" type="password" required placeholder="请再一次填写密码" name="password">
+                        &nbsp;
+                        &nbsp;
+                        <span class="last pas_remind"></span>
+                    </div>
+                    <div class="input-group">
+                        <span class="start"><b>*</b>验&nbsp;&nbsp;&nbsp;证&nbsp;&nbsp;&nbsp;码&nbsp;&nbsp;</span>
+                        <input id="check" style="width:200px;" class="next pas2" onblur="test(this)" type="text" required placeholder="请输入验证码" name="">
+                        &nbsp;
+                        &nbsp;
+                      <span class="last"></span>
+                        <span class="last"  style="margin-left:20px;display:inline-block; width:60px;height:30px; vertical-align:bottom;"></span>
+                        <a class="check_number"  onclick="getcheckPic()">
+							<!-- <img style="width:100%;height:100%;"  src=“http://localhost:8080/fuyang_backend/volunteers/captcha”> -->
+							<img style="width:100%;height:100%;" src="/fuyang_backend/volunteers/captcha">
+						</a>
+                        
+                    </div>
+                    <div class="input-group" style="padding-left: 100px;">
+                        <input id="protocoCheckbox"  type="checkbox" name="" value=""/>
+                        <span>我已经阅读并同意<a style="color: #e84c3d;" onclick="rulesDetail()"> &lt;&lt;志愿者服务条例&gt;&gt; </a></span>
+                        <span class="last"></span>
+                    </div>
+                </div>
+
+                <p id="protocol">
+                    一、行为准则
+                    <br>
+                    严禁用户从事以下行为：
+                    <br>
+                    1 违反任何适用法规；
+                    <br>
+                    2 侵犯他人的版权、商业机密、或其他知识产权，或侵犯了他人的隐私权、出版权或其他个人合法权利；
+                    <br>
+                    3 利用本网站传送、分发、储存属于诽谤、淫秽、威胁、辱骂性、毁损他人或其他非法或者违反社会公德的材料
+                    <br>
+                    4 利用本网站提供的服务系统进行任何可能对互联网或移动网正常运转造成不利影响的行为；
+                    <br>
+                    5 以任何形式使用本网站提供的服务进行任何不利于本网站的行为。
+                    <br>
+                    二、账号、密码及安全性
+                    <br>
+                    1 本网站是以用户名作为唯一的身份识别条件，每个用户所对应的注册信息，包括但不限于用户名、用户基本信息（企业机构名称、性质、规模等）、用户联系信息（企业机构联系人电话、联系邮箱、详细地址等），均视为该用户的符合性识别条件，用户都应妥善保存这些注册信息，其信息的提供与变更，无论是用户本人操作或委托他人操作，均被视为具有同等效力，其所产生的一切风险和责任均由用户方承担，因用户自身原因（如保管疏忽等）导致帐号、密码遭他人非法使用，本网站不承担任何责任。
+                    <br>
+                    2 用户明确了解并同意，基于以下原因而造成的，包括但不限于利润、信誉、应用、数据损失或其他无形损失，本网站不承担任何直接、间接、附带、特别、衍生性或惩罚性赔偿责任：
+                    <br>
+                    2.1 用户遗忘用户名或密码，并且不能提供有效身份验证用来辅助找回帐号或密码；
+                    <br>
+                    2.2 由于用户自身原因导致非授权第三方使用帐号和密码登录本网站，存取或篡改帐号内数据或资料。
+                    <br>
+                    2.3 用户若发现任何非法使用用户帐号或存在安全漏洞的情况，请立即通告本网站。
+                    <br>
+                    三、信息发布
+                    <br>
+                    1 禁止发布任何有关法律规定明令禁止发布的信息；
+                    <br>
+                    2 禁止以任何形式侵犯他人的版权、商标权、商业秘密或其他知识产权；
+                    <br>
+                    3 禁止侵犯个人和社会大众的隐私安全；
+                    <br>
+                    4 禁止传输任何非法的、骚扰性的、中伤性的、辱骂性的、恐吓性的、伤害性、庸俗或淫秽的信息。
+                    <br>
+                    5 禁止发布虚假、不准确、不完整或具有误导性的信息或意见、通知、商业广告或内容。
+                    <br>
+                    6 为了证明注册用户主体资格的真实性，本网站保留向用户索取相关证明材料（如：加盖公章的营业执照副本等）的权利。同时，用户承诺对所发布的信息承担完全责任，如因所发布的信息违反本协议之规定或者侵犯任何第三方的合法权益引起的一切纠纷或责任，由用户自行承担，本网站不承担任何责任。
+                    <br>
+                    四、信息公开与使用
+                    <br>
+                    1 在本网站所发布的任何信息，均有可能被任何本网站的访问者浏览，也可能被错误使用，本网站对前述浏览或错误使用情形将不予承担任何责任。
+                    <br>
+                    <br>
+                    <br>
+                    
+                    <button class="btn btn-sm btn-danger" style="display:block;margin:0 auto;" onclick="agreeRule()">同意并继续</button>               
+                </p>
+            </div>
+            <div class="then col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                <a href="index.html" class="button btn btn-danger" style="width:30%">返回首页</a>
+            </div>
+            <div class="then col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                <button type="button"  onclick="next(this)"  class="button btn btn-danger" style="width:30%">下一步</button>
+            </div>
+        </div>
+        <div id="hidden2">
+            <form id="form1" action="/fuyang_backend/volunteers/reVol" method="post" enctype="application/x-www-form-urlencoded"></form>
+
+            <div class="sign_message">
+                <div class="group_sign_message col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <!--<h2>组织注册信息</h2>-->
+                    <div class="input-group">
+                        <span class="start"><b>*</b>真实姓名&nbsp;&nbsp;&nbsp;</span>
+                        <input class="next realname" form="form1" onblur="test(this)" type="text" placeholder="请填写姓名" required name="realname">
+                        &nbsp;
+                        &nbsp;
+                        <span class="last"></span>
+                    </div>
+                    <div class="input-group">
+                        <span class="start"><b>*</b>证件类型&nbsp;&nbsp;&nbsp;</span>
+                        <select class="next cardType" name="cardType" form="form1" id="" style="width:30%; height:25px;">
+                            <option value="身份证">二代身份证</option>
+                            <option value="军官证">军官证</option>
+                            <option value="护照">护照</option>
+                            <option value="港澳通行证">港澳通行证</option>
+                        </select>
+                        &nbsp;
+                        &nbsp;
+                        <span class="last">(请使用有效证件)</span>
+                    </div>
+                    <div class="input-group">
+                        <span class="start"><b>*</b>证&nbsp;件&nbsp;号&nbsp;码&nbsp;&nbsp;&nbsp;</span>
+                        <input class="next cardId" onblur="test(this)" form="form1" type="text" placeholder="请填写证件号码" required name="cardId">
+                        &nbsp;
+                        &nbsp;
+                        <span class="last"></span>
+                    </div>
+                  <form id="form2" method="post" enctype="multipart/form-data" action="/fuyang_backend/volunteers/uploadCardId"> 
+                        <div class="input-group" style="position: relative;">
+                            <span class="start"><b>*</b>证件照片&nbsp;&nbsp;&nbsp;</span>
+                            <input class="next"  id="card_upload1"  style="width:150px"  type="file" required name="attach" style=""/>
+
+                            <div id="preview" style="position: absolute;left: 50%;top:-60%;width: 85.6px;height:54px"></div>
+
+                            <input type="button" value="确认上传" id="upcdcard"  style="width: 60px;height: 20px;"/>
+
+                        </div>
+                    </form>  
+                    
+                    <div class="input-group" style="width: 0;height: 0;opacity: 0;">
+                        <input class="next photos" form="form1" style="width:0;height:0;" id="picPath" value="1" name="photo">
+                    </div>
+                    
+                    <div class="input-group">
+                        <span class="start"><b>*</b>政治面貌&nbsp;&nbsp;&nbsp;</span>
+                        <select class="next party" form="form1" name="party"  id="" style="width:30%; height:25px;">
+                            <option value="中共党员">中共党员</option>
+                            <option value="共青团员">共青团员</option>
+                            <option value="民主党派">民主党派</option>
+                            <option value="群众">群众</option>
+                            <option value="其他">其他</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <span class="start"><b>*</b>注册账号区域&nbsp;&nbsp;&nbsp;</span>
+                        <select class="next regionId" form="form1" name="regionId" id="" style="width:30%; height:25px;">
+                            <option value="阜阳市">阜阳市</option>
+                            <option value="颍州区">&nbsp;颍州区</option>
+                            <option value="颍泉区">&nbsp;颍泉区</option>
+                            <option value="颍东区">&nbsp;颍东区</option>
+                            <option value="临泉县">&nbsp;临泉县</option>
+                            <option value="阜南县">&nbsp;阜南县</option>
+                            <option value="其他">&nbsp;其他</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <span class="start"><b>*</b>性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别&nbsp;&nbsp;&nbsp;</span>
+                        <input class="sex" type="radio" form="form1" value="男" name="sex">
+                        <span class="last">男</span>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <input class="sex" type="radio" form="form1" value="女" name="sex">
+                        <span class="last">女</span>
+                    </div>
+                    <div class="input-group">
+                        <span class="start"><b>*</b>民&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;族&nbsp;&nbsp;&nbsp;</span>
+                        <select class="next raceId" name="raceId" form="form1" id="" style="width:30%; height:25px;">
+                            <option value="汉族">汉族</option>
+                            <option value="壮族">壮族</option>
+                            <option value="满族">满族</option>
+                            <option value="回族">回族</option>
+                            <option value="其他">其他</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <span class="start"><b>*</b>籍&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;贯&nbsp;&nbsp;&nbsp;</span>
+                        <select class="next nativePlace" name="nativePlace" form="form1" id="" style="width:30%; height:25px;">
+                            <option value="安徽省">安徽省</option>
+                            <option value="阜阳">阜阳</option>
+                            <option value="亳州">亳州</option>
+                            <option value="合肥">合肥</option>
+                            <option value="淮南">淮南</option>
+                            <option value="其他">其他</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <span class="start"><b>*</b>是否在读&nbsp;&nbsp;&nbsp;</span>
+                        <input class="sex1 onSchool studying" form="form1" type="radio" onclick="onStudy()" value="1" name="studying">
+                        <span class="last">是</span>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <input class="sex1 notSchool studying" form="form1" type="radio" onclick="noStudy()" value="0" name="studying">
+                        <span class="last">否</span>
+                    </div>
+                    <div class="input-group">
+                        <span class="start"><b>*</b>学校/工作单位&nbsp;&nbsp;&nbsp;</span>
+                        <input class="next workAddress" form="form1" onblur="test(this)" type="text" placeholder="请填写学校或工作单位" required name="workAddress">
+                        &nbsp;
+                        &nbsp;
+                        <span class="last"></span>
+                    </div>
+                    <div class="input-group school">
+                        <span class="start">学&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号&nbsp;&nbsp;&nbsp;</span>
+                        <input class="next studentId" form="form1" onblur="test(this)" type="number" placeholder="请填写学号" name="studentId">
+                        &nbsp;
+                        &nbsp;
+                        <span class="last"></span>
+                    </div>
+
+                    <div class="input-group">
+                        <span class="start"><b>*</b>邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱&nbsp;&nbsp;&nbsp;</span>
+                        <input class="next email" form="form1" onblur="test(this)" type="email" required placeholder="请填写常用邮箱" name="email">
+                        &nbsp;
+                        &nbsp;
+                        <span class="last"></span>
+                    </div>
+
+                    <div class="input-group">
+                        <span class="start"><b>*</b>qq&nbsp;&nbsp;&nbsp;号&nbsp;&nbsp;&nbsp;码&nbsp;&nbsp;&nbsp;</span>
+                        <input class="next qq" form="form1" onblur="test(this)" type="text" required placeholder="请填写qq号码" name="qq">
+                        &nbsp;
+                        &nbsp;
+                        <span class="last"></span>
+                    </div>
+
+                    <div class="input-group">
+                        <span class="start"><b>*</b>从业情况&nbsp;&nbsp;&nbsp;</span>
+                        <select class="next tradeId" form="form1" name="tradeId" id="" style="width:30%; height:25px;">
+                            <option value="在职">在职</option>
+                            <option value="待业">待业</option>
+                            <option value="离职">离职</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <span class="start"><b>*</b>最高学历&nbsp;&nbsp;&nbsp;</span>
+                        <select class="next educationId" form="form1" name="educationId" id="" style="width:30%; height:25px;">
+                            <option value="博士">博士</option>
+                            <option value="硕士">硕士</option>
+                            <option value="学士">学士</option>
+                            <option value="大专">大专</option>
+                            <option value="中专">中专</option>
+                            <option value="其他">其他</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <span class="start" style="vertical-align: top;padding-top:20px;"><b>*</b>擅长技能&nbsp;&nbsp;&nbsp;</span>
+                        <div class="next" style="display: inline-block;">
+                            <p style="font-size: 1.4rem;color: #ee3e3c;">请选择1-2项你擅长的技能</p>
+                            <input type="checkbox" class="specialty" form="form1" value="1" name="specialty"/>
+                            <span>美术设计</span>
+
+                            <input type="checkbox" class="specialty" form="form1" value="2" name="specialty"/>
+                            <span>摄影摄像</span>
+
+                            <input type="checkbox" class="specialty" form="form1" value="3" name="specialty"/>
+                            <span>传播策划</span>
+
+                            <input type="checkbox" class="specialty" form="form1" value="4" name="specialty"/>
+                            <span>文化艺术</span>
+
+                            <input type="checkbox" class="specialty" form="form1" value="5" name="specialty"/>
+                            <span>IT技术</span>
+
+                            <input type="checkbox" class="specialty" form="form1" value="6" name="specialty"/>
+                            <span>应急救援</span>
+
+                            <input type="checkbox" class="specialty" form="form1" value="7" name="specialty"/>
+                            <span>教育培训</span>
+
+                            <input type="checkbox" class="specialty" form="form1" value="8" name="specialty"/>
+                            <span>医疗护理</span>
+
+                            <input type="checkbox" class="specialty" form="form1" value="9" name="specialty"/>
+                            <span>翻译</span>
+
+                            <input type="checkbox" class="specialty" form="form1" value="10" name="specialty"/>
+                            <span>会计审计</span>
+
+                            <input type="checkbox" class="specialty" form="form1" value="11" name="specialty"/>
+                            <span>其他</span>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <span class="start" style="vertical-align: top;padding-top:20px;"><b>*</b>服务领域&nbsp;&nbsp;&nbsp;</span>
+                        <div class="next" style="display: inline-block">
+                            <p style="font-size: 1.4rem;color: #ee3e3c;" > 请选择1-2项你擅长的技能</p>
+                            <input type="checkbox" class="serviceArea"  form="form1"  value="10"  name="serviceArea"/>
+                            <span>扶贫济困</span>
+
+                            <input type="checkbox" class="serviceArea" form="form1" value="1" name="serviceArea"/>
+                            <span>助老助残</span>
+
+                            <input type="checkbox" class="serviceArea" form="form1" value="2" name="serviceArea"/>
+                            <span>社区服务</span>
+
+                            <input type="checkbox" class="serviceArea" form="form1" value="3" name="serviceArea"/>
+                            <span>生态建设</span>
+
+                            <input type="checkbox" class="serviceArea" form="form1" value="4" name="serviceArea"/>
+                            <span>大型活动</span>
+
+                            <input type="checkbox" class="serviceArea" form="form1" value="5" name="serviceArea"/>
+                            <span>抢险救灾</span>
+
+                            <input type="checkbox" class="serviceArea" form="form1" value="6" name="serviceArea"/>
+                            <span>社会管理</span>
+
+                            <input type="checkbox" class="serviceArea" form="form1" value="7" name="serviceArea"/>
+                            <span>文化建设</span>
+
+                            <input type="checkbox" class="serviceArea" form="form1" value="8" name="serviceArea"/>
+                            <span>西部开发</span>
+
+                            <input type="checkbox" class="serviceArea" form="form1" value="9" name="serviceArea"/>
+                            <span>海外服务</span>
+                            <br/>
+                            <input type="checkbox" class="serviceArea" form="form1" value="11" name="serviceArea"/>
+                            <span>综合/其他</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="then col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                <button type="button" onclick="prev(this)" class="button btn btn-danger">上一步</button>
+            </div>
+            <div class="then col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                <button type="button"   onclick="next(this)"  form="form1" class="submit button btn btn-danger">下一步</button>
+                
+            </div>
+        </div>	
+        <div id="hidden3" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="complete text-center col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <img src="img/complete.png" alt="">
+                <span style="font-size: 1.8rem;vertical-align: bottom;">注册完成,等待管理员审核</span>
+            </div>
+           <!--  <div class="then col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                <button type="button" onclick="prev(this)" class="button btn btn-danger">上一步</button>
+            </div>
+            <div class="then col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                <button class="button">上一步</button>
+                <a onclick="next(this)" style="width: 30%;" class="button btn btn-danger">进入用户中心</a>
+            </div>
+        </div> -->
+        <div class="then col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                <a href="http://www.zyfy0558.com" style="width: 30%;" class="button btn btn-danger">返回首页</a>
+          </div>
+        
+    </div>
+</div>
+
+<script type="text/javascript" src="js/ajaxfileupload.js"></script>
+<script type="text/javascript" src="js/sign_volun.js?v=1234567"></script>
+<script>
+function rulesDetail(){
+	$("#protocol").css("display","block");
+}
+function agreeRule(){
+	$("#protocoCheckbox").attr("checked","checked");
+	$("#protocol").css("display","none");
+}
+function school(){
+	if($(".onSchool").is(":checked")){
+		$(".school").css("display","block");
+	}
+	if($(".notSchool").is(":checked")){
+		$(".school").css("display","none");
+	}
+}
+function noStudy(){
+	$(".school").css("display","none");
+}
+function onStudy(){
+	$(".school").css("display","block");
+}
+</script>
+</body>
+</html>

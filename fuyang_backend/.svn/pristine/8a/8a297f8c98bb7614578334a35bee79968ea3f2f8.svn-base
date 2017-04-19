@@ -1,0 +1,449 @@
+*{
+    margin:0;
+    padding:0;
+}
+input{
+    outline:0;
+}
+
+@media all and (min-width:1000px){
+    /******************************协会简介***************************/
+    #introduction{
+        width:1000px;
+        margin:0 auto;
+    }
+    .associate-row-title{margin-top: 3em;}
+    .title-left{float:left;width:30%;}
+    .title-right{float:left;text-align: center;}
+    .row-top{margin-top: 1em;}
+    .associate-title {font-size: 1.4em;font-weight: bold;}
+    .associate-text-span{text-align: center;
+        vertical-align: middle;
+        margin-top: 3em;
+        margin-bottom: 3em;
+        }
+
+    .associate-text-span span{font-size: 1.6em;font-weight: bold;
+   }
+    .associate-text-span p{margin: 0px;
+        color:#988c8c;}
+
+    .img-responsive{margin: 0 auto;}
+    .associate-text{text-align: center;
+        font-size: 2.4em;font-weight:bold;margin-top: 1em;}
+    .map_left_top img{margin: 0 auto;}
+    #introduction:after{
+        content:"";
+        display:block;
+        clear:both;
+    }
+    #introduction h1{
+        font-weight:bold;
+        font-size:20px;
+        text-align:center;
+    }
+    #introduction img{
+        margin-top:10px;
+    width: 80%;
+    margin-left: 10%;}
+    /******************************协会简介正文***************************/
+    #context{
+        width:1000px;
+        margin:0 auto;
+    }
+    #context:after{
+        content:"";
+        display:block;
+        clear:both;
+    }
+    #context p{
+        margin-top: 0.8em;
+        font-size:1.1em;
+        text-indent:2em;
+        line-height:30px;
+    }
+    /******************************地图部分***************************/
+    #map{
+        width:1000px;
+
+        margin:40px auto 0;
+    }
+    #map:after{
+        content:"";
+        display:block;
+        clear:both;
+    }
+    #map_left{
+        padding-top:30px;
+    }
+    .map_left_top{
+        padding-bottom:60px;
+    }
+    #map .mydv1 p a{
+        color:#444444;
+        display:block;
+        float:left;
+        font-weight:bold;
+        width:100px;
+    }
+    .code{
+        margin-bottom:10px;
+    }
+    .code_left,.code_right{
+        padding-left:10px;
+    }
+    .vision,.mission,.value{
+        padding:0;
+        width:100%;
+        border:1px solid #dadada;
+        background:#eeeeee;
+    }
+    .mission{
+        margin-top:10px;
+    }
+    .value{
+        margin-top:10px;
+    }
+    .vision_top,.mission_top,.value_top{
+        padding:0;
+        width:100%;
+        height:60px;
+        position:relative;
+        border-bottom:1px solid #e5e5e5;
+    }
+    .vision_top h4,.mission_top h4,.value_top h4{
+        top:19px;
+        left:10px;
+        width:40%;
+        position:absolute;
+        height:30px;
+        line-height:30px;
+        background-color:#e84c3d;
+        font-size:16px;
+        text-indent:1em;
+        color:#ffffff;
+        border-radius:10px 0 0 0;
+    }
+    .vision_bot p,.mission_bot p,.value_bot p{
+        padding:12px 0 0 40px;
+        color:#be3441;
+        font-weight:lighter;
+    }
+    .vision_bot p{
+        font-weight:bold;
+    }
+    .mission_bot p{
+        color:#222222;
+    }
+    .mission_bot p span{
+        font-weight:bold;
+        color:#f55d4f;
+    }
+    .value_bot p{
+        color:#222;
+        padding:0 20px 0 40px;
+        line-height:30px;
+        font-weight:lighter;
+    }
+}
+
+@media all and (min-width: 768px) and (max-width:999px){
+    .col-sm-0{
+        display:none;
+    }
+    /******************************协会简介***************************/
+    #introduction{
+        width:90%;
+        margin:0 auto;
+    }
+    #introduction:after{
+        content:"";
+        display:block;
+        clear:both;
+    }
+    #introduction .mydv{
+        padding:0 0;
+    }
+    #introduction h1{
+        font-weight:bold;
+        font-size:20px;
+        text-align:center;
+    }
+    #introduction img{
+        margin-top:10px;
+        width: 80%;
+        margin-left: 10%;
+    }
+    /******************************协会简介正文***************************/
+    #context{
+        width:90%;
+        margin:0 auto;
+    }
+    .associate-text{text-align: center;
+        font-size: 2em;margin-top: 1em;}
+    #context:after{
+        content:"";
+        display:block;
+        clear:both;
+    }
+    .associate-text{text-align: center;
+        font-size: 1.4em;font-weight:bold;margin-top: 1em;border-bottom: 1px solid darkgray;}
+    #context p{
+        font-size: 0.8em;
+        text-indent:2em;
+        line-height:25px;
+    }
+    /******************************地图部分***************************/
+    #map{
+        width:90%;
+        margin:40px auto 0;
+    }
+    #map:after{
+        content:"";
+        display:block;
+        clear:both;
+    }
+    .map_left{
+        padding-top:60px;
+    }
+    .map_left_top{
+        padding-bottom:60px;
+    }
+    #map .mydv1 p{
+        padding:8px 0;
+        width:100%;
+    }
+    #map .mydv1 p a{
+        font-weight:bold;
+        color:#444444;
+        display:block;
+        float:left;
+        width:30%;
+    }
+    .img-responsive{margin: 0 auto;}
+    #map .mydv1 p span{
+        width:70%;
+        display:block;
+        float:right;
+    }
+    .code{
+        margin-bottom:10px;
+    }
+    .code_left,.code_right{
+        padding-left:10px;
+    }
+    .code_left li:first-child,.code_right li:first-child{
+        display:none;
+    }
+    .code_left li:last-child,.code_right li:last-child{
+        width:100%;
+        font-size:12px;
+        padding:0;
+        margin:0;
+    }
+    .vision,.mission,.value{
+        padding:0;
+        width:100%;
+        border:1px solid #dadada;
+        background:#eeeeee;
+    }
+    .mission{
+        margin-top:10px;
+    }
+    .value{
+        margin-top:10px;
+    }
+    .vision_top,.mission_top,.value_top{
+        padding:0;
+        width:100%;
+        height:60px;
+        position:relative;
+        border-bottom:1px solid #e5e5e5;
+    }
+    .vision_top h4,.mission_top h4,.value_top h4{
+        top:19px;
+        left:10px;
+        width:40%;
+        position:absolute;
+        height:30px;
+        line-height:30px;
+        background-color:#e84c3d;
+        font-size:16px;
+        text-indent:1em;
+        color:#ffffff;
+        border-radius:10px 0 0 0;
+    }
+    .vision_bot p,.mission_bot p,.value_bot p{
+        padding:5px 0 0 30px;
+        color:#be3441;
+        font-weight:lighter;
+    }
+    .vision_bot p{
+        font-weight:bold;
+    }
+    .mission_bot p{
+        color:#222222;
+    }
+    .mission_bot p span{
+        font-weight:bold;
+        color:#f55d4f;
+    }
+    .value_bot p{
+        color:#222;
+        padding:0 20px 0 30px;
+        line-height:25px;
+        font-weight:lighter;
+    }
+    .associate-title{font-size: 1.4em;font-weight: bold;}
+    .img-association{width: 100%;margin-top: 1.2em;}
+    .img_association{width: 70%;height: 70%}
+    .col-xs-6{width: 100%;margin-top: 5%;}
+    .row-top{margin-top: 2em;}
+    .associate-text{
+        width: 100%;
+        text-align: center;
+        font-size:1.4em;font-weight:bold;margin-top: 1em;border-bottom: 1px solid darkgray;}
+}
+
+@media all and (max-width: 768px){
+
+    .hidden{
+        display:none;
+    }
+    /******************************协会简介***************************/
+    #introduction{
+        width:90%;
+        margin:0 auto;
+    }
+
+    #introduction:after{
+        content:"";
+        display:block;
+        clear:both;
+    }
+    #introduction .mydv{
+        padding:0 0;
+    }
+    #introduction h1{
+        font-weight:bold;
+        font-size:13px;
+        text-align:center;
+    }
+    #introduction img{
+        margin-top:20px;
+        width: 80%;
+        margin-left: 10%;
+    }
+    /******************************协会简介正文***************************/
+    #context{
+        width:90%;
+        margin:0 auto;
+    }
+    .associate-text{text-align: center;
+        font-size: 2em;margin-top: 1em;}
+    #context:after{
+        content:"";
+        display:block;
+        clear:both;
+    }
+    #context p{
+        font-size: 0.8em;
+        text-indent:2em;
+        line-height:20px;
+    }
+    /******************************地图部分***************************/
+    #map{
+        width:90%;
+        margin:0 auto;
+    }
+    #map:after{
+        content:"";
+        display:block;
+        clear:both;
+    }
+    .map_left_top{
+        padding-bottom:10px;
+    }
+    #map .mydv1 p{
+        padding:10px 0;
+    }
+    #map .mydv1 p a{
+        font-weight:bold;
+        color:#444444;
+        display:block;
+        float:left;
+        width:35%;
+    }
+    #map .mydv1 p span{
+        width:65%;
+        display:block;
+        float:right;
+    }
+    .allCode{
+        padding-top:10px;
+    }
+    .code{
+        margin-bottom:10px;
+    }
+    .vision,.mission,.value{
+        padding:0;
+        width:100%;
+        border:1px solid #dadada;
+        background:#eeeeee;
+    }
+    .mission{
+        margin-top:10px;
+    }
+    .value{
+        margin-top:10px;
+    }
+    .vision_top,.mission_top,.value_top{
+        padding:0;
+        width:100%;
+        height:60px;
+        position:relative;
+        border-bottom:1px solid #e5e5e5;
+    }
+    .vision_top h4,.mission_top h4,.value_top h4{
+        top:19px;
+        left:5px;
+        width:40%;
+        position:absolute;
+        height:30px;
+        line-height:30px;
+        background-color:#e84c3d;
+        font-size:16px;
+        padding-left:8px;
+        color:#ffffff;
+        border-radius:10px 0 0 0;
+    }
+    .vision_bot p,.mission_bot p,.value_bot p{
+        padding:10px 0 0 15px;
+        color:#be3441;
+        font-weight:lighter;
+    }
+    .vision_bot p{
+        font-weight:bold;
+    }
+    .mission_bot p{
+        color:#222222;
+    }
+    .mission_bot p span{
+        font-weight:bold;
+        color:#f55d4f;
+    }
+    .value_bot p{
+        color:#222;
+        padding:0 20px 0 15px;
+        line-height:30px;
+        font-weight:lighter;
+    }
+    .img-association{width: 100%;margin-top: 1.2em;}
+
+    .associate .col-xs-6{width: 100%;margin-top: 5%;}
+    .associate-title{font-size: 0.8em;font-weight: bold;}
+    .associate-text{
+        width: 100%;
+        text-align: center;
+        font-size:1.4em;font-weight:bold;margin-top: 1em;border-bottom: 1px solid darkgray;}
+}

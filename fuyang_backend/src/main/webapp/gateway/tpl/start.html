@@ -1,0 +1,137 @@
+<div ng-include="'tpl/include/header.html'"></div>
+<div id="start_main" ng-controller="startCtrl">
+    <div class="container">
+        <div class="start_top">
+            <div class="top_left col-xs-6 col-sm-4 col-md-4 col-lg-4">
+                <img src="img/user.png" alt="">
+                <p>
+                    志愿者人数
+                    <br>
+                    <span ng-bind="volTotal"></span>
+                    人
+                </p>
+            </div>
+            <div class="top_center col-xs-6 col-sm-4 col-md-4 col-lg-4">
+                <img src="img/time.jpg" alt="">
+                <p>
+                    总服务时长
+                    <br>
+                    <span ng-bind="volTotalTimes"></span>
+                    小时
+                </p>
+            </div>
+            <div class="top_right col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                <div class="same">
+                    <img src="img/app_ios_big.jpg" class="big" alt="">
+                    <img src="img/ios.jpg" class="small" alt="">
+                </div>
+                <div class="same">
+                    <img src="img/app_andriod_big.jpg" class="big" alt="">
+                    <img src="img/andriod.jpg" class="small" alt="">
+                </div>
+            </div>
+        </div>
+        <div class="start_center">
+            <div class="contain">
+                <div class="title col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <h3 class="col-xs-2 col-sm-2 col-md-2 col-lg-2">通知公告</h3>
+                </div>
+                <div class="content col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding: 0;">
+                    <div class="center_left col-xs-12 col-sm-6 col-md-6 col-lg-6" style="padding-left: 0;">
+                        <div id="news_banner">
+                            <div id="news_carousel" class="carousel slide" data-ride="carousel" data-interval="1000">
+                                <!-- Indicators -->
+                                <ol class="carousel-indicators">
+                                    <li data-target="#news_carousel" data-slide-to="{{$index}}" ng-class="{active:$first}" ng-repeat="obj in imgs | limitTo:5"></li>
+                                </ol>
+
+                                <!-- Wrapper for slides -->
+                                <div class="carousel-inner" role="listbox">
+                                    <div class="item" ng-class="{active:$first}" ng-repeat="obj in imgs | limitTo:5">
+                                        <a href="#/news_detail/{{obj.id}}"><img ng-src="{{obj.titleImgUrl}}" alt="..."></a>
+                                        <div class="carousel-caption" ng-bind="obj.title">
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Controls -->
+                                <a class="left carousel-control" href="" data-target="#news_carousel" role="button" data-slide="prev">
+                                    <img class="imgl" src="img/arrowl.png" alt="">
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="right carousel-control" href="" data-target="#news_carousel" role="button" data-slide="next">
+                                    <img class="imgr" src="img/arrowr.png" alt="">
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </div>
+                        </div>
+                        <!--<a href="#/news_detail/{{announcements[0].id}}"><img ng-src="{{announcements[0].titleImgUrl}}"  style="width: 100%; height: 100%;"></a>-->
+                    </div>
+                    <div class="center_right col-xs-12 col-sm-6 col-md-6 col-lg-6" style="padding: 0;">
+                        <ul class="list col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <li ng-repeat="obj in announcements"><a href="#/news_detail/{{obj.id}}" ng-bind="obj.title"></a></li>
+                        </ul>
+                        <div class="more">
+                            <a href="#/1/news_list">更多>></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="start_next">
+            <div class="container">
+                <div class="area col-xs-6 col-sm-4 col-md-4 col-lg-4" style="padding: 0;">
+                    <div class="title col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <h3 class="col-xs-4 col-sm-4 col-md-4 col-lg-4">各区动态</h3>
+                    </div>
+                    <ul class="area_mess col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <li ng-repeat="obj in news"><a href="#/news_detail/{{obj.id}}" ng-bind="obj.title"></a></li>
+                    </ul>
+                    <div class="more">
+                        <a href="#/2/news_list">更多>></a>
+                    </div>
+                </div>
+                <div class="campaign area col-xs-6 col-sm-4 col-md-4 col-lg-4" style="padding: 0;">
+                    <div class="title col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <h3 class="col-xs-4 col-sm-4 col-md-4 col-lg-4">活动信息</h3>
+                    </div>
+                    <ul class="campaign_mess area_mess col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <li ng-repeat="obj in campaigns"><a href="#/news_detail/{{obj.id}}" ng-bind="obj.title"></a></li>
+                    </ul>
+                    <div class="more">
+                        <a href="#/3/news_list">更多>></a>
+                    </div>
+                </div>
+                <div class="sign area col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                    <div class="border col-xs-10 col-sm-10 col-md-10 col-lg-10" style="padding: 0;">
+                        <a href="sign_volun.html"><span class="user_s"></span>&nbsp;个人注册</a>
+                        <a href="sign_groups.html"><span class="group_s"></span>&nbsp;组织注册</a>
+                        <a href="login.html"><span class="sign_s"></span>&nbsp;用户登录</a>
+                        <a href=""><span class="search_s"></span>&nbsp;组织查询</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="start_bottom">
+            <div class="container">
+                <div class="title col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <h3 class="col-xs-3 col-sm-3 col-md-3 col-lg-3">优秀志愿者或组织</h3>
+                </div>
+                <div class="volun_img">
+                    <a href=""><img ng-src='{{obj.photo}}' alt="" ng-repeat="obj in volunteers"></a>
+                </div>
+                <br>
+                <div class="more">
+                    <a href="#/volun">更多>></a>
+                </div>
+            </div>
+        </div>
+        <br>
+        <br>
+        <br>
+    </div>
+</div>
+<div ng-include="'tpl/include/footer.html'"></div>

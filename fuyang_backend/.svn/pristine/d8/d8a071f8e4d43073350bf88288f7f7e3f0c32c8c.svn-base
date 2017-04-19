@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <script type="text/javascript" src="js/jquery-1.11.3.js"></script>
+    <script type="text/javascript" src="js/paging.js"></script>
+    <script type="text/javascript" src="js/query.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/luntan_detail.css"/>
+    <link rel="stylesheet" href="css/paging.css"/>
+	<link rel="stylesheet" href="css/mycss.css"/>
+    <link rel="stylesheet" href="css/ass_css.css"/>
+    <title></title>
+</head>
+<body>
+<div id="header" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="container">
+        <div class="navbar navbar-default " role="navigation" >
+
+            <ul class="nav navbar-nav">
+                <li class="myli1"><a class="mya2" href="index.html">您好，欢迎参加志愿阜阳</a></li>
+                <li><a class="mya1" style="color: #ee3e3c;margin-left: 20px;" href="login.html?op=volunlogin">登录</a></li>
+                <li><a class="mya1" >/</a></li>
+                <li><a class="mya1" style="color: #ee3e3c;" href="login.html?op=volunregister">注册</a></li>
+            </ul>
+            <ul class="nav navbar-nav " style="float: right;">
+                <li><a class="a_special" href="login.html?op=orglogin">管理员登录入口</a></li>
+                <li><a class="mya1" >|</a></li>
+                <li><a class="mya1" href="">帮助</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div id="banner" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <img src="img/details.png" alt=""/>
+    </div>
+</div>
+
+
+<div id="main" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="container">
+        <div id="postContent" class="content col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <h2>帖子内容</h2>
+            <div>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;今天看了一个视频：“老人一生献给山区教育 近6旬学英语教出16个大学生 ”，很是感动，山区有很多小孩没有得到正规教育，老师也是凭着自己的良心和责任感教育者这些小孩，小孩们光着脚丫，鞋都没有，真是可怜。
+                    <br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;我想尽自己一点微薄之力，资助这些小孩，以后有机会也要到山里去看看他们，希望有个能帮助这些需要帮助的孩子</p>
+            </div>
+            <div class="share col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <a class="collect" href=""></a>
+                <span class="collect_number">10</span>
+
+                <a class="discuss" style="margin-right:0;" href=""></a>
+                <span class="discuss_number collect_number" style="margin-right:18px;"></span>
+                
+                <a class="priase" onclick="thumbs()" href=""></a>
+
+                <span class="priase_number">10</span>
+            </div>
+        </div>
+        <div class="comment">
+            <h2>所有评论</h2>
+            <ul id="postPomment" class="pagin_contents">
+                
+            </ul>
+        </div>
+        <div id="pagination" style="text-align: center;">
+
+        </div>
+        <div style="clear:both;"></div>
+        <div class="post_discuss">
+            <div id="myinp"  style="width: 100%;">
+                <form action="/fuyang_backend/bbs/addAtoms" method="post" enctype="application/x-www-form-urlencoded"  style="width: 100%;">
+                    <div class="inp"  style="width: 100%;margin:0;">                 
+                        <!---------------------------第二个row-------------------------->
+                        <div class="row myrow2" style="width: 100%;margin:0; ">
+
+                        </div>
+                        <!---------------------------第三个row-------------------------->
+                        <div class="row myrow3" style="width: 100%;margin:0;">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <textarea name="content" id="postComment" cols="30" rows="10" style="resize:none;"></textarea>
+                            </div>
+                        </div>
+                        <!---------------------------第四个row-------------------------->
+                        <div class="row myrow4" style="width: 100%; margin:0;">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <input id="form2" class="btn btn-danger" type="button" value="发布评论" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="clear"></div>
+<footer style="padding-bottom: 20px;">
+    <div class="myfooter">
+        <div class="row">
+            <!--------------第一部分。。------------->
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4" style="margin-top:20px;">
+                <p style="font-size: 1.4rem;">友情链接:</p>
+                <p style="font-size: 1.4rem;"><a href="">四川共青团</a>
+                    <a href="">中国青年志愿者网</a>
+                    <a href="">中国软件与技术服务</a>
+                    <a href="">股份有限公司</a>
+                    <a href="">中国电子信息产业集团有限公司</a>
+                </p>
+                <p style="font-size: 1.2rem;color: #fff;">
+                    反馈建议:<span style="color: #fff;font-size: 1.2rem;">service@zyfy.org.cn</span>
+                </p>
+                <p style="font-size: 1.2rem;color: #fff;">
+                    客服QQ:<span style="color: #fff;font-size: 1.2rem;">408705635</span>
+                </p>
+            </div>
+            <!--------------第二部分。。------------->
+            <div class="mydv1 col-xs-0 col-sm-6 col-md-4 col-lg-4">
+                <div class="media">
+                    <a class="pull-left" href="index.html">
+                        <img class="media-object" src="img/666.png" alt="媒体对象">
+                    </a>
+                    <div style="border-left:1px solid #fff;" class="media-body">
+                        <p class="myp1"><a href="">联系我们</a></p>
+                        <p class="myp1"><a href="">帮助中心</a></p>
+                        <p class="myp1"><a href="">关于我们</a></p>
+                        <p class="myp1"><a href="">下载APP</a></p>
+                    </div>
+                </div>
+            </div>
+            <!--------------第三部分。。------------->
+            <div class="mydv2 col-xs-0 col-sm-0 col-md-4 col-lg-4">
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                    <div class="thumbnail">
+                        <img src="img/777.png" alt="">
+                    </div>
+                    <div class="caption">
+                        <p>官方微博扫码关注</p>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                    <div class="thumbnail">
+                        <img src="img/888.png" alt="">
+                    </div>
+                    <div class="caption">
+                        <p>官方微博扫码关注</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<script type="text/javascript" src="js/post_detail.js?v=122205"></script>
+</body>
+</html>

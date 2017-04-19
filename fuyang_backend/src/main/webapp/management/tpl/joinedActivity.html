@@ -1,0 +1,28 @@
+<!-- 参加活动-->
+<div id="joined_active" ng-controller="joinedActivityCtrl">
+    <div class="table_box">
+        <table id="example1" class="table" cellspacing="0">
+            <thead>
+            <tr>
+                <td>参加活动名称</td>
+                <td>联系方式</td>
+                <td>参加人数</td>
+                <td>活动地点</td>
+                <td>审核状态</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="obj in list track by $index">
+                <td ng-bind="obj.title"></td>
+                <td ng-bind="obj.pricipalTel"></td>
+                <td ng-bind="obj.memberCount"></td>
+                <td ng-bind="obj.location"></td>
+                <td ng-if="obj.campaignrecord.iscalc==0"><a href="#/volunInfo" style="color: red">不通过</a></td>
+                <td ng-if="obj.campaignrecord.iscalc==1">通过</td>
+                <td ng-if="obj.campaignrecord.iscalc==2" style="color: red">待审核...</td>
+            </tr>
+            </tbody>
+        </table>
+        <div id="vol_joinedActpage"></div>
+    </div>
+</div>

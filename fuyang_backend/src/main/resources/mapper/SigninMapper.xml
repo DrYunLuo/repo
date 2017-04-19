@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+ <mapper namespace="com.yichuang.fuyang.dao.SigninDao">
+ 
+ <!-- 更新签到天数 -->
+ <update id="updateSignin" parameterType="string" >
+ 	UPDATE signin SET `count` = `count`+1,`day` = `day`+1,signinTime = (select now())
+ 	WHERE AccountId = #{AccountId}
+ </update>
+ 
+ <!-- 根据id获取签到次数和更新时间 -->
+ <select id="getNowTime" parameterType="string" resultType="com.yichuang.fuyang.entity.Signin">
+	select id,signinTime,count from signin where accountId=#{accountId} 
+ </select>
+ 
+ <insert id="saveSignin" parameterType="com.yichuang.fuyang.entity.Signin">
+	<selectKey keyProperty="id" order="BEFORE" resultType="string">
+		SELECT UUID()
+	</selectKey>
+	  insert into signin(
+         id,
+         count,
+         day,
+         createdAt,
+         updatedAt,
+         AccountId)
+      values(
+           #{id},#{count},#{day},#{createdAt},#{updatedAt},#{AccountId})
+	</insert>
+ 
+ </mapper>

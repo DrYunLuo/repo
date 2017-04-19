@@ -1,0 +1,145 @@
+#group_detail_main{
+    font-family: '微软雅黑';
+    font-size: 12px;
+    color:#444;
+}
+#main_top{
+    overflow: hidden;
+}
+#main_top>div{
+    float: left;
+    margin-right: 28px;
+}
+#group_info h2{
+    margin-top:0;
+    font-weight: 600;
+    font-size: 20px;
+}
+#group_info table{
+    width:410px;
+}
+#group_info table td{
+    padding:5px 0;
+}
+#group_info button{
+    width: 200px;
+    height:30px;
+    color:#fff;
+    border-radius: 5px 5px;
+    background: #e84c3d;
+    outline: 0;
+    border: 0;
+    font-size: 16px;
+    margin-top:5px;
+}
+#hot_groups div.top{
+    width: 257px;
+    border-bottom:2px solid #e5e5e5;
+}
+#hot_groups div.top span{
+    width:108px;
+    height:36px;
+    line-height: 36px;
+    text-align: center;
+    display: inline-block;
+    font-size: 16px;
+    background: #e84c3d;
+    border-top-left-radius:20px;
+    color: #fff;
+}
+#hot_groups li:before {
+    content: "";
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    margin: 0 10px;
+    background-color: #444;
+    border-radius: 50%;
+}
+#hot_groups li{
+    margin:10px 0;
+}
+
+/******************************************/
+.db{
+    display: block;
+}
+.dn{
+    display: none;
+}
+.notice{
+    color: #e84c3d !important;
+}
+#main_content{
+    margin-top:40px;
+    width:680px;
+}
+#main_tabs{
+
+    border-bottom:2px solid #dcdcdc;
+    margin-bottom:40px;
+}
+#main_tabs span{
+    width:108px;
+    height:36px;
+    line-height: 36px;
+    text-align: center;
+    display: inline-block;
+    font-size: 16px;
+    background: #dedfe0;
+    color: #000;
+    cursor: pointer;
+}
+#main_tabs span.group_actlist{
+    border-top-left-radius:15px;
+}
+#main_tabs span.group_desc{
+    border-top-right-radius:15px;
+}
+#main_tabs span.current{
+    background: #e84c3d;
+    color: #fff;
+}
+#group_actlist{
+    width: 650px;
+}
+#group_actlist>ul>li{
+    margin-top:40px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #dcdcdc;
+    overflow: hidden;
+}
+#group_actlist>ul>li>div{
+    float: left;
+    margin-right: 20px;
+}
+#group_actlist .act_summary h3{
+    margin-top:0;
+    font-size: 16px;
+    font-weight: bold;
+}
+#group_actlist .act_summary h3 span{
+    font-size: 16px;
+}
+#group_actlist .act_summary div{
+    font-size: 14px;
+    margin-top: 25px;
+}
+#group_actlist .act_summary div span{
+    font-size: 14px;
+}
+#actlist_page{
+    margin:30px auto;
+    display: table;
+}
+#group_desc{
+    line-height: 25px;
+}
+#group_desc p{
+    font-size: 14px !important;
+    text-indent: 2em;
+}
+#group_desc img{
+    float: left;
+    margin:10px;
+}

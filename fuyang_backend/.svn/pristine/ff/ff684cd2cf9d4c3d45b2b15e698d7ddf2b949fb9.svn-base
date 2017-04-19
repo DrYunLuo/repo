@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-cn" ng-app="myApp">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>管理员管理中心</title>
+
+    <!--[if IE 8]>
+    <script src="js/es5-shim.min.js"></script>
+    <![endif]-->
+    <!-- Bootstrap -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/paging.css" rel="stylesheet"/>
+    <link href="css/manage.css" rel="stylesheet">
+    <link href="css/modalDialog.css" rel="stylesheet">
+
+
+    <!--[if lt IE 9]>
+    <script src="../js/jquery.JPlaceholder.js"></script>
+    <script src="../js/html5shiv.min.js"></script>
+    <script src="../js/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript" src="js/angular-route.js"></script>
+    <style>
+        #create_active .fr li{
+            height:45px;
+        }
+    </style>
+</head>
+<body ng-controller="parentCtrl">
+<div id="header">
+    <div class="container">
+        <a href="../index.html"><img class="logo" src="img/logo.png"/></a>
+        <p class="title">用户管理中心</p>
+    </div>
+</div>
+<div id="nav">
+    <div class="container">
+        <ul class="fl">
+            <li>
+                欢迎回来，<span ng-bind="user.nickname">admin</span>
+            </li>
+            <li>
+                <a href="../index.html">网站首页</a>
+            </li>
+            <li>
+                <a href="#">注销</a>
+                /
+                <a href="#/modifyPwd" class="notice">修改密码</a>
+            </li>
+        </ul>
+        <ul class="fr">
+            <li>
+                登录时间：2017年2月17日 星期三
+            </li>
+        </ul>
+    </div>
+</div>
+<div id="main">
+    <div class="container">
+        <div id="box_left">
+            <ul>
+                <li ng-class="{active:$first}" ng-repeat="menu in menus track by $index" ng-click="jump(menu.powerUrl)" ng-bind="menu.powerName"></li>
+            </ul>
+        </div>
+        <div id="box_right">
+            <div class="right_main" ng-view>
+
+            </div>
+            <div class="footer">
+                <div class="copyright fl">
+                    <p class="notice">志愿阜阳&nbsp; |&nbsp; 联系电话：0558-2285707</p>
+                    <p>Copyright © 2016 http://zyfy0558.com</p>
+                </div>
+                <div class="address fr">
+                    <p>地址：安徽省阜阳市颍州区颍州南路和平公园内阜阳革命烈士纪念馆</p>
+                    <p></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--操作成功弹出框-->
+<div class="md-modal md-effect-1" id="modal-1">
+    <div class="md-content">
+        <div>
+            <p>操作成功</p>
+            <button class="md-close">确定</button>
+        </div>
+    </div>
+</div>
+<!--遮罩层-->
+<div class="md-overlay"></div>
+<script src="../js/jquery-1.11.3.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="js/paging.js"></script>
+<script charset="utf-8" src="editor/kindeditor.js"></script>
+<script charset="utf-8" src="editor/lang/zh_CN.js"></script>
+<script src="../js/ajaxfileupload.js"></script>
+<script src="js/manage.js?v=34e34"></script>
+</body>
+</html>

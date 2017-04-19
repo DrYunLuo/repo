@@ -1,0 +1,112 @@
+<!-- 组织审核参加活动的志愿者详情页-->
+<div id="actvol_review_detail" ng-controller="actVolReviewDetailCtrl">
+    <div class="content_box">
+        <p>志愿者信息</p>
+        <div class="content">
+            <div class="row">
+                <div class="col-lg-6">
+                    姓&nbsp;&nbsp;名：<span ng-bind="volunteer.realname"></span>
+                </div>
+                <div class="col-lg-6">
+                    证件号码：<span ng-bind="volunteer.cardId"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    性&nbsp;&nbsp;别：<span ng-bind="volunteer.sex"></span>
+                </div>
+                <div class="col-lg-6">
+                    政治面貌：<span ng-bind="volunteer.party"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    民&nbsp;&nbsp;族：<span ng-bind="volunteer.raceId"></span>
+                </div>
+                <div class="col-lg-6">
+                    邮箱地址：<span ng-bind="volunteer.email"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    职&nbsp;&nbsp;业：<span ng-bind="volunteer.tradeId"></span>
+                </div>
+                <div class="col-lg-6">
+                    QQ号码：<span ng-bind="volunteer.qq"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    学&nbsp;&nbsp;历：<span ng-bind="volunteer.educationId"></span>
+                </div>
+                <div class="col-lg-6">
+                    联系电话：<span ng-bind="volunteer.tel"></span>
+                </div>
+            </div>
+            <!--<div class="row">-->
+                <!--<div class="col-lg-6">-->
+                    <!--毕业学校：<span ng-bind="volunteer.">北京大学</span>-->
+                <!--</div>-->
+                <!--<div class="col-lg-6">-->
+                    <!--注册账号区域：<span ng-bind="volunteer.">安徽省阜阳市</span>-->
+                <!--</div>-->
+            <!--</div>-->
+            <div class="row">
+                <div class="col-lg-6">
+                    现在住址：<span ng-bind="volunteer.homeAddress"></span>
+                </div>
+                <div class="col-lg-6">
+                    籍&nbsp;&nbsp;贯：<span ng-bind="volunteer.nativePlace"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content_box">
+        <p>擅长技能</p>
+        <div class="content">
+            <div class="row">
+                <div class="col-lg-12">
+                    <span ng-if="volunteer.specialty.indexOf('1,') > -1">美术设计</span>
+                    <span ng-if="volunteer.specialty.indexOf('2,') > -1">摄影摄像</span>
+                    <span ng-if="volunteer.specialty.indexOf('3,') > -1">传播策划</span>
+                    <span ng-if="volunteer.specialty.indexOf('4,') > -1">文化艺术</span>
+                    <span ng-if="volunteer.specialty.indexOf('5,') > -1">IT技术</span>
+                    <span ng-if="volunteer.specialty.indexOf('6,') > -1">应急救援</span>
+                    <span ng-if="volunteer.specialty.indexOf('7,') > -1">教育培训</span>
+                    <span ng-if="volunteer.specialty.indexOf('8,') > -1">医疗护理</span>
+                    <span ng-if="volunteer.specialty.indexOf('9,') > -1">翻译</span>
+                    <span ng-if="volunteer.specialty.indexOf('10,') > -1">会计审计</span>
+                    <span ng-if="volunteer.specialty.indexOf('11,') > -1">其他</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content_box">
+        <p>服务领域</p>
+        <div class="content">
+            <div class="row">
+                <div class="col-lg-12">
+                     <span ng-if="volunteer.serviceArea.indexOf('1,') > -1">助老助残</span>
+                    <span ng-if="volunteer.serviceArea.indexOf('2,') > -1">社区服务</span>
+                    <span ng-if="volunteer.serviceArea.indexOf('3,') > -1">生态建设</span>
+                    <span ng-if="volunteer.serviceArea.indexOf('4,') > -1">大型活动</span>
+                    <span ng-if="volunteer.serviceArea.indexOf('5,') > -1">抢险救灾</span>
+                    <span ng-if="volunteer.serviceArea.indexOf('6,') > -1">社会管理</span>
+                    <span ng-if="volunteer.serviceArea.indexOf('7,') > -1">文化建设</span>
+                    <span ng-if="volunteer.serviceArea.indexOf('8,') > -1">西部开发</span>
+                    <span ng-if="volunteer.serviceArea.indexOf('9,') > -1">海外服务</span>
+                    <span ng-if="volunteer.serviceArea.indexOf('10,') > -1">扶贫济困</span>
+                    <span ng-if="volunteer.serviceArea.indexOf('11,') > -1">综合其他</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="button-group"  >
+        <button class="1">通过</button>
+        <button class="0">不通过</button>
+        <a href="javascript:history.go(-1);void(0);">返回上一层</a>
+    </div>
+    <div class="reason_box">
+        <textarea id="reason" ng-bind="auditNotes" name="reason" style="width: 100%;height:100px;" placeholder="备注（不通过的理由）"></textarea>
+    </div>
+</div>

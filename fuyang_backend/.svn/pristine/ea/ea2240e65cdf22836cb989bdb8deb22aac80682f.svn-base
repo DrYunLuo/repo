@@ -1,0 +1,445 @@
+/*代码重构*/
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, textarea, p, blockquote, th, td
+{
+    margin:0;padding:0;
+    color:#000;
+}
+table /* 设置table 的样式*/
+{
+    border-collapse:collapse;
+    border-spacing:0;
+}
+fieldset, img
+{
+    border:0;
+}
+em, strong
+{
+    font-style:normal;
+    font-weight:normal;
+}
+li
+{
+    list-style:none;
+}
+
+body, input, button, textarea
+{
+    font-size:12px;
+    font-family:"microsoft yahei",Arial, Helvetica, sans-serif;
+}
+a{ text-decoration:none;outline:none;color:#000;}
+a:hover{ cursor:pointer;}
+th, td{vertical-align:top;}
+.dn{
+    display: none;
+}
+.db{
+    display: block;
+}
+.fl{
+    float: left;
+}
+.fr{
+    float: right;
+}
+/*页头*/
+#header{
+    padding-top: 15px;
+}
+.welcome{
+    font-size: 24px;
+    margin-left:20px;
+    vertical-align: bottom;
+}
+#main{
+    margin-top:20px;
+    position: relative;
+}
+#forms{
+    background: #fff;
+}
+.yzm .yzm_box{
+    width:60px;
+    height:30px;
+    padding: 4px 5px;
+    text-shadow: 1px 1px 2px #a2a2a2;
+    text-align: center;
+    margin-left: 20px;
+    background: #d0d0d0;
+    font-size: 14px;
+    color:#5c5c5c;
+    user-select:none;
+}
+.refreshyzm{
+    line-height: 36px;
+}
+#log_box input,#log_box button{
+    outline:0;
+    border-radius: 4px 4px;
+}
+#log_box .validate{
+    padding-left:10px !important;
+}
+.inputErr{
+    border: 1px solid #e84c3d !important;
+}
+
+/*admin*/
+#adminMain{
+    margin-top:20px;
+    position: relative;
+    height:600px;
+    background: url(../img/adminbg.jpg) no-repeat;
+    background-size: 100% 100%;
+}
+#adminMain .logo_box{
+    position: absolute;
+    top: 25%;
+    left: 10%;
+}
+#adminMain .logo_box h2{
+    margin: 20px 0;
+}
+#adminMain .form_header a{
+    width: 100% !important;
+}
+#adminMain .form_content .row{
+    margin: 20px 0;
+}
+@media all and (min-width:992px){
+    #main{
+        height:600px;
+        background: url(../img/log_bg.jpg) no-repeat;
+        background-size: 100% 100%;
+    }
+    #forms{
+        width: 562px;
+        height:500px;
+        position: absolute;
+        right: 8%;
+        top: 10%;
+        box-shadow: 1px 3px 3px #999;
+    }
+    #forms .form_header{
+        box-shadow:0 2px #bdbcbc;
+        overflow: hidden;
+    }
+    #forms .form_header>a{
+        width: 50%;
+        height:78px;
+        line-height:78px;
+        font-size: 24px;
+        text-align: center;
+        float: left;
+        color: #000;
+        text-decoration: none;
+    }
+    #forms .form_header>a.active{
+        background: #e84c3d;
+        color:#fff;
+    }
+    #forms .form_content{
+        height:86%;
+    }
+    #log_box{
+        /*border: 1px solid #ddd;*/
+        margin: 50px 0;
+        width:100%;
+    }
+    #log_box .row.yzm{
+        margin-bottom: 10px;
+    }
+    #log_box .row a,#log_box .row label{
+        color:#e84c3d;
+    }
+    #forms label{
+        vertical-align: middle;
+        font-weight: normal;
+    }
+    #forms .row input[type='text'],#forms .row input[type='password']{
+        width: 60%;
+        height:30px;
+        padding-left:35px;
+        padding-right:10px;
+        border: 1px solid #9a9a9a;
+        box-shadow: 0 0 2px #9a9a9a;
+    }
+    #vname,#oname{
+        background: url(../img/user_pass.png) no-repeat 0 0;
+    }
+    #vpwd,#opwd{
+        background: url(../img/user_pass.png) no-repeat 0 -30px;
+    }
+    #forms button{
+        width: 60%;
+        background: #e84c3d;
+        height: 50px;
+        font-size:20px;
+        color: #fff;
+        border: 0;
+        outline: 0;
+        margin-bottom: 20px;
+    }
+    #forms input[type='button']{
+        padding:3px 10px;
+        background: #d0d0d0;
+        border: 0;
+        outline: 0;
+    }
+    #form-volunregister{
+        margin: -20px 30px;
+    }
+    #form-volunregister table tr{
+        line-height: 20px;
+    }
+    #form-volunregister table tr td{
+        padding:8px 5px;
+    }
+    #form-volunregister table tr td:last-child span{
+        color: #aaa;
+    }
+    #form-volunregister a{
+        color:#e84c3d ;
+    }
+    #forms #bt-volunreg{
+        width:50%;
+    }
+}
+
+@media all and (min-width: 768px) and (max-width:991px){
+    #main{
+        height:600px;
+        background: url(../img/log_bg.jpg) no-repeat;
+        background-size: 100% 100%;
+    }
+    #forms{
+        width: 562px;
+        height:500px;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        margin-top: -250px;
+        margin-left:-281px;
+        box-shadow: 1px 3px 3px #999;
+    }
+    #forms .form_header{
+        box-shadow:0 2px #bdbcbc;
+        overflow: hidden;
+    }
+    #forms .form_header>a{
+        width: 50%;
+        height:78px;
+        line-height:78px;
+        font-size: 24px;
+        text-align: center;
+        float: left;
+        color: #000;
+        text-decoration: none;
+    }
+    #forms .form_header>a.active{
+        background: #e84c3d;
+        color:#fff;
+    }
+    #forms .form_content{
+        height:86%;
+    }
+    #log_box{
+        /*border: 1px solid #ddd;*/
+        margin: 50px 10px;
+        width:100%;
+    }
+    #log_box .row.yzm{
+        margin-bottom: 10px;
+    }
+    #log_box .row a,#log_box .row label{
+        color:#e84c3d;
+    }
+    #forms label{
+        vertical-align: middle;
+        font-weight: normal;
+    }
+    #forms .row input[type='text'],#forms .row input[type='password']{
+        width: 60%;
+        height:30px;
+        padding-left:35px;
+        padding-right:10px;
+        border: 1px solid #9a9a9a;
+        box-shadow: 0 0 2px #9a9a9a;
+    }
+    #vname,#oname{
+        background: url(../img/user_pass.png) no-repeat 0 0;
+    }
+    #vpwd,#opwd{
+        background: url(../img/user_pass.png) no-repeat 0 -30px;
+    }
+    #forms button{
+        width: 60%;
+        background: #e84c3d;
+        height: 50px;
+        font-size:20px;
+        color: #fff;
+        border: 0;
+        outline: 0;
+        margin-bottom: 20px;
+    }
+    #forms input[type='button']{
+        padding:3px 10px;
+        background: #d0d0d0;
+        border: 0;
+        outline: 0;
+    }
+    #form-volunregister{
+        margin: -20px 30px;
+    }
+    #form-volunregister table tr{
+        line-height: 20px;
+    }
+    #form-volunregister table tr td{
+        padding:8px 5px;
+    }
+    #form-volunregister table tr td:last-child span{
+        color: #aaa;
+    }
+    #form-volunregister a{
+        color:#e84c3d ;
+    }
+    #forms #bt-volunreg{
+        width:50%;
+    }
+}
+
+@media all and (max-width: 767px){
+    #header .container{
+        text-align: center;
+    }
+    .welcome{
+        display: block;
+    }
+    #main{
+        height:500px;
+        /*background: url(../img/log_bg.jpg) no-repeat;*/
+        /*background-size: 100% 100%;*/
+    }
+    #forms{
+        width: 90%;
+        margin: 0 auto;
+        height:500px;
+        box-shadow: 0 0 3px #999;
+    }
+    #forms .form_header{
+        box-shadow:0 2px #bdbcbc;
+        overflow: hidden;
+    }
+    #forms .form_header>a{
+        width: 50%;
+        height:78px;
+        line-height:78px;
+        font-size: 24px;
+        text-align: center;
+        float: left;
+        color: #000;
+        text-decoration: none;
+    }
+    #forms .form_header>a.active{
+        background: #e84c3d;
+        color:#fff;
+    }
+    #forms .form_content{
+        height:86%;
+    }
+    #log_box{
+        /*border: 1px solid #ddd;*/
+        margin: 50px 0;
+        width:100%;
+    }
+    #log_box .row.yzm{
+        margin-bottom: 10px;
+    }
+    #log_box .row a,#log_box .row label{
+        color:#e84c3d;
+    }
+    #forms label{
+        vertical-align: middle;
+        font-weight: normal;
+    }
+    #forms .row input[type='text'],#forms .row input[type='password']{
+        width: 60%;
+        height:30px;
+        padding-left:35px;
+        padding-right:10px;
+        border: 1px solid #9a9a9a;
+        box-shadow: 0 0 2px #9a9a9a;
+    }
+    #vname,#oname{
+        background: url(../img/user_pass.png) no-repeat 0 0;
+    }
+    #vpwd,#opwd{
+        background: url(../img/user_pass.png) no-repeat 0 -30px;
+    }
+    #forms button{
+        width: 60%;
+        background: #e84c3d;
+        height: 50px;
+        font-size:20px;
+        color: #fff;
+        border: 0;
+        outline: 0;
+        margin-bottom: 20px;
+    }
+    #forms input[type='button']{
+        padding:3px 5px;
+        background: #d0d0d0;
+        border: 0;
+        outline: 0;
+    }
+    #form-volunregister{
+        margin: -20px 10px;
+    }
+    #form-volunregister table tr{
+        line-height: 20px;
+    }
+    #form-volunregister table tr td{
+        vertical-align: middle;
+    }
+    #form-volunregister table tr td:nth-child(1){
+        width:25%;
+        text-align: right;
+        padding-right: 3%;
+    }
+    #form-volunregister table tr td:nth-child(3){
+        width:40%;
+    }
+    #form-volunregister table tr td:nth-child(2) input{
+        width:90%;
+    }
+    #form-volunregister table tr td:nth-child(2) input[type='checkbox']{
+        width:14px;
+    }
+    #form-volunregister table tr td h4{
+        font-size: 14px;
+    }
+    #form-volunregister table tr td{
+        padding:2px 2px;
+    }
+    #form-volunregister table tr td:last-child span{
+        color: #aaa;
+    }
+    #form-volunregister a{
+        color:#e84c3d ;
+    }
+    #forms #bt-volunreg{
+        width:50%;
+    }
+}
+/*表单验证样式*/
+.onError{
+    color:red !important;
+}
+.onSuccess{
+    color:green !important;
+}
+.isNotAgree{
+    background: #f49d9e !important;
+    cursor: default;
+}

@@ -1,0 +1,38 @@
+<!-- 密码修改-->
+<div id="change_pwd" ng-controller="ModifyCtrl">
+    <div class="content_box">
+        <p>修改密码</p>
+        <div class="content">
+            <div>
+                <table class="cpwd_table">
+                    <tr>
+                        <td>当前密码：</td>
+                        <td><input id="cpwd_inp1" type="password"/></td>
+                        <td><span class="dn" style="font-size:10px;color:red;">{{msg}}</span></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><a href="#" class="notice">忘记密码？</a></td>
+                    </tr>
+                    <tr>
+                        <td>新密码：</td>
+                        <td><input type="password"/></td>
+                        <td><span class="dn" style="font-size:10px;color:red;"></span></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>密码由6~16位字母、数字或下划线组成</td>
+                    </tr>
+                    <tr>
+                        <td>确认密码：</td>
+                        <td><input type="password"/></td>
+                        <td><span class="dn" style="font-size:10px;color:red;">两次输入密码不一致</span></td>
+                    </tr>
+                </table>
+            </div>
+            <div>
+                <button class="bt-save">保存</button>
+            </div>
+        </div>
+    </div>
+</div>

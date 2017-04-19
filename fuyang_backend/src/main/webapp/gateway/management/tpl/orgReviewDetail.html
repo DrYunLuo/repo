@@ -1,0 +1,126 @@
+<!-- 组织审核详情页-->
+<div id="org_review_detail" ng-controller="orgReviewDetailCtrl">
+    <div class="content_box">
+        <p>协会简介</p>
+        <div class="content">
+            <div class="row">
+                <div class="col-lg-12">
+                    <span ng-bind="org.description"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content_box">
+        <p>组织信息</p>
+        <div class="content">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            组织名称：<span ng-bind="org.name"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            注册时间：<span ng-bind="org.registrationDate"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            所属组织：<span ng-bind="org.institution"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            组织类型：<span ng-bind="org.groupType"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            组织代码：<span ng-bind="org.groupCode"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            组织网站：<span ng-bind="org.web"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            地&nbsp;&nbsp;址：<span ng-bind="org.address"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            组织电话：<span ng-bind="org.phonenumber"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            组织登记证书
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <img src="img/certificate01.jpg" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content_box">
+        <p>组织联系人信息</p>
+        <div class="content">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            姓&nbsp;&nbsp;名：<span ng-bind="org.contactsname"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            职&nbsp;&nbsp;务：<span></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            联系方式：<span ng-bind="org.contactstel"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            邮&nbsp;&nbsp;箱：<span ng-bind="org.email">123456865@qq.com</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            组织联系人证件
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <img src="img/certificate02.jpg" />
+                        </div>
+                        <div class="col-lg-6">
+                            <img src="img/certificate02.jpg" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="button-group">
+        <button class="1">通过</button>
+        <button class="0">不通过</button>
+        <a href="javascript:history.go(-1);void(0);">返回上一层</a>
+    </div>
+    <div class="reason_box">
+        <textarea id="reason" name="reason" style="width: 100%;height:100px;" placeholder="备注（不通过的理由）"></textarea>
+    </div>
+</div>

@@ -1,0 +1,45 @@
+<!-- 组织审核参加活动的志愿者-->
+<div id="actvol_review" ng-controller="actVolReviewCtrl">
+    <div class="table_box">
+    
+	   	 <div class="table" style="border:none">
+	   		姓名：<input type="text" id="cRealName"  >
+	   		手机号：<input type="text" id="cTel" >
+	   		审核状态：<select id="iscalc" >
+		    			<option value="">--请选择--</option>
+		    			<option value="2">未审核</option>
+		    			<option value="1">审核已通过</option>
+		    			<option value="0">审核未通过</option>
+	    		  	 </select>
+	   		<input type="button" ng-click="searchBtn()" style="width:70px;" value="查询">
+	    </div>
+    
+        <table id="example2" class="table" cellspacing="0">
+            <thead>
+            <tr>
+             	<td>参与活动</td>
+                <td>姓名</td>
+                <td>手机号</td>
+                <td>审核状态</td>
+                <td>备注</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="obj in list track by $index">
+            	<td ng-bind="obj.title"></td>
+                <td>
+                    <a href="#/actVolReviewDetail" ng-bind="obj.realname" ng-click="getId(obj)"></a>
+                </td>
+                <td ng-bind="obj.tel"></td>
+                <td class="notice">
+                	<span ><a ng-if="obj.iscalc == 0" href="#/actVolReviewDetail" ng-click="getId(obj)">审核未通过</a></span>
+                	<span ng-if="obj.iscalc == 1">审核已通过</span>
+                	<span><a ng-if="obj.iscalc == 2" href="#/actVolReviewDetail" ng-click="getId(obj)">未审核</a></span>
+                </td>
+                <td ng-bind="obj.auditNotes"></td>
+            </tr>
+            </tbody>
+        </table>
+        <div id="actvolun_rvpage"></div>
+    </div>
+</div>

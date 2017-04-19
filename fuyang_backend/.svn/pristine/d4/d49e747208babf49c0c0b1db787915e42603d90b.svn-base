@@ -1,0 +1,505 @@
+package com.yichuang.fuyang.web;
+
+import java.io.File;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.apache.commons.fileupload.disk.DiskFileItem;
+import org.apache.commons.net.ftp.FTPClient;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
+
+import com.yichuang.fuyang.entity.Groups;
+import com.yichuang.fuyang.entity.User;
+import com.yichuang.fuyang.entity.Volunteers;
+import com.yichuang.fuyang.service.GroupsService;
+import com.yichuang.fuyang.service.PropertyService;
+import com.yichuang.fuyang.service.UserService;
+import com.yichuang.fuyang.service.VolunteersService;
+import com.yichuang.fuyang.service.YichuangException;
+import com.yichuang.fuyang.util.DefaultResponse;
+import com.yichuang.fuyang.util.FTPUtil;
+import com.yichuang.fuyang.util.JsonResult;
+import com.yichuang.fuyang.util.Utils;
+/**
+ * 用户功能
+ * @author Administrator
+ *
+ */
+@Controller
+@RequestMapping("/user")
+public class UserController {
+
+	@Autowired
+	private UserService userService;
+
+	@Autowired
+	private VolunteersService volunteersService;
+
+	@Autowired
+	private GroupsService groupsService;
+
+	@Autowired
+	private PropertyService propertyService;
+	
+	
+
+	/**
+	 * 获取个人信息
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping("/getUserById")
+	@ResponseBody
+	public JsonResult<Map<String, Object>> getUserById(String id, String keyParams,String token) {
+		//接口签名
+		JsonResult<Map<String, Object>> checkResult = Utils.checkKeyParams(id + propertyService.KEY, keyParams);
+		if (checkResult != null) {
+			return checkResult;
+		} 
+		//判断参数
+		if(StringUtils.isEmpty(id)){
+			return new JsonResult<Map<String,Object>>(DefaultResponse.PARAM_NULL_ERROR,null);
+		}
+		//对比token
+		List<User> user = userService.getUserByID(id);
+		if(user != null && user.size() >0){
+			if(!user.get(0).getToken().equals(token)){
+				return new JsonResult<Map<String,Object>>(DefaultResponse.TOKEN_NULL_ERROR,null);
+			}
+		}
+	try {
+			Map<String, Object> list = userService.getUserById(id);
+			return new JsonResult<Map<String, Object>>(list);
+			
+		} catch (YichuangException e) {
+			e.printStackTrace();
+			return new JsonResult<Map<String, Object>>(e.getField(),
+					e.getMessage(), null);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new JsonResult<Map<String, Object>>(DefaultResponse.QUERY_ERROR,null);
+		}
+	}
+
+	/**
+	 * 管理后台验证密码 LH
+	 * 
+	 * @param Integer
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	@RequestMapping("/checkPwd")
+	@ResponseBody
+	public JsonResult<Boolean> checkPwd(@RequestParam(value="userId",required=false)String userId,@RequestParam(value="password",required=false)String password,String keyParams) {
+		JsonResult<Boolean> result = null;
+		try {
+				//接口加密验证
+				JsonResult<Boolean>  checkResult = Utils.checkKeyParams(userId+password+propertyService.KEY,keyParams);
+				if(checkResult != null){
+					return checkResult;
+				}
+				
+				//出入参数是否 为空 为空则返回1006
+				if(StringUtils.isEmpty(userId) || StringUtils.isEmpty(password) ){
+					return new JsonResult<Boolean>(DefaultResponse.PARAM_NULL_ERROR,null);
+				}
+				
+				//根据用户ID查询用户 查询不到用户返回2004
+				List<User> list = userService.getUserByID(userId);
+				
+				if(list == null || list.size() < 1){
+					return  new JsonResult<Boolean>(DefaultResponse.RESULT_NULL_ERROR,null);
+				}
+				
+				//对比输入密码是否正确 相同则返回0   不相同返回2004
+				boolean flag = list.get(0).getPassword().equals(Utils.md5salt(password));
+				if(flag){
+					result = new JsonResult<Boolean>(DefaultResponse.SUCCESS,null);
+				}else{
+					result = new JsonResult<Boolean>(DefaultResponse.COMPARE_DIFFERENCE,null);
+				}
+					
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new JsonResult<Boolean>(DefaultResponse.OPERATE_ERROR, false);
+		}
+		return result;
+	}
+	
+	
+	/**
+	 * 管理后台修改密码 LH
+	 * 
+	 * @param Integer
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	@RequestMapping("/modifyPwd")
+	@ResponseBody
+	public JsonResult<Boolean> modifyPwd(@RequestParam("userId")String userId,@RequestParam("password")String password,String keyParams) {
+		//System.out.println("userId----------------"+userId);
+		//System.out.println("password----------------"+password);
+		//System.out.println("keyParams----------------"+keyParams);
+		//System.out.println("服务端keyParams----------------"+Utils.sh1(userId+password+propertyService.KEY));
+		
+		JsonResult<Boolean> result = null;
+		try {
+				//接口加密验证
+				JsonResult<Boolean>  checkResult = Utils.checkKeyParams(userId+password+propertyService.KEY,keyParams);
+				if(checkResult != null){
+					return checkResult;
+				}
+				//出入参数是否 为空 为空则返回1006
+				if(StringUtils.isEmpty(userId) || StringUtils.isEmpty(password) ){
+					return new JsonResult<Boolean>(DefaultResponse.PARAM_NULL_ERROR,null);
+				}
+				//根据用户ID查询用户 查询不到用户返回2004
+				List<User> list = userService.getUserByID(userId);
+				if(list == null || list.size() < 1){
+					return  new JsonResult<Boolean>(DefaultResponse.RESULT_NULL_ERROR,null);
+				}
+				
+				//修改用户密码 成功返回0 失败返回1004
+				User user = list.get(0);
+				user.setPassword(Utils.md5salt(password));
+				user.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+				
+				int i = userService.updateUserById(user);
+				if(i>0){
+					result = new JsonResult<Boolean>(DefaultResponse.SUCCESS,null);
+				}else{
+					result = new JsonResult<Boolean>(DefaultResponse.UPDATE_ERROR,null);
+				}
+				
+		} catch (Exception e) {
+			e.printStackTrace();
+			result = new JsonResult<Boolean>(DefaultResponse.OPERATE_ERROR, false);
+		}
+		return result;
+	}
+	
+
+	/**
+	 * 获取组织 / 志愿者 信息 LH
+	 * @param session
+	 * @param keyParams 验证码
+	 * @return
+	 */
+	@SuppressWarnings({ "unused", "rawtypes" })
+	@RequestMapping("/getInfo")
+	@ResponseBody
+	public JsonResult<User> getInfo(String id,String keyParams) {
+		JsonResult<User> result = null;
+		try {
+				JsonResult  checkResult = Utils.checkKeyParams(id+propertyService.KEY,keyParams);
+				if(checkResult != null){
+					return new JsonResult<User>(DefaultResponse.OPERATE_ERROR,null);
+				}
+				
+				if ( id == null ) {
+					return  new JsonResult<User>(DefaultResponse.PARAM_NULL_ERROR, null);
+				} 
+			 	// 根据ID查询用户信息
+				User user =null;
+				List<User> list = userService.getUserByID(id);
+				if(list != null && list.size() > 0){
+					user = list.get(0);
+				}
+				
+				if(user == null){
+					return new JsonResult<User>(DefaultResponse.PARAM_NULL_ERROR, null);
+				}
+				Volunteers vol_temp = null;
+				Groups group = null; 
+				String userType = user.getType();
+				
+				//查询志愿者信息
+				if(propertyService.USERTYPE_VOL.equals(userType)){
+					String volunteerId = user.getVolunteerId();
+					
+					List<Volunteers> returnVoluns = volunteersService.getVolunById(volunteerId);
+					if(returnVoluns != null && returnVoluns.size()>0){
+						vol_temp = volunteersService.getVolunById(volunteerId).get(0);
+						user.setVolunteer(vol_temp);
+					}
+				}
+				
+				//查询组织或管理员信息
+				if(propertyService.USERTYPE_GRO.equals(userType) || propertyService.USERTYPE_MAN.equals(userType)){
+					String groupId = user.getGroupId();
+					
+					List<Groups> getGroupsList = groupsService.getGroupById(groupId);
+					
+					if(getGroupsList != null && getGroupsList.size()>0){
+						group = groupsService.getGroupById(groupId).get(0);
+						user.setGroup(group);
+					}
+				}
+				result = new JsonResult<User>(DefaultResponse.SUCCESS, user);
+		} catch (Exception e) {
+			e.printStackTrace();
+			result = new JsonResult<User>(DefaultResponse.QUERY_ERROR, null);
+		}
+		return result;
+	}
+	
+	/**
+	 * 更新任务
+	 * @param user
+	 * @return
+	 */
+	@RequestMapping("updateMissing")
+	@ResponseBody 
+	public JsonResult<String> updateMissing(String id,String shareCamDate,String voteDate,String signDate,String shareAppDate,String taskFinishedDate){
+		if(id == null || id.trim() == ""){
+			return new JsonResult<String>(DefaultResponse.PARAM_NULL_ERROR,null);
+		}
+		User user = new User();
+		JsonResult<String> jsonResult = null;
+		user.setId(id);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		if(taskFinishedDate != null){
+			try {
+				user.setTaskFinishedDate(sdf.parse(taskFinishedDate)); 
+				userService.updateDateByid(user);
+				jsonResult = new JsonResult<String>(DefaultResponse.SUCCESS,null);
+				} catch (Exception e) {
+				jsonResult = new JsonResult<String>(DefaultResponse.OPERATE_ERROR,null);
+				}
+		}
+		if(shareCamDate != null){
+			try {
+				user.setShareCamDate(sdf.parse(shareCamDate)); 
+				userService.updateDateByid(user);
+				jsonResult = new JsonResult<String>(DefaultResponse.SUCCESS,null);
+				} catch (Exception e) {
+				jsonResult = new JsonResult<String>(DefaultResponse.OPERATE_ERROR,null);
+				}
+		}
+		if(voteDate != null){
+			try {
+				user.setVoteDate(sdf.parse(voteDate));
+				userService.updateDateByid(user);
+				jsonResult = new JsonResult<String>(DefaultResponse.SUCCESS,null);
+				} catch (Exception e) {
+				jsonResult = new JsonResult<String>(DefaultResponse.OPERATE_ERROR,null);
+				}
+		}
+		if(signDate != null){
+			try {
+				user.setSignDate(sdf.parse(signDate));
+				userService.updateDateByid(user);
+				jsonResult = new JsonResult<String>(DefaultResponse.SUCCESS,null);
+			} catch (Exception e) {
+				jsonResult = new JsonResult<String>(DefaultResponse.OPERATE_ERROR,null);
+			}
+		}
+		if(shareAppDate != null){
+			try {
+				user.setShareAppDate(sdf.parse(shareAppDate));
+				userService.updateDateByid(user);
+				jsonResult = new JsonResult<String>(DefaultResponse.SUCCESS,null);
+			} catch (Exception e) {
+				jsonResult = new JsonResult<String>(DefaultResponse.OPERATE_ERROR,null);
+			}
+		}
+		return jsonResult;
+	}
+	
+	/**
+	 * 更新用户信息
+	 * @param req
+	 * @param user
+	 * @return
+	 */
+	@RequestMapping("updateUserInfo")
+	@ResponseBody
+	public JsonResult<String> updateUserInfo(HttpServletRequest req,User user,String birthDay,String token){
+		String userId = user.getId();
+		if(StringUtils.isEmpty(userId)){
+			return new JsonResult<String>(DefaultResponse.PARAM_NULL_ERROR,null);
+		}
+		Volunteers volunteers = null;
+		//对比token
+		List<User> list = userService.getUserByID(userId);
+		if(list != null && list.size() >0){
+			if(!list.get(0).getToken().equals(token)){
+				return new JsonResult<String>(DefaultResponse.TOKEN_NULL_ERROR,null);
+			}
+			if(StringUtils.isEmpty(list.get(0).getVolunteerId())){
+				volunteers = new Volunteers();
+				volunteers.setId(list.get(0).getVolunteerId());
+				volunteers.setPhoto(list.get(0).getPhoto());
+			}
+		}
+		long time = System.currentTimeMillis();
+		Timestamp timestamp = new Timestamp(time);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		if(!StringUtils.isEmpty(birthDay)){
+			try {
+				user.setBirth(sdf.parse(birthDay));
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
+		user.setUpdatedAt(timestamp);
+		if (req instanceof MultipartHttpServletRequest) {
+			
+			Map<String, Object> connectReturnMap = null;
+			FTPClient ftp = null;
+
+				// 转换成多部分request
+			MultipartHttpServletRequest multRequest = (MultipartHttpServletRequest) req;
+			Iterator<String> iter = multRequest.getFileNames();
+			while (iter.hasNext()) {
+
+					// 根据上传文件名称获取上传的文件
+				MultipartFile file1 = multRequest.getFile(iter.next());
+					
+					// 将MultipartFile 转为 File
+				CommonsMultipartFile cf = (CommonsMultipartFile) file1;
+				DiskFileItem fi = (DiskFileItem) cf.getFileItem();
+				File fileFrom = fi.getStoreLocation();
+				String systFileName = UUID.randomUUID().toString()+"."+Utils.getFileSuffix(fi.getName());
+				try {
+					connectReturnMap = FTPUtil.connect(propertyService.REMOTE_IMAGE_PHOTO, propertyService.REMOTE_IMAGE_IP,
+							propertyService.REMOTE_IMAGE_PORT, propertyService.REMOTE_IMAGE_USERNAME,
+							propertyService.REMOTE_IMAGE_PASSWORD);
+					if(connectReturnMap != null && (boolean)connectReturnMap.get("connectFlag")){
+						ftp = (FTPClient) connectReturnMap.get("FTPClient");
+						FTPUtil.upload(fileFrom,systFileName,ftp);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				String serverPath = propertyService.OFFICIAL_SITE+propertyService.REMOTE_IMAGE_PHOTO_LOOK+systFileName;
+				user.setPhoto(serverPath);
+				Integer integer = userService.updateUserById(user);
+				if(integer > 0 ){
+					if(volunteers != null){
+						volunteers.setPhoto(serverPath);
+						volunteers.setNickname(user.getNickname());
+						volunteersService.updateVolunInfo(volunteers);
+					}
+					return new JsonResult<String>(DefaultResponse.SUCCESS,null);
+				}
+				return new JsonResult<String>(DefaultResponse.UPDATE_ERROR,null);
+			} 
+			
+		}
+		Integer integer = userService.updateUserById(user);
+		if(integer > 0){
+			if(volunteers != null){
+				volunteers.setNickname(user.getNickname());
+				volunteersService.updateVolunInfo(volunteers);
+			}
+			return new JsonResult<String>(DefaultResponse.SUCCESS,null);
+		}
+		return new JsonResult<String>(DefaultResponse.UPDATE_ERROR,null);
+	}
+
+	/**
+	 * 用户修改密码
+	 * @param userId
+	 * @param password
+	 * @param cardId
+	 * @param keyParams
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	@RequestMapping("/userModifyPwd")
+	@ResponseBody
+	public JsonResult<Boolean> userModifyPwd(@RequestParam("userId")String userId,@RequestParam("password")String password,String cardId,String keyParams) {
+		
+		JsonResult<Boolean> result = null;
+		try {
+				//接口加密验证
+				JsonResult<Boolean>  checkResult = Utils.checkKeyParams(userId+password+propertyService.KEY,keyParams);
+				if(checkResult != null){
+					return checkResult;
+				}
+				//出入参数是否 为空 为空则返回1006
+				if(StringUtils.isEmpty(userId) || StringUtils.isEmpty(password) ){
+					return new JsonResult<Boolean>(DefaultResponse.PARAM_NULL_ERROR,null);
+				}
+				//根据用户ID查询用户 查询不到用户返回2004
+				List<User> list = userService.getUserByID(userId);
+				if(list == null || list.size() < 1){
+					return  new JsonResult<Boolean>(DefaultResponse.RESULT_NULL_ERROR,null);
+				}
+				
+				//修改用户密码 成功返回0 失败返回1004
+				User user = list.get(0);
+				
+				if(StringUtils.isEmpty(user.getType())){//用户类型不为空时，验证用户信息
+					String userType = user.getType();
+					Volunteers vol_temp = null;
+					Groups group = null; 
+					//查询志愿者信息
+					if(propertyService.USERTYPE_VOL.equals(userType)){
+						String volunteerId = user.getVolunteerId();
+						
+						List<Volunteers> returnVoluns = volunteersService.getVolunById(volunteerId);
+						if(returnVoluns != null && returnVoluns.size()>0){
+							vol_temp = volunteersService.getVolunById(volunteerId).get(0);
+							if(!vol_temp.getCardId().equals(cardId)){
+								return new JsonResult<Boolean>(1,"身份证号码不正确",null);
+							}
+						}
+					}
+					
+					//查询组织信息
+					if(propertyService.USERTYPE_GRO.equals(userType)){
+						String groupId = user.getGroupId();
+						
+						List<Groups> getGroupsList = groupsService.getGroupById(groupId);
+						
+						if(getGroupsList != null && getGroupsList.size()>0){
+							group = groupsService.getGroupById(groupId).get(0);
+							if(!group.getContactsIscard().equals(cardId)){
+								return new JsonResult<Boolean>(1,"注册人身份证号码不正确",null);
+							}
+						}
+					}
+					
+					//查询管理员信息
+					if(propertyService.USERTYPE_MAN.equals(userType)){
+						return new JsonResult<Boolean>(1,"不能修改管理员密码",null);
+					}
+				}
+				
+				user.setPassword(Utils.md5salt(password));
+				user.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+				
+				int i = userService.updateUserById(user);
+				if(i>0){
+					result = new JsonResult<Boolean>(DefaultResponse.SUCCESS,null);
+				}else{
+					result = new JsonResult<Boolean>(DefaultResponse.UPDATE_ERROR,null);
+				}
+				
+		} catch (Exception e) {
+			e.printStackTrace();
+			result = new JsonResult<Boolean>(DefaultResponse.OPERATE_ERROR, false);
+		}
+		return result;
+	}
+	
+}

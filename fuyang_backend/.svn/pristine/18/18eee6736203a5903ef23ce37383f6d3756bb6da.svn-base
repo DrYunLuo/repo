@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+ <mapper namespace="com.yichuang.fuyang.dao.StepRecordsDao">
+ 
+ 	<!-- 新添捐步记录 -->
+ 	<insert id="addSteps" parameterType="com.yichuang.fuyang.entity.StepRecords" >
+ 		insert into steprecords(stepRecordsId,steps,stepTime,userId,stepsCount)
+ 		values(#{stepRecordsId},#{steps},#{stepTime},#{userId},#{stepsCount})
+ 	</insert>
+ 	
+ 	<!-- 获取记录 -->
+ 	<select id="findByUserId" parameterType="com.yichuang.fuyang.entity.StepRecords" resultMap="BaseResultMap">
+ 		select * from steprecords<where>
+ 			<if test="userId != null and userId !=''">`userId` = #{userId}</if>
+ 		</where>
+ 	</select>
+ 	<resultMap type="com.yichuang.fuyang.entity.StepRecords" id="BaseResultMap">
+ 		<id column="stepRecordsId" property="stepRecordsId"/>
+ 	</resultMap>
+ </mapper>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+ <mapper namespace="com.yichuang.fuyang.dao.PostbbsDao">
+ <!-- 根据title获取帖子 -->
+ <select id="getPostByTitle" parameterType="string" resultMap="BaseResultMap">
+ 	select * from postbbs where title like'%${title}%'
+ </select>
+ 
+ <!-- 获取论坛帖子 -->
+ <select id="getPostList" parameterType="string" resultMap="BaseResultMap">
+ 	select * from postbbs where `type`=#{type}
+ </select>
+ <!-- 根据条件查询帖子列表内容 -->
+ <select id="findPostList" parameterType="com.yichuang.fuyang.entity.Postbbs" resultMap="BaseResultMap">
+ 	select * from postbbs 
+ 	<where>
+ 		<if test="volunteerId != null and volunteerId !=''">volunteerId = #{volunteerId}</if>
+ 		<if test="id != null and id !=''">and id = #{id}</if>
+ 	</where>
+ </select>
+ 
+<resultMap type="com.yichuang.fuyang.entity.Postbbs" id="BaseResultMap">
+	<id property="id" column="id"/>
+</resultMap>
+ 
+ <!-- 总条数 -->
+ <select id="totalCount" parameterType="string" resultType="integer">
+ 	select count(id) from postbbs where `type`=#{type} 
+ </select>
+ 
+ 
+ <!-- 根据id获取帖子详情 -->
+ <select id="getPostById" parameterType="string" resultType="com.yichuang.fuyang.entity.Postbbs">
+ 	select * from postbbs where id=#{id}
+ </select>
+ 
+ <!-- 发帖 -->
+	 <insert id="addPost" parameterType="com.yichuang.fuyang.entity.Postbbs">
+	 	insert into postbbs (id,title,content,author,picture,click,createTime,type,volunteerId,groupId,photo,realname)
+	 	values (#{id},#{title},#{content},#{author},#{picture},#{click},#{createTime},#{type},#{volunteerId},#{groupId},#{photo},#{realname})
+	 </insert>
+ 
+ <!-- 获取帖子总数 -->
+ <select id="postTotal" resultType="integer">
+ 	select count(id) from postbbs
+ </select>
+ 
+ <!-- 根据id更新帖子点击量 -->
+ <update id="updateClickById" parameterType="string">
+ 	update postbbs set click = click + 1 where id = #{id}
+ </update>
+ </mapper>

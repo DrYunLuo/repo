@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script type="text/javascript" src='js/jquery-1.11.3.js'></script>
+<title>Insert title here</title>
+</head>
+<body>
+<div class="mydv1">
+            <img src="img/活动详情页_03.png" alt=""/>
+            <div class="baby">
+                <h3>关爱肿瘤宝贝</h3>
+                <p class="myp1">阿萨德撒打算看美女来看你</p>
+                <div class="dv">
+                    <progress value="50" max="100"></progress><span>50%</span>
+                </div>
+                <div class="total">
+                    <p class="myp2">共<span>222</span>份爱心</p>
+                    <p class="myp3">目标<span>222</span>万元</p>
+                </div>
+            </div>
+        </div>
+        <div class="mydv1">
+            <img src="img/活动详情页_03.png" alt=""/>
+            <div class="baby">
+                <h3>关爱肿瘤宝贝</h3>
+                <p class="myp1">阿萨德撒打算看美女来看你</p>
+                <div class="dv">
+                    <progress value="50" max="100"></progress><span>50%</span>
+                </div>
+                <div class="total">
+                    <p class="myp2">共<span>222</span>份爱心</p>
+                    <p class="myp3">目标<span>222</span>万元</p>
+                </div>
+            </div>
+        </div>
+<script>
+    $(function(){
+    	function GetQueryString(name)
+        {
+            var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if(r!=null)return  unescape(r[2]); return null;
+        }
+    	var vid=GetQueryString(vid);
+    	
+        $.get("/fuyang_backend/campaigns/getLovingHeart",function(data){
+        	console.log(data);
+        	$("header span").text(data.data);
+        });
+        var s=0;
+        var f;
+        
+        $.get("/fuyang_backend/campaigns/getBenefit?pageNo=1&pageSize=10",function(result){
+        	console.log(result);
+        	console.log(result.data.list[0].image);
+        	console.log(result.data.list[0].title);
+//	                        第一部分...
+			
+        	$("section #clas1 img").attr("src",result.data.list[0].image);
+        	$("section #clas1 aside h3").text(result.data.list[0].title);
+        	if(result.data.list[0].lovingHeart==null){
+        		s=0;
+        	}else{
+        		s=result.data.list[0].lovingHeart;
+        	}
+        	$("section #clas1 aside p span").text(s);
+//        	第二部分...
+			
+        	$("section #clas2 img").attr("src",result.data.list[1].image);
+        	$("section #clas2 aside h3").text(result.data.list[1].title);
+        	if(result.data.list[1].lovingHeart==null){
+        		s=0;
+        	}else{
+        		s=result.data.list[1].lovingHeart;
+        	}
+        	$("section #clas2 aside p span").text(s);
+//        	第三部分...
+			
+        	$("section #clas3 img").attr("src",result.data.list[2].image);
+        	$("section #clas3 aside h3").text(result.data.list[2].title);
+        	if(result.data.list[2].lovingHeart==null){
+        		s=0;
+        	}else{
+        		s=result.data.list[2].lovingHeart;
+        	}
+        	$("section #clas3 aside p span").text(s);
+//        	第四部分...
+			
+        	$("section #clas4 img").attr("src",result.data.list[3].image);
+        	$("section #clas4 aside h3").text(result.data.list[3].title);
+        	if(result.data.list[3].lovingHeart==null){
+        		s=0;
+        	}else{
+        		s=result.data.list[3].lovingHeart;
+        	}
+        	$("section #clas4 aside p span").text(result.data.list[3].lovingHeart);
+       
+	        var size=result.data.list.length;
+	        var arr1=new Array(size);
+	        for(var i=0;i<size;i++){
+	        	arr1[i]=result.data.list[i].id;
+	        };
+	        console.log(arr1);
+	        for(var i=0;i<size;i++){
+	        	if(result.data.list[i].lovingHeart==null){
+	        		s=0;
+	        	}else{
+	        		s=result.data.list[i].lovingHeart;
+	        	}
+	        	f=Math.ceil(s/(result.data.list[i].captical*10000));
+	        	$("#ddd").append("<div class='mydv1'><img src='"+result.data.list[i].image+"' alt=''/><div class='baby'><h3>"+result.data.list[i].title+"</h3><p class='myp1'>"+result.data.list[i].location+"</p><div id='dv'><progress value='"+f+"' max='100'></progress><span>"+f+"%</span></div><div class='total'><p class='myp2'>共<span>"+s+"</span>份爱心</p><p class='myp3'>目标<span>"+result.data.list[i].captical+"</span>万元</p></div></div></div>");
+	        };
+	        
+	        
+	        $("section aside").each(function(key,value){
+	        	$(value).on("click",function(){
+	        		window.location.href="activity_donation.html?id="+arr1[key]+"&token="+vid;
+	        	});
+	        });
+	        
+	        $("#ddd .mydv1").each(function(key,value){
+	        	$(value).on("click",function(){
+	        		window.location.href="activity_donation.html?id="+arr1[key]+"&token="+vid;
+	        	});
+	        });
+        });
+    });
+</script>
+<script type="text/javascript">
+var time=[];
+var stepsArr=[];
+function sub(){
+ 	 $.post('/fuyang_backend/account/donateStep',{
+      	currentStep:10005,
+      	volunteerId:'33c6c7fe-9107-4625-93ce-c055f51f1d6c',
+      	
+      },function(result){
+   	   var obj=result.data.sevenDay;
+   	   var json=JSON.parse(obj);
+   	   for(var key in json){
+   		    time.push(parseInt(key.replace("_","")));
+   		 	console.log(time);
+   		    stepsArr.push(json[key]);
+   		    console.log(stepsArr);
+   	   }
+           alert("捐赠成功,今天已捐出"+steps+"步");         
+      })
+ }  
+ 	sub();
+</script>
+</body>
+</html>

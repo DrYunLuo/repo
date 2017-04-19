@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="css/activity_donation.css"/>
+    <script src="js/jquery-1.11.3.js"></script>
+</head>
+<body>
+<article>
+    <div id="wdwd">
+        <img class="myimg1" src="" alt=""/>
+        
+    </div>
+
+    <div class="mydv1">
+        <p>
+            <span></span>
+        </p>
+        <p class="ppp">65%</p>
+    </div>
+    <section class="mysec1">
+        <div>
+            <p id="p1" class="myp1">1111</p>
+            <p class="myp2">已捐赠积分</p>
+        </div>
+        <div>
+            <p id="p2">1111</p>
+            <p>目标积分</p>
+        </div>
+        <div>
+            <p id="p3">1111</p>
+            <p>爱心（份）</p>
+        </div>
+    </section>
+    <div class="mydv2"></div>
+    <div class="mydv3"></div>
+</article>
+    <div class="mydv4">
+        
+    </div>
+    <footer>
+        <input type="button" class="btn1" value="捐赠积分"/>
+    </footer>
+    <div class="fff">
+        <p>剩余积分:<span class="val"></span>
+            <input class="inp1" type="number" placeholder="输入你想要捐赠的积分" />
+            <input class="inp2" type="button" value="捐赠"/></p>
+    </div>
+</body>
+<script>
+    $(function(){
+        var windowHeight=window.innerHeight;
+        var footerTop=$("footer").offset().top;
+        var footerHeight=$("footer").innerHeight();
+        var dvHeight=$(".mydv3").innerHeight()+$(".mydv3").offset().top;
+        if(windowHeight>footerHeight+dvHeight){
+            $(".mydv4").css("height",(windowHeight-footerHeight-dvHeight)+"px");
+        }else{
+            $(".mydv4").css("height", 766 + "px");
+        }
+        $("footer .btn1").on("click",function(){
+            $("footer").animate({"opacity":0},200,function(){
+                $(".fff").animate({"bottom":0},500);
+            });
+        });
+//        调用接口开始部分。。。。
+        function GetQueryString(name)
+        {
+            var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if(r!=null)return  unescape(r[2]); return null;
+        }
+        //渲染头像
+        var cid = GetQueryString("cid");
+        var vid = GetQueryString("vid");
+        var id;
+        var fff;
+        var value;
+        var test;
+        console.log(cid);
+        $.get("/fuyang_backend/campaigns/getBenefitById?id=0d23e522-1620-4ca3-b49a-17b11b58ccaa",function(data){
+        	
+        	console.log(data);
+//        	最上面的图片部分...
+//        	$("#wdwd .myimg1").attr("src",data.data[0].image);
+			if(data.data[0].contributions){
+				fff=parseInt(data.data[0].contributions);
+			}
+			if(!data.data[0].contributions){
+				fff=0;
+			}
+			
+        	//data.data[0].contributions==?fff=0:fff=data.data[0].contributions;
+//        	积分部分....
+			test=Math.floor(fff/parseInt(data.data[0].captical*10000));
+			console.log(test);
+			$(".mydv1 span").css("width",test+"%");
+			$(".mydv1 .ppp").text(test+"%");
+			$("#p1").text(fff);
+			$("#p2").text(data.data[0].captical*10000);
+			$("#p3").text(data.data[0].lovingHeart);
+//			项目内容部分....
+			$(".mydv4").append("<aside><h3>项目内容</h3><div></div><h2>"+data.data[0].theme+"</h2><img src='"+data.data[0].thumb+"' alt=''/><p>"+data.data[0].description+"</p></aside><aside><h3>善款接收机构</h3><div></div><h2>"+data.data[0].groupsList[0].name+"</h2></aside>");
+        
+        });
+		
+		$.post("/fuyang_backend/account/getCredit",{
+			vid:vid,
+		},function(result){
+			console.log(result);
+			if(!result.data.credit){
+				$(".fff p span").text(0);
+			}else{
+				$(".fff p span").text(result.data.credit);
+			}
+		});
+		
+		var val=$(".fff p span").text();
+		$(".fff .inp2").on("click",function(){
+			value=$(".fff .inp1").val();
+        	console.log("val的值为:"+parseInt(val));
+        	console.log("value的值为:"+value);
+        	if(!value){
+        		alert('请输入你要捐赠的积分!!!');
+        		return;
+        	}else{
+//	        	value=parseInt($(".fff .inp1").val());
+	        	console.log(Math.ceil(value/1));
+	        	console.log(Math.floor(value/1));
+	        	console.log((value/1)>Math.floor(value/1));
+	        	if(Math.ceil(value/1)>Math.floor(value/1)){
+	        		alert('请输入整数!!!');
+	        		$(".fff .inp1").val('');
+	        		return;
+	        	};
+	        	if(value>parseInt(val)){
+	        		alert('您的积分不够了!!!');
+	        		$(".fff .inp1").val('');
+	        		return;
+	        	};
+	        	if(value<=parseInt(val)){
+	        		$.post("/fuyang_backend/account/juan",{
+	        			vid:vid,
+	        			cid:cid,
+	        			credit:value,
+	        		},function(result){
+	        			console.log(result);
+	        			alert('捐赠成功!!!');
+	        			history.go(0);
+	        		});
+        		}	
+        	}
+        });
+    });
+</script>
+</html>

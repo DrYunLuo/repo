@@ -1,0 +1,808 @@
+body{
+    width: 100%;
+}
+input{
+    outline:0;
+}
+
+/*****************************头部**********************************/
+#first{
+    width:100%;
+    border-bottom:1px solid #7d7d7d;
+    background:#f7f7f7;
+}
+#first:after{
+    content:"";
+    display:block;
+    clear:both;
+}
+.header li{
+    float:left;
+    line-height: 40px;
+}
+.header a{
+    padding:10px 5px !important;
+    color:#444 !important;
+}
+.header a.notice{
+    color:#e84c3d !important;
+}
+
+/*****************************支援阜阳logo部分**********************************/
+#twice{
+    width:100%;
+    background:#f7f7f7;
+}
+#twice:after{
+    content:"";
+    display:block;
+    clear:both;
+}
+#twice .logo{
+    overflow: hidden;
+}
+#twice ul{
+    margin-bottom: 0;
+}
+/*****************************头图**********************************/
+#third{
+    width:100%;
+}
+#third:after{
+    content:"";
+    display:block;
+    clear:both;
+}
+#third img{
+    width:100%;
+}
+#third a img{
+    width:40%;
+    height:40%;
+    margin:50% 20%;
+}
+#fifth{
+    margin:0 auto;
+    background:#eaeaea;
+    border:1px solid #dbdbdb;
+}
+@media all and (min-width:1160px){
+    .header{
+        width:70%;
+        margin:0 auto;
+    }
+    .logo{
+        width:70%;
+        margin:0 auto;
+    }
+    .logo .myul1{
+        float:right;
+    }
+    .logo li a{
+        line-height:80px;
+    }
+    .container{
+        width:70%;
+    }
+    #twice{
+        line-height: 80px;
+    }
+    /*****************************论坛首页logo部分**********************************/
+    #forth{
+        padding-top:30px;
+        width:1000px;
+        margin:0 auto;
+    }
+    #forth:after{
+        content:"";
+        display:block;
+        clear:both;
+    }
+    /*****************************助学部分**********************************/
+    #fifth{
+        width:1000px;
+    }
+    #fifth:after{
+        content:"";
+        display:block;
+        clear:both;
+    }
+    #fifth ul li{
+        color:#000;
+        list-style-type:none;
+        float:left;
+        padding:10px 20px;
+        margin:0px;
+    }
+    #fifth ul li:nth-child(1){
+        background-color:#e84c3d;
+    }
+    /*****************************标题部分**********************************/
+    #sixth{
+        width:1000px;
+        margin:0 auto;
+        background:#f9f9f9;
+        border:1px solid #e9e9e9;
+    }
+    #sixth:after{
+        content:"";
+        display:block;
+        clear:both;
+    }
+    #sixth p{
+        line-height:30px;
+        font-weight:bold;
+        color:#666666;
+        /*padding-left:15px;*/
+        margin:0;
+    }
+    /*****************************标题下面正文部分**********************************/
+    #seventh{
+        width:1000px;
+        margin:0 auto;
+        overflow:hidden;
+    }
+    #seventh:after{
+        content:"";
+        display:block;
+        clear:both;
+    }
+    #seventh .row .red{
+        color:#e84c3d;
+    }
+    #seventh .row{
+        padding-top:10px;
+        border-bottom:1px dashed #cccccc;
+    }
+    #seventh .row .media p{
+        height:40px;
+    }
+    /*****************************页码部分**********************************/
+    #page{
+        padding-top:10px;
+        width:1000px;
+        margin:0 auto;
+    }
+    #page:after{
+        content:"";
+        display:block;
+        clear:both;
+    }
+    #page .list-inline a{
+        font-size:14px;
+        color:#666666;
+        padding:5px 10px;
+        border:1px solid #dbdbdb;
+    }
+    /*****************************发帖部分**********************************/
+    .post{
+        padding-top:10px;
+        width:1000px;
+        margin:0 auto;
+        border:1px solid #dbdbdb;
+        background:#eaeaea;
+    }
+    .post:after{
+        content:"";
+        display:block;
+        clear:both;
+    }
+    .post p{
+        text-indent:2em;
+        color:#666666;
+        font-weight:bold;
+    }
+    /*****************************发帖输入部分**********************************/
+    #myinp{
+        border:1px solid #dbdbdb;
+        margin:0 auto;
+        padding-bottom:10px;
+    }
+    #myinp .luntan_file{
+        display:inline-block;
+        width:60%;
+        outline:1px solid #cccccc;
+        padding:3px 5px;
+    }
+    .inp{
+        width:900px;
+        margin:0 auto;
+    }
+    .inp:after{
+        content:"";
+        display:block;
+        clear:both;
+    }
+    .inp .myrow1 .mydv1{
+        margin-top:10px;
+    }
+    #luntan_sel{
+        outline:1px solid #cccccc;
+        width:100%;
+        padding:3px 5px;
+    }
+    .inp .myrow1 .mydv1 input{
+        outline:1px solid #cccccc;
+        margin-left:10px;
+        width:70%;
+        padding:3px 5px;
+    }
+    .inp .myrow1 .mydv1 span{
+        padding:3px 5px;
+    }
+    /****第二个row*****/
+    .inp .myrow2{
+        margin:0;
+        height:10px;
+        margin-top:10px;
+        background:#eaeaea;
+    }
+    .inp .myrow3 textarea{
+        outline:0;
+        width:100%;
+        margin:0;
+        height:80px;
+        margin-top:0;
+        border:1px solid #cccccc;
+        border-top:0;
+    }
+    /****第四个row*****/
+    .inp .myrow4{
+        margin:0;
+        height:10px;
+        margin-top:10px;
+    }
+    .inp .myrow4 div{
+        margin:0;
+        padding:0;
+    }
+    .inp .myrow4 input{
+        border-radius:0;
+        padding:3px 5px;
+    }
+    /******************************footer部分***************************/
+    footer{
+        width:100%;
+        background:#282222;
+    }
+    footer:after{
+        display:block;
+        content:"";
+        clear:both;
+    }
+    .myfooter{
+        width:70%;
+        margin:0 auto;
+    }
+    .myfooter p{
+        color:#fceceb;
+    }
+    .myfooter a{
+        color:#fceceb;
+        margin-right:10px;
+    }
+    .myfooter .myp1{
+        padding-left:10px;
+    }
+    .myfooter .mydv1{
+        padding-top:50px;
+        padding-left:100px;
+    }
+    .myfooter .mydv2{
+        padding-top:50px;
+        padding-left:20px;
+    }
+    .myfooter .mydv2 p{
+        text-align: center;
+    }
+}
+
+@media all and (min-width: 768px) and (max-width:1159px){
+    .col-sm-0{
+        display:none;
+    }
+    .header{
+        width:90%;
+        margin:0 auto;
+    }
+    .header .myli1{
+        display:none;
+    }
+    .logo{
+        width:90%;
+        margin:0 auto;
+    }
+    .logo .myul1{
+        float:right;
+    }
+    .logo li a{
+        line-height:80px;
+    }
+    #twice{
+        line-height: 90px;
+    }
+    /*****************************论坛首页logo部分**********************************/
+    #forth{
+        padding-top:30px;
+        width:90%;
+        margin:0 auto;
+    }
+    #forth:after{
+        content:"";
+        display:block;
+        clear:both;
+    }
+    /*****************************助学部分**********************************/
+    #fifth{
+        width:90%;
+    }
+    #fifth:after{
+        content:"";
+        display:block;
+        clear:both;
+    }
+    #fifth ul li{
+        color:#000;
+        list-style-type:none;
+        float:left;
+        padding:10px;
+        margin:0px;
+    }
+    #fifth ul li:nth-child(1){
+        background-color:#e84c3d;
+    }
+    /*****************************标题部分**********************************/
+    #sixth{
+        width:90%;
+        margin:0 auto;
+        background:#f9f9f9;
+        border:1px solid #e9e9e9;
+    }
+    #sixth:after{
+        content:"";
+        display:block;
+        clear:both;
+    }
+    #sixth p{
+        line-height:30px;
+        font-weight:bold;
+        color:#666666;
+        padding-left:10px;
+        margin:0;
+    }
+    /*****************************标题下面正文部分**********************************/
+    #seventh{
+        width:85%;
+        margin:0 auto;
+        overflow:hidden;
+    }
+    #seventh:after{
+        content:"";
+        display:block;
+        clear:both;
+    }
+    #seventh .row .red{
+        color:#e84c3d;
+    }
+    #seventh .row{
+        padding-top:10px;
+        border-bottom:1px dashed #cccccc;
+    }
+    #seventh .row .media p{
+        height:48px;
+    }
+    #seventh .row .dv2 p.red{
+        margin:0 0;
+    }
+    /*****************************页码部分**********************************/
+    #page{
+        padding-top:10px;
+        width:85%;
+        margin:0 auto;
+    }
+    #page:after{
+        content:"";
+        display:block;
+        clear:both;
+    }
+    #page .list-inline a{
+        color:#666666;
+        padding:2px 5px;
+        border:1px solid #dbdbdb;
+    }
+    /*****************************发帖部分**********************************/
+    .post{
+        padding-top:10px;
+        width:90%;
+        margin:0 auto;
+        border:1px solid #dbdbdb;
+        background:#eaeaea;
+    }
+    .post:after{
+        content:"";
+        display:block;
+        clear:both;
+    }
+    .post p{
+        text-indent:2em;
+        color:#666666;
+        font-weight:bold;
+    }
+    /*****************************发帖输入部分**********************************/
+    #myinp{
+        border:1px solid #dbdbdb;
+        width:90%;
+        margin:0 auto;
+        padding-bottom:10px;
+    }
+    .inp{
+        width:95%;
+        margin:0 auto;
+    }
+    .inp:after{
+        content:"";
+        display:block;
+        clear:both;
+    }
+    #myinp .luntan_file{
+        outline:1px solid #cccccc;
+        width:70%;
+        display:inline-block;
+        padding:3px 5px;
+    }
+    .inp .myrow1 .mydv1{
+        margin-top:10px;
+    }
+    .inp .myrow1 .mydv1 select{
+        outline:1px solid #cccccc;
+        width:100%;
+        padding:3px 5px;
+    }
+    .inp .myrow1 .mydv1 input{
+        outline:1px solid #cccccc;
+        width:70%;
+        padding:3px 5px;
+    }
+    .inp .myrow1 .mydv1 span{
+        padding:3px 5px;
+    }
+    /****第二个row*****/
+    .inp .myrow2{
+        margin:0;
+        height:10px;
+        margin-top:10px;
+        background:#eaeaea;
+    }
+    .inp .myrow3 textarea{
+        outline:0;
+        width:100%;
+        margin:0;
+        height:60px;
+        margin-top:0;
+        border:1px solid #cccccc;
+        border-top:0;
+    }
+    /****第四个row*****/
+    .inp .myrow4{
+        margin:0;
+        height:10px;
+        margin-top:10px;
+    }
+    .inp .myrow4 div{
+        margin:0;
+        padding:0;
+    }
+    .inp .myrow4 input{
+        border-radius:0;
+        padding:3px 5px;
+    }
+    /******************************footer部分***************************/
+    footer{
+        width:100%;
+        background:#282222;
+    }
+    footer:after{
+        display:block;
+        content:"";
+        clear:both;
+    }
+    .myfooter{
+        width:90%;
+        margin:0 auto;
+    }
+    .myfooter p{
+        color:#fceceb;
+    }
+    .myfooter a{
+        color:#fceceb;
+        margin-right:10px;
+    }
+    .myfooter .mydv1{
+        padding-top:20px;
+        padding-left:100px;
+    }
+    .myfooter .myp1{
+        padding-left:10px;
+    }
+    .myfooter .mydv2{
+        padding-top:50px;
+        padding-left:20px;
+    }
+}
+
+@media all and (max-width: 768px){
+    #first{
+        font-size:12px;
+    }
+    .hidden{
+        display:none;
+    }
+    .header{
+        width:90%;
+        margin:0 auto;
+    }
+    .header .myli1 .welcome{
+        display:none;
+    }
+    .logo{
+        width:90%;
+        margin:0 auto;
+    }
+    .col-xs-0{
+        display:none;
+    }
+    .logo .mydv1{
+        margin:0;
+        padding:0;
+    }
+    .logo .myul1 li{
+        margin:0;
+        display:block;
+        float:left;
+    }
+    .logo .myul1 li:nth-child(1),.logo .myul1 li:nth-child(3),.logo .myul1 li:nth-child(5),.logo .myul1 li:nth-child(7),.logo .myul1 li:nth-child(9),.logo .myul1 li:nth-child(11){
+        width:30%;
+        text-align:center;
+    }
+    .logo .myul1 li:nth-child(6){
+        display:none;
+    }
+    .logo .myul1 li:nth-child(7){
+        clear:both;
+    }
+    .logo li a{
+        line-height:30px;
+    }
+    /*****************************论坛首页logo部分**********************************/
+    #forth{
+        padding-top:10px;
+        width:90%;
+        margin:0 auto;
+    }
+    #forth:after{
+        content:"";
+        display:block;
+        clear:both;
+    }
+    #forth .myul1 li:nth-child(2),#forth .myul1 li:nth-child(3),#forth .myul1 li:nth-child(8){
+        display:none;
+    }
+    /*****************************助学部分**********************************/
+    #fifth{
+        width:90%;
+    }
+    #fifth:after{
+        content:"";
+        display:block;
+        clear:both;
+    }
+    #fifth ul li{
+        color:#000;
+        list-style-type:none;
+        float:left;
+        padding:8px 0;
+        text-align:center;
+        margin:0px;
+        width:14%;
+    }
+    #fifth ul li:last-child{
+        width:16%;
+    }
+    #fifth ul li:nth-child(1){
+        background-color:#e84c3d;
+    }
+    /*****************************标题部分**********************************/
+    #sixth{
+        width:90%;
+        margin:0 auto;
+        background:#f9f9f9;
+        border:1px solid #e9e9e9;
+    }
+    #sixth:after{
+        content:"";
+        display:block;
+        clear:both;
+    }
+    #sixth p{
+        line-height:25px;
+        font-weight:bold;
+        color:#666666;
+        /*padding-left:15px;*/
+    }
+    /*****************************标题下面正文部分**********************************/
+    #seventh{
+        width:85%;
+        margin:0 auto;
+        overflow:hidden;
+    }
+    #seventh:after{
+        content:"";
+        display:block;
+        clear:both;
+    }
+    #seventh .row .red{
+        color:#e84c3d;
+    }
+    #seventh .row h3{
+        font-size:16px;
+    }
+    #seventh .row span.sp{
+        display:none;
+    }
+    #seventh .row .dv1{
+        padding-right:0;
+    }
+    #seventh .row .dv2{
+        padding:0 0;
+    }
+    #seventh .row{
+        padding-top:10px;
+        border-bottom:1px dashed #cccccc;
+    }
+    #seventh .row .media p{
+        height:48px;
+    }
+    #seventh .row .dv2 p.red{
+        margin:0 0;
+    }
+    /*****************************页码部分**********************************/
+    #page{
+        padding-top:10px;
+        width:85%;
+        margin:0 auto;
+    }
+    #page:after{
+        content:"";
+        display:block;
+        clear:both;
+    }
+    #page .list-inline li{
+        padding:0 0;
+    }
+    #page .list-inline a{
+        color:#666666;
+        padding:2px 5px;
+        border:1px solid #dbdbdb;
+    }
+    /*****************************发帖部分**********************************/
+    .post{
+        padding-top:10px;
+        width:90%;
+        margin:0 auto;
+        border:1px solid #dbdbdb;
+        background:#eaeaea;
+    }
+    .post:after{
+        content:"";
+        display:block;
+        clear:both;
+    }
+    .post p{
+        text-indent:2em;
+        color:#666666;
+        font-weight:bold;
+    }
+    /*****************************发帖输入部分**********************************/
+    #myinp{
+        border:1px solid #dbdbdb;
+        width:90%;
+        margin:0 auto;
+        padding-bottom:5px;
+    }
+    .inp{
+        width:95%;
+        margin:0 auto;
+    }
+    .inp:after{
+        content:"";
+        display:block;
+        clear:both;
+    }
+    #myinp .luntan_file{
+        outline:1px solid #cccccc;
+        width:60%;
+        display:inline-block;
+    }
+    .myrow1 span{
+        font-size:8px;
+    }
+    .inp .myrow1 .mydv1{
+        margin-top:5px;
+        padding:0;
+    }
+    .inp .myrow1 .mydv1 select{
+        outline:1px solid #cccccc;
+        width:55%;
+        margin-left:4%;
+    }
+    .inp .myrow1 .mydv1 input{
+        margin:10px 0 0 0;
+        padding:0;
+        outline:1px solid #cccccc;
+        width:60%;
+    }
+    /****第二个row*****/
+    .inp .myrow2{
+        margin:0;
+        height:10px;
+        margin-top:5px;
+        background:#eaeaea;
+    }
+    .inp .myrow3 textarea{
+        outline:0;
+        width:100%;
+        margin:0;
+        height:60px;
+        margin-top:0;
+        border:1px solid #cccccc;
+        border-top:0;
+    }
+    /****第四个row*****/
+    .inp .myrow4{
+        margin:0;
+        height:10px;
+        margin-top:5px;
+    }
+    .inp .myrow4 div{
+        margin:0;
+        padding:0;
+    }
+    .inp .myrow4 input{
+        border-radius:0;
+        padding:3px 5px;
+    }
+    /******************************footer部分***************************/
+    footer{
+        width:100%;
+        background:#282222;
+    }
+    footer:after{
+        display:block;
+        content:"";
+        clear:both;
+    }
+    .myfooter{
+        width:90%;
+        margin:0 auto;
+    }
+    .myfooter p{
+        color:#fceceb;
+    }
+    .myfooter a{
+        color:#fceceb;
+        margin-right:5px;
+    }
+    .myfooter .mydv1 .myp1{
+        padding-left:5px;
+    }
+    .myfooter .mydv1{
+        padding-top:10px;
+    }
+    .myfooter .thumbnail{
+        padding-bottom:5px;
+    }
+    .myfooter .mydv2{
+        padding-top:10px;
+        padding-left:0;
+    }
+}

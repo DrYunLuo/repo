@@ -1,0 +1,13 @@
+.create_campaign{
+    border-top:2px solid #dadada;
+}
+.media-body div{
+    line-height:18px;
+}
+.media-heading{
+    padding:0;
+    line-height:20px;
+}
+.media-body .campaign_person{
+    padding:0;
+}

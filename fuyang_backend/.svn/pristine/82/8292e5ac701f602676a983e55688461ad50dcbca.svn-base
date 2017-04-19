@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+ <mapper	namespace="com.yichuang.fuyang.dao.CampaignrecordsDao">
+ 
+ <!-- 根据志愿者id和活动id添加一条记录 -->
+ <insert id="partTake" parameterType="com.yichuang.fuyang.entity.Campaignrecords">
+ 	 INSERT INTO campaignrecords (id,VolunteerId,CampaignId,createdAt,updatedAt) 
+ 	VALUES(#{id},#{VolunteerId},#{CampaignId},(SELECT NOW()),(SELECT NOW()))
+ </insert>
+ 
+ <!-- 获取所有 参与活动的人数（已经审核通过的）-->
+ <select id="getPeoPle" parameterType="hashmap" resultType="int">
+ 	select count(id) from campaignrecords
+ 	<where>
+ 		<if test="VolunteerId!=null">
+ 			and VolunteerId = #{VolunteerId}
+ 		</if>
+ 		<if test="CampaignId!=null">
+ 			and CampaignId = #{CampaignId}
+ 		</if>
+	 		
+ 	</where>
+ 	
+ </select>
+ 
+ <!-- 获取活动记录 -->
+ <select id="findVolunRecords" parameterType="com.yichuang.fuyang.entity.Campaignrecords" resultMap="BaseResultMap">
+ 	select * from campaignrecords 
+ 	<where>
+ 		<if test="volunteerId != null and volunteerId != ''">volunteerId = #{volunteerId}</if>
+ 		<if test="iscalc != null and iscalc != ''">and iscalc = #{iscalc}</if>
+ 	</where>
+ </select>
+ <resultMap type="com.yichuang.fuyang.entity.Campaignrecords" id="BaseResultMap">
+ 	<id column="id" property="id"/>
+ </resultMap>
+ 
+ <!-- 组织审核志愿者参加活动 LH -->
+  <update id="updateCamRecIscalc"  parameterType="com.yichuang.fuyang.entity.Campaignrecords"  >
+  		update campaignrecords 
+  		<set>
+  			<if test="iscalc != null and iscalc != ''">
+  				iscalc = #{iscalc},
+  			</if>
+  				auditNotes = #{auditNotes}
+  		</set>
+  		where id = #{id}
+  </update>
+  
+  <!-- 动态更新活动参与记录 -->
+  <update id="updateCamRecDynamic"  parameterType="com.yichuang.fuyang.entity.Campaignrecords"  >
+  		update campaignrecords 
+  		<set>
+  			<if test="iscalc != null and iscalc != ''">
+  				iscalc = #{iscalc},
+  			</if>
+  			<if test="auditNotes != null and auditNotes != ''">
+  				auditNotes = #{auditNotes},
+  			</if>
+  			<if test="enterTime != null and enterTime != ''">
+  				enterTime = #{enterTime},
+  			</if>
+  			<if test="leaveTime != null and leaveTime != ''">
+  				leaveTime = #{leaveTime},
+  			</if>
+  			<if test="createdAt != null">
+  				leaveTime = #{createdAt},
+  			</if>
+  			<if test="updatedAt != null">
+  				updatedAt = #{updatedAt},
+  			</if>
+  			<if test="volnotes != null and volnotes != ''">
+  				volnotes = #{volnotes},
+  			</if>
+  			<if test="groupquality != null and groupquality != ''">
+  				groupquality = #{groupquality},
+  			</if>
+  			<if test="groupnotes != null and groupnotes != ''">
+  				groupnotes = #{groupnotes},
+  			</if>
+  			<if test="groupTime != null">
+  				groupTime = #{groupTime},
+  			</if>
+  			<if test="auditNotes != null and auditNotes != ''">
+  				auditNotes = #{auditNotes},
+  			</if>
+  			<if test="payFlag != null and payFlag != ''">
+  				payFlag = #{payFlag},
+  			</if>
+  		</set>
+  		where campaignId = #{campaignId} and volunteerId = #{volunteerId}
+  </update>
+  
+  
+  <!-- updateCampaignRecordsById -->
+   <!-- 组织查询待审核  志愿者加入活动申请记录 -->
+   <update id="updateCampaignRecordsById"  parameterType="com.yichuang.fuyang.entity.Campaignrecords"  >
+  		update campaignrecords 
+  		<set>
+  			<if test="iscalc != null and iscalc != ''">
+  				iscalc = #{iscalc},
+  			</if>
+  			<if test="auditNotes != null and auditNotes != ''">
+  				auditNotes = #{auditNotes},
+  			</if>
+  		</set>
+  		where id = #{id}
+  </update>
+ <select id="getCamRecByIscalc" parameterType="com.yichuang.fuyang.entity.Campaignrecords"  resultType="com.yichuang.fuyang.entity.Campaignrecords">
+ 		SELECT  c.*,v.`realname`,s.`title`,s.`description`,c.`iscalc`,v.`tel`
+ 	    FROM campaignrecords c,campaigns s, volunteers v 
+ 	    <where>
+ 	    	c.`campaignId`=s.`id` AND c.`volunteerId`=v.`id`
+ 	    	<if test="sTel != null and sTel != ''"> and v.`tel` like CONCAT('%',#{sTel},'%')</if>
+ 	    	<if test="sRealName != null and sRealName != ''"> and v.`realName` like CONCAT('%',#{sRealName},'%')</if>
+ 	    	<if test="groupId != null and groupId != ''">
+ 	    		and s.`groupId`= #{groupId}
+ 	    	</if>
+ 	    	<if test="iscalc != null and iscalc != ''">
+ 	    		and c.iscalc = #{iscalc}
+ 	    	</if>
+ 	    </where>
+  </select>
+  <!-- 单表查询 -->
+  <select id="getCamRec" parameterType="com.yichuang.fuyang.entity.Campaignrecords"  resultType="com.yichuang.fuyang.entity.Campaignrecords">
+ 		SELECT  c.*
+ 	    FROM campaignrecords c
+ 	    <where>
+ 	    	<if test="volunteerId != null and volunteerId !=''">volunteerId = #{volunteerId}</if>
+  			<if test="campaignId != null and campaignId != ''">and campaignId = #{campaignId}</if>
+ 	    	<if test="groupId != null and groupId != ''">
+ 	    		and s.`groupId`= #{groupId}
+ 	    	</if>
+ 	    	<if test="iscalc != null and iscalc != ''">
+ 	    		and c.iscalc = #{iscalc}
+ 	    	</if>
+ 	    </where>
+  </select>
+  
+  <!-- 根据活动id或志愿者id获取单挑记录 -->
+  <select id="findByCidVid" parameterType="com.yichuang.fuyang.entity.Campaignrecords" resultType="com.yichuang.fuyang.entity.Campaignrecords">
+  	select * from campaignrecords 
+  	<where>
+  		<if test="volunteerId != null and volunteerId !=''">volunteerId = #{volunteerId}</if>
+  		<if test="campaignId != null and campaignId != ''">and campaignId = #{campaignId}</if>
+  	</where>
+  </select>
+  
+  <!-- 根据volunteerId查询当前志愿者所参加的所有活动 -->
+ 	<select id="findAllActivitis" parameterType="com.yichuang.fuyang.entity.Campaignrecords" resultType="com.yichuang.fuyang.entity.Campaigns">
+ 		SELECT * FROM campaignrecords AS c,campaigns AS camp
+				WHERE c.`campaignId`=camp.`id`  AND c.`VolunteerId`=#{volunteerId}
+ 	</select>
+ 	
+ 	 <!-- 查找符合积分发放条件的campaignrecords"-->
+  <select id="unpaidCamRecords"  parameterType="com.yichuang.fuyang.entity.Campaignrecords"  resultMap="CampaignrecordsResultMap">
+  		 SELECT c.id cId ,c.startTime,c.endTime,c.duration,c.awardPerHour,c.camPayFlag,c.groupId,
+  		 cr.id crId,cr.volunteerId,cr.payFlag,cr.enterTime,cr.leaveTime 
+		FROM campaigns c ,campaignrecords cr 
+		where c.id = cr.campaignId and  <![CDATA[c.endTime< NOW() ]]>
+		<if test="campaigns.status != null  and campaigns.status != ''">and c.status = #{campaigns.status} </if>
+		<if test="campaigns.camPayFlag != null ">and c.camPayFlag = #{campaigns.camPayFlag} </if>
+		<if test="iscalc != null  and iscalc != ''">and cr.iscalc = #{iscalc} </if>
+		<if test="payFlag != null  ">and cr.payFlag = #{payFlag} </if>
+  </select>
+  
+  <!--unpaidCamRecords方法 resultMap 返回类型 -->
+<resultMap type="com.yichuang.fuyang.entity.Campaignrecords" id="CampaignrecordsResultMap">
+       	<id property="id" column="crId"/>
+        <result property="volunteerId" column="volunteerId"/>
+        <result property="payFlag" column="payFlag"/>
+        <result property="enterTime" column="enterTime"/>
+        <result property="leaveTime" column="leaveTime"/>
+        
+         <association property="campaigns" javaType="com.yichuang.fuyang.entity.Campaigns">
+             <id property="id" column="cId"/>
+             <result property="startTime" column="startTime"/>
+             <result property="endTime" column="endTime"/>
+             <result property="duration" column="duration"/>
+             <result property="awardPerHour" column="awardPerHour"/>
+             <result property="camPayFlag" column="camPayFlag"/>
+             <result property="groupId" column="groupId"/>
+            
+         </association>
+</resultMap>
+  
+  
+  <!-- 更新活动记录  -->
+  <update id="updateCamRecord" parameterType="com.yichuang.fuyang.entity.Campaignrecords">
+  		update campaignrecords 
+  		<set>
+  			<if test="payFlag != null ">payFlag = #{payFlag},</if>
+  			<if test="updatedAt != null ">updatedAt = #{updatedAt}</if>
+  		</set>
+  		where id = #{id}
+  </update>
+  
+ </mapper>

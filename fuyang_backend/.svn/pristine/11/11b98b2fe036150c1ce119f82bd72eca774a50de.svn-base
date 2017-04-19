@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+ <mapper namespace="com.yichuang.fuyang.dao.CampaignsDao">
+ 
+ <!-- 获取本日活动 -->
+<select id="getTodayCam" resultMap="other">
+	SELECT c.`id`,c.`title`,c.`image`,c.`hostUnit`,c.`startTime`,c.`endTime`,c.`pricipalName`,c.`memberCount`,g.`id`,g.`name` FROM campaigns c 
+	LEFT JOIN groups g ON c.`groupId`=c.`id` WHERE TO_DAYS(startTime) = TO_DAYS(NOW()) and c.`status` = '1'
+</select>
+
+<!-- 获取本周活动 -->
+<select id="getWeekCam" resultMap="other">
+	SELECT c.`id`,c.`title`,c.`image`,c.`startTime`,c.`hostUnit`,c.`endTime`,c.`pricipalName`,c.`memberCount`,g.`id`,g.`name` FROM campaigns c 
+	LEFT JOIN groups g ON c.`groupId`=c.`id` WHERE YEARWEEK(DATE_FORMAT(startTime,'%Y-%m-%d')) = YEARWEEK(NOW()) 
+	 AND c.`status` = '1';
+</select>
+
+<!-- 获取本月活动 -->
+<select id="getMonthCam" resultMap="other">
+	SELECT c.`id`,c.`title`,c.`image`,c.`startTime`,c.`hostUnit`,c.`endTime`,c.`pricipalName`,c.`memberCount`,g.`id`,g.`name` FROM campaigns c 
+	LEFT JOIN groups g ON c.`groupId`=c.`id` WHERE  DATE_FORMAT(startTime,'%Y-%m')=DATE_FORMAT(NOW(),'%Y-%m')  
+	AND c.`status` = '1';
+</select>
+
+  <!-- 获取单个活动信息 -->
+ <select id="getCampaignById" parameterType="string" resultMap="other">
+ 	select a.*,g.id,g.name from campaigns a left join groups g on a.`groupId`=g.`id` where a.`id` = #{id}
+ </select>
+ 
+ <!-- 根据标题模糊查询活动 -->
+ <select id="getCampaignsByTitle" parameterType="string" resultMap="other">
+ 	select a.title,a.id,g.id,g.name,a.hostUnit from campaigns a left join groups g on a.`groupId`=g.`id` where a.`title` like '%${title}%' and a.`status`='1'
+ </select>
+ 
+ <!-- 热门度更新 -->
+ <update id="updateRecommend" parameterType="string">
+ 	update campaigns set recommend = recommend+1 where id=#{id}
+ </update>
+ 
+  <!-- 批量更新活动信息 -->
+ <update id="updateCampBatch">
+ 	update campaigns set publishFineFlag = "1" where id in
+ 	<foreach item="item" index="index" collection="array" open="(" separator="," close=")">  
+ 		#{item}  
+	</foreach>  
+ </update>
+ 
+ <!-- 动态更新语句 -->
+ <update id="updateCampaignDynamic" parameterType="com.yichuang.fuyang.entity.Campaigns">
+ 	update campaigns 
+ 	<set>
+ 		<if test="theme != null and theme != ''">
+ 			theme = #{theme},
+ 		</if>
+ 		<if test="duration != null and  duration != ''">
+ 			duration = #{duration},
+ 		</if>
+ 		<if test="attendanceNum !=  null">
+ 			attendanceNum = #{attendanceNum},
+ 		</if>
+ 		<if test="location !=  null">
+ 			location = #{location},
+ 		</if>
+ 		<if test="hostUnit !=  null">
+ 			hostUnit = #{hostUnit},
+ 		</if>
+ 		<if test="limit !=  null">
+ 			limit = #{limit},
+ 		</if>
+ 		<if test="awardPerHour !=  null">
+ 			awardPerHour = #{awardPerHour},
+ 		</if>
+ 		<if test="award !=  null">
+ 			award = #{award},
+ 		</if>
+ 		<if test="isUs !=  null">
+ 			isus = #{isUs},
+ 		</if>
+ 		<if test="recommend !=  null">
+ 			recommend = #{recommend},
+ 		</if>
+ 		<if test="description !=  null">
+ 			description = #{description},
+ 		</if>
+ 	</set>
+ 	where id=#{id}
+ </update>
+ 
+ 
+ <!-- 获取最新，最热新闻 -->
+ <select id="getCampaigns" resultMap="other">
+ 	SELECT a.`id`,a.`title`,a.`startTime`,a.hostUnit,a.`endTime`,a.`location`,a.`memberCount`,a.`image`,a.`groupId`,a.`limit`,g.`name`,a.`award`,g.`id` FROM campaigns a LEFT JOIN groups g 
+ 	ON  a.`groupId`=g.`id` where a.`status`= '1' 
+ </select>
+ 
+ <!-- 获取已完成列表-->
+ <select id="getRecommend" resultMap="other">
+ 	SELECT a.`id`,a.`title`,a.`startTime`,a.hostUnit,a.`endTime`,a.`location`,a.`memberCount`,a.`image`,a.`groupId`,g.`name` 
+ 	from campaigns a left join groups g 
+ 	on a.`groupId` = g.`id` WHERE a.`check`='2' AND a.`status`='1'
+ </select>
+ 
+<!-- 获取公益项目 -->
+<select id="getBenefit" resultMap="other">
+	SELECT a.`id`,a.`title`,a.`thumb`,a.hostUnit,a.`location`,a.`lovingHeart`,a.`captical`,a.`groupId`,g.`id`,g.`name` 
+	FROM campaigns a LEFT JOIN groups g ON a.`groupId` = g.`id`
+</select>
+
+<!-- 根据id获取公益项目 -->
+<select id="getBenefitById" parameterType="string" resultMap="other">
+	SELECT a.`captical`,a.`id`,a.`title`,a.hostUnit,a.`location`,a.`thumb`,a.`lovingHeart`,a.`contributions`,a.`image`,a.`groupId`,g.`name` 
+	from campaigns a left join groups g 
+ 	on a.`groupId` = g.`id` where a.`id` = #{id}
+</select>
+ 
+ <!-- 获取爱心总数 -->
+ <select id="getLovingHeart" resultType="integer">
+ 	select sum(lovingHeart) from campaigns 
+ </select>
+ 
+ <!-- 更新爱心及捐款额 -->
+ <update id="updateLovingHeart" parameterType="hashmap" >
+ 	update campaigns set lovingHeart = lovingHeart+1,contributions = contributions + #{contributions} where id = #{id}
+ </update>
+ 
+  <!-- 更新发布活动 -->
+ <update id="updateReleaseCampaignById" parameterType="com.yichuang.fuyang.entity.Campaigns">
+ 	update campaigns
+ 	<set>
+ 		<if test="title != null and title != ''">title = #{title},</if>
+ 		<if test="hostUnit != null and hostUnit != ''">hostUnit = #{hostUnit},</if>
+ 		<if test="startTime != null and startTime != ''">startTime = #{startTime},</if>
+ 		<if test="endTime != null and endTime != ''">endTime = #{endTime},</if>
+ 		<if test="pricipalName != null and pricipalName != ''">pricipalName = #{pricipalName},</if>
+ 		<if test="pricipalTel != null and pricipalTel != ''">pricipalTel = #{pricipalTel},</if>
+ 		<if test="location != null and location != ''">location = #{location},</if>
+ 		<if test="rewardsAdditional != null and rewardsAdditional != ''">rewardsAdditional = #{rewardsAdditional},</if>
+ 		<if test="duration != null and duration != ''">duration = #{duration},</if>
+ 		<if test="limit != null and limit != ''">`limit` = #{limit},</if>
+ 		<if test="checkBy != null and checkBy != ''">checkBy = #{checkBy},</if>
+ 		<if test="description != null and description != ''">description = #{description},</if>
+ 		<if test="image != null and image != ''">image = #{image}</if>
+ 	</set>
+ 	where id=#{id}
+ </update>
+ 
+ <resultMap type="com.yichuang.fuyang.entity.Campaigns" id="other"> 
+	<id column="id" property="id" />
+	<result column="title" property="title"/>
+	<result column="time" property="time"/>
+	<result column="endTime" property="endTime"/>
+	<result column="location" property="location"/>
+	<result column="memberCount" property="memberCount"/>
+	<result column="thumb" property="thumb"/>
+	<result column="limit" property="limit"/>
+	<result column="award" property="award"/>
+	<result column="isUs" property="isUs"/>
+	<result column="recommend" property="recommend"/>
+	<result column="description" property="description"/>
+	<result column="captical" property="captical"/>
+	<result column="capticalSource" property="capticalSource"/>
+	<result column="benefitObject" property="benefitObject"/>
+	<result column="benefitPeople" property="benefitPeople"/>
+	<result column="status" property="status"/>
+	<result column="ageBraket" property="ageBraket"/>
+	<result column="check" property="check"/>
+	<result column="memberCount" property="memberCount"/>
+	<result column="createdAt" property="createdAt"/>
+	<result column="updatedAt" property="updatedAt"/>
+	<result column="groupId" property="groupId"/> 
+	<result column="pricipalName" property="pricipalName"/> 
+	<result column="pricipalTel" property="pricipalTel"/> 
+	<result column="notes" property="notes"/> 
+	<result column="addTime" property="addTime"/> 
+	<result column="image" property="image"/> 
+	<result column="latest" property="latest"/> 
+	<result column="regionId" property="regionId"/> 
+	<result column="startTime" property="startTime"/>
+	<result column="enterTime" property="enterTime"/>
+	<result column="lovingHeart" property="lovingHeart"/>
+	<result column="contributions" property="contributions"/>
+	<result column="checkBy" property="checkBy"/>
+	<result column="hostUnit" property="hostUnit"/>
+	<result column="duration" property="duration"/>
+	
+	<collection property="groupsList" ofType="com.yichuang.fuyang.entity.Groups">
+		<id column="groupId" property="id" />
+		<result column="name" property="name" />
+		<result column="phonenumber" property="phonenumber"/>
+	</collection>
+  </resultMap>
+  
+  
+
+ <resultMap type="com.yichuang.fuyang.entity.Campaigns" id="BaseResultMap"> 
+	<id column="id" property="id" /> 
+  </resultMap>
+  
+  <insert id="saveCampaigns" parameterType="com.yichuang.fuyang.entity.Campaigns">
+  	<selectKey keyProperty="id" order="BEFORE" resultType="string">
+ 		SELECT UUID()
+ 	  </selectKey>
+  	insert into campaigns
+  	(`id`,`groupId`, `title`, `checkBy`, `enterTime`, `startTime`, `endTime`, `location`, `limit`, `capticalSource`, `award`, `benefitObject`, `benefitPeople`, `ageBraket`, `image`,`thumb`,`createdAt`,`updatedAt`,`notes`,duration,hostUnit,rewardsAdditional,theme,pricipalName,pricipalTel,description) 
+  	VALUES(#{id},#{groupId},#{title},#{checkBy},#{enterTime},#{startTime},#{endTime},#{location},#{limit},#{capticalSource},#{award},#{benefitObject},#{benefitPeople},#{ageBraket},#{image},#{thumb},#{createdAt},#{updatedAt},#{notes},#{duration},#{hostUnit},#{rewardsAdditional},#{theme},#{pricipalName},#{pricipalTel},#{description})
+  </insert>
+ 
+ <!-- 获取未审核活动 -->
+ <select id="getCampaignsByCheck" parameterType="com.yichuang.fuyang.entity.Campaigns" resultMap="other">
+ 	select c.*,g.id,g.name,c.notes,c.status from campaigns c left join groups g on c.groupId = g.id  
+ 	<where>
+ 		<if test="sTitle != null and sTitle != ''">and c.`title` like CONCAT("%",#{sTitle},"%")</if>
+ 		<if test="sHostUnit != null and sHostUnit != ''"> and c.`hostUnit` like CONCAT("%",#{sHostUnit},"%")</if>
+ 		<if test="status !=null and status!=''">
+ 			and c.`status`= #{status} 
+ 		</if>
+ 		<if test="checkBy != null and checkBy!= ''">
+ 			and  c.`checkBy`=#{checkBy}
+ 		</if>
+ 		<if test="publishFineFlag != null and publishFineFlag!= ''">
+ 			and  c.`publishFineFlag`=#{publishFineFlag}
+ 		</if>
+ 	</where> 
+ </select>
+ 
+ 
+ <!-- 根据id审核活动 -->
+ <update id="updateCampaignById" parameterType="com.yichuang.fuyang.entity.Campaigns">
+ 	update campaigns 
+ 	<set >
+ 		<if test="status != null and status != ''">`status`= #{status},</if>
+ 		<if test="checkBy != null and checkBy != ''">checkBy = #{checkBy},</if>
+ 		<if test="notes != null and notes != ''">notes = #{notes},</if>
+ 		<if test="camPayFlag != null ">camPayFlag = #{camPayFlag},</if>
+ 		<if test="updatedAt != null and updatedAt != ''">updatedAt=#{updatedAt}</if>
+ 	</set>
+ 	where id=#{id}
+ </update>
+  <!-- 更新活动信息 -->
+ <update id="updateCampaignsById" parameterType="com.yichuang.fuyang.entity.Campaigns">
+ 	update campaigns 
+ 	<set >
+ 		<if test="status != null and status != ''">`status`= #{status},</if>
+ 		<if test="checkBy != null and checkBy != ''">checkBy = #{checkBy},</if>
+ 		<if test="notes != null and notes != ''">notes = #{notes},</if>
+ 		<if test="updatedAt != null and updatedAt != ''">updatedAt=#{updatedAt},</if>
+ 		<if test="memberCount != null">
+ 			memberCount=#{memberCount},
+ 		</if>
+ 	</set>
+ 	where id=#{id}
+ </update>
+  
+  <select id="getCampainName" parameterType="com.yichuang.fuyang.entity.Campaigns" resultType="com.yichuang.fuyang.entity.Campaigns">
+  	select id,title,image,groupId,startTime,endTime from campaigns where id=#{id}
+  </select>
+  
+   <!-- 查询未发放积分活动 -->
+  <select id="unpaidCam"  resultType="com.yichuang.fuyang.entity.Campaigns">
+  		select id,startTime,endTime,duration,awardPerHour,camPayFlag,groupId  from campaigns where status = '1' and camPayFlag = 0 
+  			and endTime  <![CDATA[ <]]> now()
+  </select> 
+  
+ <!-- 查询活动  符合条件志愿者是否全部发放积分 -->
+ <select id="paidCam" resultType="com.yichuang.fuyang.entity.Campaigns">
+	SELECT * FROM campaigns WHERE (SELECT COUNT(1) FROM campaignrecords WHERE iscalc = '1' AND payFlag = 0 ) = 0
+ </select>
+ </mapper>

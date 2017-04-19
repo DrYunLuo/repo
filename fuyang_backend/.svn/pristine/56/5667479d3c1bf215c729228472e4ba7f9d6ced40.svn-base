@@ -1,0 +1,886 @@
+package com.yichuang.fuyang.web;
+
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import javax.imageio.ImageIO;
+import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.apache.commons.fileupload.disk.DiskFileItem;
+import org.apache.commons.net.ftp.FTPClient;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.yichuang.fuyang.entity.Campaigns;
+import com.yichuang.fuyang.entity.Groups;
+import com.yichuang.fuyang.entity.User;
+import com.yichuang.fuyang.entity.Volunteers;
+import com.yichuang.fuyang.service.GroupsService;
+import com.yichuang.fuyang.service.PropertyService;
+import com.yichuang.fuyang.service.UserService;
+import com.yichuang.fuyang.service.VolunteersService;
+import com.yichuang.fuyang.service.YichuangException;
+import com.yichuang.fuyang.util.DefaultResponse;
+import com.yichuang.fuyang.util.FTPUtil;
+import com.yichuang.fuyang.util.ImageUtil;
+import com.yichuang.fuyang.util.JsonResult;
+import com.yichuang.fuyang.util.Utils;
+import com.yichuang.fuyang.util.YCConstants;
+
+/**
+ * 志愿者功能
+ */
+@Controller
+@RequestMapping("/volunteers")
+public class VolunteerController {
+	
+	@Autowired
+	private UserService userService;
+
+	@Autowired
+	private VolunteersService volunteersService;
+	@Autowired
+	private GroupsService groupsService;
+
+	@Autowired
+	private PropertyService propertyService;
+	
+	static Logger logger = Logger.getLogger(VolunteerController.class);
+
+	// 志愿者总人数
+	@RequestMapping("/volTotal")
+	@ResponseBody
+	public JsonResult<Integer> getVolTotals(String keyParams) {
+		JsonResult<Integer> result = null;
+		JsonResult<Integer> checkResult = Utils.checkKeyParams(propertyService.KEY, keyParams);
+		if (checkResult != null) {
+			result = checkResult;
+		} else {
+			Integer volTatol = volunteersService.getTotalVol();
+			result = new JsonResult<Integer>(volTatol);
+		}
+		return result;
+	}
+
+	@RequestMapping("/volceshi")
+	@ResponseBody
+	public JsonResult<List<Map<String, Object>>> getVols(String keyParams) {
+		JsonResult<List<Map<String, Object>>> result = null;
+		JsonResult<List<Map<String, Object>>> checkResult = Utils.checkKeyParams(propertyService.KEY, keyParams);
+		if (checkResult != null) {
+			result = checkResult;
+		} else {
+
+			List<Map<String, Object>> list = volunteersService.getVols();
+			result = new JsonResult<List<Map<String, Object>>>(list);
+		}
+		return result;
+	}
+
+	// 志愿者总服务时长
+	@RequestMapping("/volTotalTimes")
+	@ResponseBody
+	public JsonResult<Integer> getTotalServiceTimes(String keyParams) {
+		JsonResult<Integer> result = null;
+		JsonResult<Integer> checkResult = Utils.checkKeyParams(propertyService.KEY, keyParams);
+		if (checkResult != null) {
+			result = checkResult;
+		} else {
+
+			Integer volTatol = volunteersService.getSumServiceTimes();
+			result = new JsonResult<Integer>(volTatol);
+		}
+		return result;
+	}
+
+	/**
+	 * 志愿者排行时长
+	 * @param pageNo
+	 * @param pageSize
+	 * @param keyParams
+	 * @return
+	 */
+	@RequestMapping("/getRankingVolun")
+	@ResponseBody
+	public JsonResult<PageInfo<Volunteers>> getRankingVolun(Integer pageNo, Integer pageSize, String keyParams) {
+		JsonResult<PageInfo<Volunteers>> result = null;
+		try {
+			JsonResult<PageInfo<Volunteers>> checkResult = Utils.checkKeyParams(propertyService.KEY, keyParams);
+			if (checkResult != null) {
+				result = checkResult;
+			} else {
+				PageInfo<Volunteers> page = volunteersService.getRankingVolun(pageNo, pageSize);
+				result = new JsonResult<PageInfo<Volunteers>>(page);
+			}
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new JsonResult<PageInfo<Volunteers>>(1, "获取信息失败", null);
+		}
+	}
+
+	/**
+	 * 上传志愿者证件照
+	 * @param file
+	 * @param request
+	 * @param response
+	 * @param keyParams
+	 * @return
+	 */
+	@RequestMapping("/registPic")
+	@ResponseBody
+	public JsonResult<String> registPic(MultipartFile file, HttpServletRequest request, HttpServletResponse response,String keyParams){
+		JsonResult<String> checkResult = Utils.checkKeyParams(propertyService.KEY, keyParams);
+		if(checkResult != null){
+			return checkResult;
+		}
+		CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(
+				request.getSession().getServletContext());
+		// 判断request是否存在附件
+		if (multipartResolver.isMultipart(request)) {
+			
+			Map<String, Object> connectReturnMap = null;
+			FTPClient ftp = null;
+
+			// 转换成多部分request
+			MultipartHttpServletRequest multRequest = (MultipartHttpServletRequest) request;
+			Iterator<String> iter = multRequest.getFileNames();
+			while (iter.hasNext()) {
+
+				// 根据上传文件名称获取上传的文件
+				MultipartFile file1 = multRequest.getFile(iter.next());
+				
+				// 将MultipartFile 转为 File
+				CommonsMultipartFile cf = (CommonsMultipartFile) file1;
+				DiskFileItem fi = (DiskFileItem) cf.getFileItem();
+				File fileFrom = fi.getStoreLocation();
+				String systFileName = UUID.randomUUID().toString()+"."+Utils.getFileSuffix(fi.getName());
+				try {
+					connectReturnMap = FTPUtil.connect(propertyService.REMOTE_IMAGE_PHOTO, propertyService.REMOTE_IMAGE_IP,
+							propertyService.REMOTE_IMAGE_PORT, propertyService.REMOTE_IMAGE_USERNAME,
+							propertyService.REMOTE_IMAGE_PASSWORD);
+					if(connectReturnMap != null && (boolean)connectReturnMap.get("connectFlag")){
+						ftp = (FTPClient) connectReturnMap.get("FTPClient");
+						FTPUtil.upload(fileFrom, systFileName,ftp);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				// 根据 name 获取上传的文件...
+				String serverPath = propertyService.OFFICIAL_SITE+propertyService.REMOTE_IMAGE_PHOTO_LOOK + systFileName;
+				return new JsonResult<String>(DefaultResponse.SUCCESS, serverPath);
+			}
+		}
+		return new JsonResult<String>(DefaultResponse.OPERATE_ERROR, null);
+	}
+
+	
+//	/**
+//	 * 注册志愿者
+//	 * @param volunteers
+//	 * @return
+//	 */
+//	@RequestMapping("/registVol")
+//	@ResponseBody
+//	public JsonResult<String> registVol(MultipartFile file, HttpServletRequest request, HttpServletResponse response,Volunteers volunteers,String uid,String 
+
+//  keyParams){
+//		JsonResult<String> checkResult = Utils.checkKeyParams(propertyService.KEY, keyParams);
+//		if(checkResult != null){
+//			return checkResult;
+//		}
+//		CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(
+//				request.getSession().getServletContext());
+//		// 判断request是否存在附件
+//		if (multipartResolver.isMultipart(request)) {
+//			// 转换成多部分request
+//			MultipartHttpServletRequest multRequest = (MultipartHttpServletRequest) request;
+//			Iterator<String> iter = multRequest.getFileNames();
+//			while (iter.hasNext()) {
+//
+//				// 根据上传文件名称获取上传的文件
+//				MultipartFile file1 = multRequest.getFile(iter.next());
+//				
+//				// 将MultipartFile 转为 File
+//				CommonsMultipartFile cf = (CommonsMultipartFile) file1;
+//				DiskFileItem fi = (DiskFileItem) cf.getFileItem();
+//				File fileFrom = fi.getStoreLocation();
+//				fileFrom.getName();
+//				/*try {
+//					FTPUtil.connect(propertyService.REMOTE_iMAGE_PHOTO, propertyService.REMOTE_IMAGE_IP,
+//							propertyService.REMOTE_IMAGE_PORT, propertyService.REMOTE_IMAGE_USERNAME,
+//							propertyService.REMOTE_IMAGE_PASSWORD);
+//					FTPUtil.upload(fileFrom, fi.getName());
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}*/
+//				// 根据 name 获取上传的文件...
+//				String fileName = file1.getOriginalFilename();
+//				String serverPath = propertyService.REMOTE_iMAGE_PHOTO + fileName;
+//				volunteers.setIdentification(serverPath);
+//				volunteersService.registVol(volunteers, uid);
+//				return new JsonResult<String>(0,"注册成功",null);
+//			}
+//		}
+//		return new JsonResult<String>(1,"注册失败",null);
+//	}
+	
+
+	/**
+	 * 认证志愿者
+	 * @param req
+	 * @return
+	 */
+	@RequestMapping("/saveVol")
+	@ResponseBody
+	public JsonResult<Volunteers> saveVol(Volunteers volunteers,String uid,String keyParams) {
+		try{
+			
+			JsonResult<Volunteers> checkResult = Utils.checkKeyParams(uid+propertyService.KEY, keyParams);
+			if(checkResult != null){
+				return checkResult;
+			}
+			
+			if(StringUtils.isEmpty(volunteers.getIdentification()) || StringUtils.isEmpty(volunteers.getRealname()) 
+					|| StringUtils.isEmpty(volunteers.getEmail()) || StringUtils.isEmpty(volunteers.getCardId())){
+				return new JsonResult<Volunteers>(DefaultResponse.PARAM_NULL_ERROR,null);
+			}
+			
+			volunteersService.registVol(volunteers, uid);
+			return new JsonResult<Volunteers>(DefaultResponse.SUCCESS,null);
+		}catch (YichuangException e) {
+			return new JsonResult<Volunteers>(e.getField(),e.getMessage(),null);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new JsonResult<Volunteers>(DefaultResponse.INSERT_ERROR,null);
+		}
+	}
+	
+	// 参加组织
+	@SuppressWarnings("unchecked")
+	@RequestMapping("/joinGroup")
+	@ResponseBody
+	public JsonResult<String> joinGroup(String GroupId, String id, String keyParams) {
+		JsonResult<String> result = null;
+		try {
+			JsonResult<String> checkResult = Utils.checkKeyParams(GroupId + id + propertyService.KEY, keyParams);
+			if (checkResult != null) {
+				return checkResult;
+			} 
+			if(StringUtils.isEmpty(id)){
+				return new JsonResult<String>(DefaultResponse.PARAM_NULL_ERROR,null);
+			}
+			//查询志愿者是否加入了组织 加入则返回审核通过码  前端判断 提示不能加入
+			List<Volunteers> list = volunteersService.getVolunById(id);
+			if(list == null || list.size() < 1 || StringUtils.isEmpty(list.get(0).getGroupCheck())){
+				return new  JsonResult<String>(DefaultResponse.RESULT_NULL_ERROR,null);
+			}
+			String groupCheck = list.get(0).getGroupCheck();
+			if(YCConstants.AUDIT_TURE.equals(groupCheck)){
+				return new JsonResult<String>(DefaultResponse.INSERT_ERROR,null);
+			}
+			
+			//提交申请
+			volunteersService.joinGroup(GroupId, id);
+			result = new JsonResult<String>(DefaultResponse.SUCCESS, null);
+			
+			
+		} catch (YichuangException e) {
+			e.printStackTrace();
+			return new JsonResult<String>(e.getField(), e.getMessage(), null);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new JsonResult<String>(DefaultResponse.OPERATE_ERROR, null);
+		}
+		return result;
+	}
+
+	@RequestMapping("getPhoto")
+	@ResponseBody
+	public JsonResult<String> getPhoto(String volunteerId, String keyParams) {
+		JsonResult<String> result = null;
+		try {
+			JsonResult<String> checkResult = Utils.checkKeyParams(volunteerId + propertyService.KEY, keyParams);
+			if (checkResult != null) {
+				result = checkResult;
+			} else {
+				String photoAddr = this.volunteersService.getPhoto(volunteerId);
+				result = new JsonResult<String>(0, "ok", photoAddr);
+			}
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new JsonResult<String>(0, "error", null);
+	}
+
+	/**
+	 * 官方审核志愿者
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping("/ourShenHe")
+	@ResponseBody
+	public JsonResult<String> ourShenHe(String volunteerId,String notes,String auditStatus, String keyParams) {
+		JsonResult<String> result = null;
+		try {
+			JsonResult<String> checkResult = Utils.checkKeyParams(volunteerId+ auditStatus + propertyService.KEY, keyParams);
+			if (checkResult != null) {
+				result = checkResult;
+			} else {
+				Volunteers volunParam = new Volunteers();
+				
+				volunParam.setId(volunteerId);
+				volunParam.setNotes(notes);
+				volunParam.setStatus(auditStatus);
+				volunParam.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+				
+				Integer integer = volunteersService.ourShenHe(volunParam);
+				if(integer > 0){
+					return  new JsonResult<String>(0,"审核成功",null);
+				}else {
+					return  new JsonResult<String>(1,"审核失败",null);
+				}
+			}
+			return result;
+		} catch (YichuangException e) {
+			e.printStackTrace();
+			return new JsonResult<String>(e.getField(), e.getMessage(), null);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new JsonResult<String>(1, "审核失败", null);
+		}
+	}
+
+	/**
+	 * 组织审核
+	 * @param gid
+	 * @param vid
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	@RequestMapping("groupShenHe")
+	@ResponseBody
+	public JsonResult<String> groupShenHe(Volunteers volunteer, String keyParams) {
+		//获取当前时间
+		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+		//定义组织
+		Groups groups = new Groups();
+		try {
+			JsonResult<String> checkResult = Utils.checkKeyParams(volunteer.getId()+volunteer.getNotes()
+					+volunteer.getGroupCheck()+volunteer.getGroupId()+propertyService.KEY, keyParams);
+			if (checkResult != null) {
+				return checkResult;
+			} 
+			//判断入参是否为空
+			if(volunteer == null || StringUtils.isEmpty(volunteer.getGroupCheck()) 
+					|| StringUtils.isEmpty(volunteer.getId()) ){
+				return new JsonResult<String>(DefaultResponse.PARAM_NULL_ERROR,null);
+			}
+			
+			//给volunteer 设置updatetime groupcheck 属性  并更新volunteer表 
+			volunteer.setUpdatedAt(timestamp);
+			
+			Integer integer = volunteersService.groupShenHe(volunteer);
+			if (integer < 1) {
+				return new JsonResult<String>(DefaultResponse.UPDATE_ERROR, null);
+			}
+			
+			//如果是审核通过 给组织增加志愿者总数
+			if(YCConstants.AUDIT_TURE.equals(volunteer.getGroupCheck()) ){
+				//给groups表设置 volTotal updatetime属性  并更新groups表
+				groups.setId(volunteer.getGroupId());
+				groups.setUpdatedAt(timestamp);
+				groups.setVolTotal(1);
+				
+				groupsService.updateGroupById(groups);
+			}
+			
+			return new JsonResult<String>(DefaultResponse.SUCCESS, null);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new JsonResult<String>(1, "审核失败", null);
+		}
+	}
+
+	/**
+	 * 获取组织未审核志愿者  LH
+	 * @param pageNo
+	 * @param pageSize
+	 * @param keyParams
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	@RequestMapping("/getUncheckedVol")
+	@ResponseBody
+	public JsonResult<PageInfo<Volunteers>> findVolunByGroupCheck(Integer pageNo, Integer pageSize, String keyParams, Volunteers Volunteer) {
+		JsonResult<PageInfo<Volunteers>> result = null;
+		try {
+			JsonResult<PageInfo<Volunteers>> checkResult = Utils.checkKeyParams(propertyService.KEY,keyParams);
+			if (checkResult != null) {
+				result = checkResult;
+			} else {
+				PageInfo<Volunteers> pageInfo = volunteersService.findVolunByGroupCheck(pageNo, pageSize, Volunteer);
+				result = new JsonResult<PageInfo<Volunteers>>(DefaultResponse.SUCCESS,pageInfo);
+			}
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new JsonResult<PageInfo<Volunteers>>(DefaultResponse.QUERY_ERROR, null);
+		}
+	}
+
+/**
+ * 获取官方未审核志愿者  LH
+ * @param pageNo
+ * @param pageSize
+ * @param keyParams
+ * @return
+ */
+	@SuppressWarnings("unchecked")
+	@RequestMapping("/findVolunByStatus")
+	@ResponseBody
+	public JsonResult<PageInfo<Volunteers>> findVolunByStatus(Integer pageNo, Integer pageSize, String keyParams,Volunteers volunteer) {
+		JsonResult<PageInfo<Volunteers>> result = null;
+		try {
+			JsonResult<PageInfo<Volunteers>> checkResult = Utils.checkKeyParams(volunteer.getStatus()+propertyService.KEY,keyParams);
+			if (checkResult != null) {
+				return  checkResult;
+			} else {
+				//如果传入页面为空 则设置为默认
+				pageNo = pageNo == null ? 1 : pageNo;
+				pageSize = pageSize == null?10 : pageSize;
+				PageHelper.startPage(pageNo,pageSize);
+				
+				PageInfo<Volunteers> pageInfo = volunteersService.findVolunByStatus(pageNo, pageSize,volunteer);
+				result = new JsonResult<PageInfo<Volunteers>>(pageInfo);
+			}
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new JsonResult<PageInfo<Volunteers>>(DefaultResponse.INSERT_ERROR, null);
+		}
+	}
+
+	/**
+	 * 组织获取未审核活动志愿者 LH
+	 * @param pageNo
+	 * @param pageSize
+	 * @param keyParams
+	 * @return
+	 */
+	@RequestMapping("/findVolByIscalc")
+	@ResponseBody
+	public JsonResult<PageInfo<Volunteers>> getVolByIscalc(Integer pageNo, Integer pageSize, String keyParams){
+		JsonResult<PageInfo<Volunteers>> result = null;
+		try {
+			JsonResult<PageInfo<Volunteers>> checkResult = Utils.checkKeyParams(propertyService.KEY,keyParams);
+			if (checkResult != null) {
+				result = checkResult;
+			} else {
+				//如果传入页面为空 则设置为默认
+				pageNo = pageNo == null ? 1 : pageNo;
+				pageSize = pageSize == null?10 : pageSize;
+				PageHelper.startPage(pageNo,pageSize);
+				
+				List<Volunteers> list = volunteersService.getVolByIscalc();
+				PageInfo<Volunteers> pageInfo  = new PageInfo<Volunteers>(list);
+				result = new JsonResult<PageInfo<Volunteers>>(DefaultResponse.SUCCESS,pageInfo);
+			}
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new JsonResult<PageInfo<Volunteers>>(DefaultResponse.QUERY_ERROR, null);
+		}
+	}
+	
+	/**
+	 * 上传身份证图片 LH
+	 * @param volunteers
+	 * @param attachs
+	 * @return
+	 */
+	@RequestMapping("/uploadCardId")
+	@ResponseBody
+	public JsonResult<String> uploadCardId(MultipartFile attach){
+		
+			Map<String, Object> connectReturnMap = null;
+			FTPClient ftp = null;
+			String picture = null;
+			
+				// 将MultipartFile 转为 File
+				CommonsMultipartFile cf = (CommonsMultipartFile) attach;
+				DiskFileItem fi = (DiskFileItem) cf.getFileItem();
+				File fileFrom = fi.getStoreLocation();
+				String fileName = UUID.randomUUID() + "." +Utils.getFileSuffix(fi.getName());
+				try {
+					connectReturnMap = FTPUtil.connect(propertyService.REMOTE_IMAGE_FOLDER, propertyService.REMOTE_IMAGE_IP,
+							propertyService.REMOTE_IMAGE_PORT, propertyService.REMOTE_IMAGE_USERNAME,
+							propertyService.REMOTE_IMAGE_PASSWORD);
+					if(connectReturnMap != null && (boolean)connectReturnMap.get("connectFlag")){
+						ftp = (FTPClient) connectReturnMap.get("FTPClient");
+						FTPUtil.upload(fileFrom,fileName,ftp);
+					}
+					// 根据 name 获取上传的文件...
+					picture = propertyService.OFFICIAL_SITE+propertyService.REMOTE_IMAGE_FOLDER_LOOK+fileName;
+					
+				} catch (Exception e) {
+					e.printStackTrace();
+					return new JsonResult<String>(DefaultResponse.OPERATE_ERROR,null);
+				}
+				
+				return new JsonResult<String>(DefaultResponse.SUCCESS,picture);
+		
+	};
+	
+	
+	
+	/**
+	 * 注册志愿者  LH
+	 * @param user
+	 * @param volunteers
+	 * @return
+	 */
+	@RequestMapping("/reVol")
+	@ResponseBody
+	public JsonResult<Integer> reVol(User user,Volunteers volunteers){
+		//定义变量
+		JsonResult<Integer> result = null;
+		String userId = UUID.randomUUID().toString();
+		String volunteerId = UUID.randomUUID().toString();
+		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+		
+		
+		Integer volResult = 0;
+		Integer userResult = 0;
+		
+		if(user == null || volunteers == null || StringUtils.isEmpty(user.getPhone()) || StringUtils.isEmpty(user.getPassword())){
+			return new JsonResult<Integer>(DefaultResponse.PARAM_NULL_ERROR,null);
+		}
+		
+		if(StringUtils.isEmpty(volunteers.getRealname()) || StringUtils.isEmpty(volunteers.getCardId())){
+			return new JsonResult<Integer>(DefaultResponse.PARAM_NULL_ERROR,null);
+		}
+		
+		try {
+			User user_temp = userService.findUserByPhone(user.getPhone());
+			if(user_temp != null ){
+				return new JsonResult<Integer>(DefaultResponse.RESULT_EXISTED,null);
+			}
+			
+			Volunteers volunteers2 = new Volunteers();
+			volunteers2.setCardId(volunteers.getCardId());
+			List<Volunteers> list = volunteersService.getVolun(volunteers2);
+			if(list != null && list.size() > 0){
+				return new JsonResult<Integer>(1,"此身份证已经注册,请耐心等待审核",null);
+			}
+			
+			//添加用户
+			user.setId(userId);
+			user.setVolunteerId(volunteerId);
+			user.setType(YCConstants.SYSTEM_STRING_ONE);
+			user.setPassword(Utils.md5salt(user.getPassword()));
+			user.setCreatedAt(timestamp);
+			user.setUpdatedAt(timestamp);
+			user.setUsername(volunteers.getRealname());
+			
+			userResult = userService.addUser(user);
+			
+			if(userResult < 1){
+				return new JsonResult<Integer>(DefaultResponse.OPERATE_ERROR,userResult);
+			}
+			
+			//增加志愿者
+			volunteers.setId(volunteerId);
+			volunteers.setTel(user.getPhone());
+			volunteers.setStatus(YCConstants.AUDIT_NOAUDIT);
+			volunteers.setCreatedAt(timestamp);
+			volunteers.setUpdatedAt(timestamp);
+			volunteers.setNickname(user.getNickname());
+			
+			volResult =volunteersService.reVol(volunteers);
+			result = new JsonResult<Integer>(DefaultResponse.SUCCESS,volResult);
+		} catch (Exception e) {
+			e.printStackTrace();
+			result = new JsonResult<Integer>(DefaultResponse.OPERATE_ERROR,null);
+		}
+		return result;
+	}
+	
+	
+	/**
+	 * 图片验证码  LH
+	 * @param model
+	 * @param response
+	 * @throws ServletException
+	 * @throws IOException
+	 */
+	   @RequestMapping(value = "/captcha")
+	    @ResponseBody
+	    public JsonResult<String> captcha(HttpServletResponse response,HttpSession session) {
+		   String code=null;
+			   try {
+				   Object[] objs = ImageUtil.createImage();
+				   code = (String) objs[0];
+				   
+					BufferedImage image = (BufferedImage) objs[1];
+					
+					//将code存入session
+					session.setAttribute(YCConstants.SESSION_CODE, code);
+					
+					// 禁止图像缓存。  
+			        response.setHeader("Pragma", "no-cache");  
+			        response.setHeader("Cache-Control", "no-cache");  
+			        response.setDateHeader("Expires", 0);  
+			        response.setContentType("image/jpeg");  
+					
+			        //输出图片
+					ServletOutputStream out = response.getOutputStream();
+				   	ImageIO.write(image, "JPEG", out);
+				   	out.print("abc");
+				    out.flush();
+			  
+			} catch (Exception e) {
+				e.printStackTrace();
+				
+			}
+				  return new JsonResult<String>(DefaultResponse.SUCCESS,code);
+
+	   }
+	
+	
+	 /**
+	    * 判断图片验证码是否正确  正确返回true 不区分大小写   LH
+	    * @param code
+	    * @param session
+	    * @return
+	    */
+	  @RequestMapping("/checkCode")
+	  @ResponseBody
+	   public JsonResult<Boolean> checkImage(String code,HttpSession session){
+		   JsonResult<Boolean> result = null;
+		   String sessionCode =  null;
+		   
+		   //判断传入参数是否为空
+		   if(StringUtils.isEmpty(code)){
+			   return new JsonResult<Boolean>(DefaultResponse.PARAM_NULL_ERROR,false);
+		   }
+		 
+		   try {
+			   //验证码改为小写
+			   String codeOr = code.toLowerCase();
+				sessionCode = (String) session.getAttribute(YCConstants.SESSION_CODE);
+				String  codeAf = sessionCode.toLowerCase();
+				
+				  //对比验证码输入是否有误
+				if(codeOr.equals(codeAf)){
+						result = new JsonResult<Boolean>(DefaultResponse.SUCCESS,true);
+				}else{
+						result = new JsonResult<Boolean>(DefaultResponse.OPERATE_ERROR,false);
+				}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new JsonResult<Boolean>(DefaultResponse.OPERATE_ERROR,false);
+		}
+		   return result;
+	   }
+	
+	
+	/**
+	 * 获取最热志愿者
+	 * @param pageNo
+	 * @param pageSize
+	 * @return
+	 */
+	@RequestMapping("getMostCam")
+	@ResponseBody
+	public JsonResult<PageInfo<Volunteers>> getMostCam(Integer pageNo,Integer pageSize){
+		try {
+			PageInfo<Volunteers> pageInfo = volunteersService.getMostCam(pageNo, pageSize);
+			return new JsonResult<PageInfo<Volunteers>>(pageInfo);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new JsonResult<PageInfo<Volunteers>>(DefaultResponse.QUERY_ERROR,null);
+		}
+	}
+	
+	/**
+	 * 获取最新志愿者
+	 * @param pageNo
+	 * @param pageSize
+	 * @return
+	 */
+	@RequestMapping("getNewVolun")
+	@ResponseBody
+	public JsonResult<PageInfo<Volunteers>> getNewVolun(Integer pageNo,Integer pageSize){
+		try {
+			PageInfo<Volunteers> pageInfo = volunteersService.getNewVolun(pageNo, pageSize);
+			return new JsonResult<PageInfo<Volunteers>>(pageInfo);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new JsonResult<PageInfo<Volunteers>>(DefaultResponse.QUERY_ERROR,null);
+		}
+	}
+	                                                                                                                                                         
+	/**
+	 * 获取所有志愿者
+	 * @param pageNo
+	 * @param pageSize
+	 * @return
+	 */
+	@RequestMapping("allVolun")
+	@ResponseBody
+	public JsonResult<PageInfo<Volunteers>> allVolun(Integer pageNo,Integer pageSize){
+		try {
+			PageInfo<Volunteers> pageInfo = volunteersService.getAllVolun(pageNo, pageSize);
+			return new JsonResult<PageInfo<Volunteers>>(pageInfo);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new JsonResult<PageInfo<Volunteers>>(DefaultResponse.QUERY_ERROR,null);
+		}
+	}
+	
+	/**
+	 * 获取所有志愿者
+	 * @param pageNo
+	 * @param pageSize
+	 * @return
+	 */
+	@RequestMapping("volunList")
+	@ResponseBody
+	public JsonResult<PageInfo<Volunteers>> allVolun(Integer pageNo,Integer pageSize,Volunteers volunteer){
+		try {
+			PageInfo<Volunteers> pageInfo = volunteersService.getVolunList(pageNo, pageSize, volunteer);
+			return new JsonResult<PageInfo<Volunteers>>(pageInfo);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new JsonResult<PageInfo<Volunteers>>(DefaultResponse.QUERY_ERROR,null);
+		}
+	}
+	
+	/**
+	 * 更新志愿者信息
+	 * @param req
+	 * @param volunteers
+	 * @return
+	 */
+	@RequestMapping("updateVolunInfo")
+	@ResponseBody
+	public JsonResult<String> updateVolunInfo(Volunteers volunteers,String birth){
+		String volunteerId = volunteers.getId();
+		if(StringUtils.isEmpty(volunteerId)){
+			return new JsonResult<String>(DefaultResponse.PARAM_NULL_ERROR,null);
+		}
+		long time = System.currentTimeMillis();
+		Timestamp timestamp = new Timestamp(time);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		volunteers.setUpdatedAt(timestamp);
+		volunteers.setStatus(YCConstants.AUDIT_NOAUDIT);
+		try {
+			volunteersService.updateVolunInfo(volunteers);
+			return new JsonResult<String>(DefaultResponse.SUCCESS,null);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new JsonResult<String>(DefaultResponse.UPDATE_ERROR,null);
+		}
+	}
+	
+	/**
+	 * 根据i的获取志愿者当前的名次
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping("ranking")
+	@ResponseBody
+	public JsonResult<Integer> getRankingById(String id){
+		if(StringUtils.isEmpty(id)){
+			return new JsonResult<Integer>(DefaultResponse.PARAM_NULL_ERROR,null);
+		}
+		try{
+			Integer integer = volunteersService.getRngkingById(id);
+			return new JsonResult<Integer>(DefaultResponse.SUCCESS,integer);
+		}catch (Exception e){
+			e.printStackTrace();
+			return new JsonResult<Integer>(DefaultResponse.QUERY_ERROR,null);
+		}
+	}
+	
+	/**
+	 * 根据志愿者id获取志愿者信息
+	 * @param volunteer
+	 * @param keyParams
+	 * @return
+	 * @author zhangpeng
+	 */
+	@SuppressWarnings("unchecked")
+	@RequestMapping("getVolunById")
+	@ResponseBody
+	public JsonResult<List<Volunteers>> getVolunById(Volunteers volunteer,String keyParams){
+		JsonResult<List<Volunteers>> checkJsonResult = Utils.checkKeyParams(volunteer.getId()+propertyService.KEY, keyParams);
+		if(checkJsonResult != null){
+			return checkJsonResult;
+		}
+		if(StringUtils.isEmpty(volunteer.getId())){
+			return new JsonResult<List<Volunteers>>(DefaultResponse.PARAM_NULL_ERROR, null);
+		}
+		try {
+			List<Volunteers> list = volunteersService.getVolunById(volunteer.getId());
+			return new JsonResult<List<Volunteers>>(list);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new JsonResult<List<Volunteers>>(DefaultResponse.QUERY_ERROR, null);
+		}
+		
+	}
+	/**
+	 * 参加活动的信息（审核状态）
+	 * @param volunteer
+	 * @param pageNo
+	 * @param pageSize
+	 * @param keyParams
+	 * @return
+	 * @author zhangpeng
+	 */
+	@SuppressWarnings("unchecked")
+	@RequestMapping("getAllCampaignsById")
+	@ResponseBody
+	public JsonResult<PageInfo<Campaigns>> getAllCampaignsById(Volunteers volunteer,Integer pageNo,Integer pageSize,String keyParams){
+		JsonResult<PageInfo<Campaigns>> checkJsonResult = Utils.checkKeyParams(volunteer.getId()+propertyService.KEY, keyParams);
+		if(checkJsonResult != null){
+			return checkJsonResult;
+		}
+		if(StringUtils.isEmpty(volunteer.getId())){
+			return new JsonResult<PageInfo<Campaigns>>(DefaultResponse.PARAM_NULL_ERROR, null);
+		}
+		try {
+			PageInfo<Campaigns> pageInfo = volunteersService.getAllCampaignsById(pageNo, pageSize, volunteer);
+			return new JsonResult<PageInfo<Campaigns>>(pageInfo);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new JsonResult<PageInfo<Campaigns>>(DefaultResponse.QUERY_ERROR, null);
+		}
+	}
+	
+}

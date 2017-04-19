@@ -1,0 +1,128 @@
+*{
+	margin:0;
+	padding:0;
+}
+input{
+	outline:0;
+}
+.col-sm-0{
+	display:none;
+}
+/*****************************头部**********************************/
+.first{
+	width:100%;
+	background:#e5e5e5;
+	border-bottom:1px solid #aaaaaa;
+}
+.first:after{
+	content:"";
+	display:block;
+	clear:both;
+}
+.header{
+	width:90%;
+	margin:0 auto;
+}
+.header li{
+	float:left;
+}
+.header .myli1{
+	display:none;
+}
+.header .mya1{
+	padding-left:3px;
+	padding-right:3px;
+}
+.header .mya2:hover{
+	color:#444444;
+}
+/*****************************支援阜阳logo部分**********************************/
+.twice{
+	width:100%;
+	background:#e5e5e5;
+}
+.twice:after{
+	content:"";
+	display:block;
+	clear:both;
+}
+.logo{
+	width:90%;
+	margin:0 auto;
+}
+.logo .myul1{
+	float:right;
+}
+.logo li a{
+	line-height:80px;
+}
+/*****************************头图**********************************/
+.third{
+	width:100%;
+}
+.third:after{
+	content:"";
+	display:block;
+	clear:both;
+}
+.third img{
+	width:100%;
+}
+.third a img{
+	width:40%;
+	height:40%;
+	margin:50% 20%;
+}
+
+/******************************footer部分***************************/
+footer{
+	margin-top:20px;
+	padding-top:10px;
+	width:100%;
+	background:#e84c3d;
+}
+footer:after{
+	display:block;
+	content:"";
+	clear:both;
+}
+.myfooter{
+	width:90%;
+	margin:0 auto;
+}
+.myfooter p{
+	color:#fceceb;
+}
+.myfooter a{
+	color:#fceceb;
+	margin-right:10px;
+}
+.myfooter .mydv1{
+	padding-top:20px;
+	padding-left:100px;
+}
+.myfooter .myp1{
+	padding-left:10px;
+}
+.myfooter .thumbnail{
+	padding-bottom:10px;
+}
+.myfooter .mydv2{
+	padding-top:20px;
+	padding-left:20px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>个人中心</title>
+    <script src="js/jquery-1.11.3.js"></script>
+    <script src="js/echarts.simple.min.js"></script>
+    <style>
+        *{
+            box-sizing:border-box;
+            padding:0;
+            margin:0;
+            font-family:Microsoft YaHei,Arial, Helvetica,"\534E\6587\9ED1\4F53", sans-serif;
+            font-size:14px;
+        }
+        body{
+            width:100%;
+            min-height:300px;
+            margin:0;
+            padding: 0;
+        }
+        div{
+            width:100%;
+            height:100%;
+        }
+        .container{
+            width:90%;
+            height:100%;
+            margin: 0 auto;
+            position: relative;
+        }
+        #chart{
+             width: 100%;
+             min-height:192px;
+             margin: 0 auto;
+             padding:8px;
+         }
+        #thumb{
+            width:100%;
+
+        }
+        #header{
+            margin-top: 2rem;
+            /*margin-bottom:10%;*/
+        }
+        #header .circle_photo{
+            position: absolute;
+            left:calc(50% - 2.5rem);
+            bottom:calc(50% - 72%);
+            width:5rem;
+            height:5rem;
+            border:0px solid #e00605;
+            border-radius: 50%;
+            vertical-align:bottom;
+        }
+        #data .border{
+            border-bottom:3px solid #ccc;
+        }
+        h3{
+            display: inline-block;
+            width:26%;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: normal;
+        }
+        input{
+            display: inline-block;
+            width:70%;
+            line-height:27px;
+            border:0;
+        }
+        .border{
+            width:100%;
+            line-height:30px;
+        }
+        #main>.container{
+            /*background: url("chartbg.png") no-repeat center center;*/
+            background-size: cover;
+            opacity: 0.7;
+        }
+        #data{
+            margin-top: 5%;
+            margin-bottom: 10%;
+            overflow: auto;
+        }
+        #chart div{
+            padding:8px;
+        }
+        #data div span{
+            display: inline-block;
+            width: 100%;
+            line-height: 100%;
+            color: #FFFFFF;
+            text-align: center;
+        }
+        #data div.left{
+            border-top-left-radius:10px;
+            padding-top:6px;
+        }
+        #data div.right{
+            padding-top:6px;
+            border-top-right-radius:10px;
+            border-left: 1px solid #d2d2d2;
+        }
+        #main{
+            margin-top: 13%;
+        }
+    </style>
+</head>
+<body>
+<div id="header">
+
+    <div class="container">
+        <img id="thumb" src="../images/banner05.png" style="width: 100%;"/>
+        <img class="circle_photo" id="avatar" src="" alt="请上传头像">
+    </div>
+</div>
+<div id="main">
+
+    <div class="container" style="background-color: #7c0a06;">
+            <div class="numbers" style="width:40%; margin: 0 auto;text-align: center;height:40px;position:absolute;right:0; z-index:10;">
+                <span id="step_count" style="color: #e9948d;display: inline-block;padding: 5px;">步数:&nbsp;&nbsp;100000</span>
+            </div>
+            <div class="numbers" style="width:20%; margin: 0 auto;text-align: center;height:25px;position:absolute;left:0; z-index:10;">
+                <span id="week" style="color: #e9948d;display: inline-block;padding: 5px 10px;border:2px solid #e9948d;border-radius: 30%;">周</span>
+            </div>
+            <div class="numbers" style="width:100%; margin: 0 auto;text-align: center;height:0;position:absolute;top:35px; z-index:10;border-bottom: 2px solid #e9948d;"></div>
+        <div id="chart" ></div>
+    </div>
+
+</div>
+<div id="data">
+    <div class="container" style="background-color:#982723;float: left;margin-left:5%;padding:6px 15px;">
+        <div class="left" style="background-color:#e84c3d;width:49.5%;height: 50px;float: left;border-top:1px solid transparent;">
+            <span class="steping">今日行走步数</span>
+            <span class="steps">25</span>
+        </div>
+        <div class="right" style="background-color:#e84c3d;width:49.5%;height: 50px;float: left;border-top:1px solid transparent;">
+            <span class="steping">历史捐赠步数</span>
+            <span class="steped">113000</span>
+        </div>
+    </div>
+</div>
+
+<div id="footer">
+    <div class="container">
+        <button id="donate_step" style="disabled:true;width: 65%;height: 50px;background-color: #ccc;border: 0;display: block;margin: 0 auto;color:#fff;margin-bottom:10px;border-radius:10px;">立即捐步</button>
+    </div>
+</div>
+</body>
+<script>
+    $(function () {
+        function GetQueryString(name)
+        {
+            var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if(r!=null)return  unescape(r[2]); return null;
+        }
+        var vid = GetQueryString("vid");
+        var steps = GetQueryString("steps");
+        $(".steps").html(steps);
+        var time=[];
+        var stepsArr=[];
+        function sub(){
+          	 $.post('/fuyang_backend/account/donateStep',{
+               	currentStep:steps,
+               	volunteerId:vid,
+               },function(result){	  
+            	   alert("捐赠成功,今天已捐出"+steps+"步");
+       				
+        		   var obj=result.data.sevenDay;
+            	   var json=JSON.parse(obj);
+            	   for(var key in json){
+            		    time.push(parseInt(key.replace('_','')));
+            		    stepsArr.push(json[key]);
+            	   }
+                            
+               })
+          }       
+        //渲染头像
+        
+        $.get('/fuyang_backend/volunteers/getPhoto?volunteerId='+vid,function (result) {
+            console.log(result);           
+            $('#avatar').attr("src",result.data);
+        });
+        if(steps>=5000){
+        	$("#donate_step").css("disabled","false");
+            $("#donate_step").css("background-color","#e84c3d");
+            $("#donate_step").bind("click",sub);
+        }
+        
+        var myChart = echarts.init(document.getElementById("chart"));
+        option = {
+            title : {
+                text: '未来一周气温变化',
+                subtext: '纯属虚构',
+                textStyle:{
+                    fontSize:10
+                }
+            },
+            tooltip : {
+                trigger: 'axis',
+            },
+            renderAsImage:"chartbg.png",
+            legend: {
+                data:['最高气温','最低气温']
+            },
+            toolbox: {
+                show : true,
+                feature : {
+                    mark : {show: true},
+                    dataView : {show: true, readOnly: false},
+                    magicType : {show: true, type: ['line', 'bar']},
+                    restore : {show: true},
+                    saveAsImage : {show: true}
+                }
+            },
+            calculable : true,
+
+            xAxis : [
+                {
+                    type : 'category',
+                    boundaryGap : false,
+                    data : time,
+                    axisLabel : {
+                        textStyle: {
+                            color: '#fff'
+                        }
+                    },
+                    axisLine:{
+                        lineStyle:{
+                            color:'yellow',
+                            width:1,//这里是为了突出显示加上的，可以去掉
+                        }
+                    },
+                },
+            ],
+            yAxis : [
+                {
+                    show:false,
+                    type : 'value',
+                    axisLabel : {
+                        formatter: '{value} 步',
+                        textStyle: {
+                            color: '#fff',
+                        }
+                    },
+                }
+            ],
+            series: [
+                {
+                    name:'最高气温',
+                    type:'line',
+                    data:stepsArr,
+                    markPoint: {
+                        data: [
+                            {
+                                type: 'max',
+                                name: '最大值'
+                            },
+                            {
+                                type: 'min',
+                                name: '最小值'
+                            }
+                        ]
+                    },
+                    markLine: {
+                        data: [
+                            {type: 'average', name: '平均值'}
+                        ]
+                    },
+
+                    itemStyle : {
+                        normal: {
+                            label:{
+                                show:true,
+                                textStyle:{
+                                    color:'yellow',
+                                }
+                            },
+                            lineStyle:{
+                                color:'yellow',
+                            },
+
+                        }
+                    },
+                },
+            ],
+        };
+        myChart.setOption(option);
+        window.onresize = myChart.resize;
+    })
+
+</script>
+</html>

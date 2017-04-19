@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+ <mapper namespace="com.yichuang.fuyang.dao.PostbbsreplayDao">
+ 	
+ 	<!-- 论坛帖子评论回复 -->
+ 	<insert id="addPostbbsReplay" parameterType="com.yichuang.fuyang.entity.Postbbsreplay">
+ 		insert into postbbsreplay (id,content,volunteerId,postatomsbbsId,replayTime,photo,realname)
+ 		values(#{id},#{content},#{volunteerId},#{postatomsbbsId},#{replayTime},#{photo},#{realname})
+ 	</insert>
+ 		
+ 	<!-- 根据评论id获取回复列表 -->	
+ 	<select id="findByPostAtomsbbs" parameterType="string" resultMap="BaseResultMap">
+ 		select * from postbbsreplay where postatomsbbsId = #{postatomsbbsId}
+ 	</select>
+ 	
+ 	<resultMap type="com.yichuang.fuyang.entity.Postbbsreplay" id="BaseResultMap">
+ 		<id property="id" column="id"/>
+ 	</resultMap>
+ </mapper>

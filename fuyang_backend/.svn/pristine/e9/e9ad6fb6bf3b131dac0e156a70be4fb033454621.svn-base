@@ -1,0 +1,80 @@
+package com.yichuang.fuyang.service;
+
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.yichuang.fuyang.dao.PostsDao;
+import com.yichuang.fuyang.entity.Posts;
+
+@Service("postsService")
+public class PostsServiceImpl implements PostsService {
+
+	@Autowired
+	private PostsDao postsDao;
+	
+	
+	/**
+	 * 发帖
+	 */
+    public void savePosts(Posts posts) {
+			posts.setId(UUID.randomUUID().toString());
+			posts.setPass("2");
+			long time = System.currentTimeMillis();
+			Timestamp datetime = new Timestamp(time);
+			posts.setZan(0);
+			posts.setTime(datetime);
+			posts.setPostPlateId("");
+			posts.setCreatedAt(datetime);
+			posts.setUpdatedAt(null);
+			postsDao.savePosts(posts);
+	}
+
+    
+    /**
+     * 获取帖子列表
+     */
+	public PageInfo<Posts> queryPosts(Integer pageNo, Integer pageSize) {
+		pageNo = pageNo == null?1:pageNo;
+	    pageSize = pageSize == null?10:pageSize;
+	    PageHelper.orderBy("p.createdAt desc");
+	    PageHelper.startPage(pageNo, pageSize);
+	    List<Posts> list = postsDao.selectPosts();
+	    PageInfo<Posts> page = new PageInfo<Posts>(list);
+		return page;
+	}
+	
+	
+	/**
+	 * 点赞
+	 */
+	public Posts updatePostsZan(String id) throws YichuangException{
+		if(id == null || id.trim() == ""){
+			throw new YichuangException(1,"帖子id为空");
+		}
+		Posts posts = postsDao.selectByPostsId(id);
+		if(posts == null){
+			throw new YichuangException(2,"帖子不存在");
+		}
+		Date date = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		if(posts.getUpdatedAt() != null){
+			if(sdf.format(date).equals(sdf.format(posts.getUpdatedAt()))){
+				throw new YichuangException(2,"今天已经点赞");
+			}
+		}
+		postsDao.updateZan(id);
+		Posts posts2 = postsDao.selectByPostsId(id);
+		return posts2;
+	}
+
+	
+	
+}

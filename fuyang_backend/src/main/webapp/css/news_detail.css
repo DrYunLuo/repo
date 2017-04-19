@@ -1,0 +1,191 @@
+#warm{
+    margin:0 auto;
+}
+#warm:after{
+    display:block;
+    content:"";
+    clear:both;
+}
+#warm .breadcrumbs{
+    overflow: hidden;
+}
+#warm .breadcrumbs li{
+    float: left;
+    padding: 0 5px;
+    font-family: 'simsun';
+}
+#warm .breadcrumbs li a{
+    font-family: 'simsun';
+}
+#warm .warm_left{
+    background:#eee;
+    padding-right: 0;
+}
+#warm .warm_left p{
+    background:#eee !important;
+    max-width: 600px !important;
+}
+.detail-cen{
+    background:#eee !important;
+}
+#warm .warm_left .news_title h3{
+    color:#000000;
+    font-size:22px;
+    font-weight:bold;
+}
+#warm .warm_left .news_title h3 span{
+    color:#989898;
+    font-size:12px;
+}
+
+#warm .warm_left .news_title ul{
+    display: inline-block;
+    margin: 0 auto;
+    overflow: hidden;
+}
+#warm .warm_left .news_title ul li{
+    float: left;
+    padding: 10px 40px 10px 30px;
+    background: url(../img/news_detail.png) no-repeat 0px 13px;
+}
+#warm .warm_left .news_title ul li.newsType{
+    background: url(../img/news_detail.png) no-repeat 0px 13px;
+}
+#warm .warm_left .news_title ul li.newsAuthor{
+    background: url(../img/news_detail.png) no-repeat 0px -25px;
+}
+#warm .warm_left .news_title ul li.newsDate{
+    padding-right: 0;
+    background: url(../img/news_detail.png) no-repeat 0px -61px;
+}
+#warm .warm_left .newsSummary{
+    margin:0 20px 20px 25px;
+    text-indent:2em
+}
+#warm .warm_left blockquote {
+    border-left:0;
+}
+#news_content{
+    padding: 0 15px;
+}
+#warm .warm_left p.news_myp,#warm .warm_left p.news_myp1{
+    text-indent:2em;
+    font-size:12px;
+    color:#444444;
+    line-height:25px;
+}
+.news_right div p{
+    width:80px;
+    font-size:14px;
+    line-height:30px;
+    border-radius:15px 0 0 0;
+    text-align:center;
+    color:#fef6f5;
+    background-color:#e84c3d;
+}
+.news_right div ul li{
+    list-style-type: disc;
+    list-style-position: inside;
+    color:#444444;
+    font-size:14px;
+}
+#warm .warm_left{
+    box-sizing: border-box;
+    padding-bottom:20px;
+    overflow: hidden;
+}
+#warm .warm_left img{
+    max-width:100%;
+}
+#warm #right_container{
+    padding-left: 10px;
+}
+/*******************大屏的样式******************/
+@media all and (min-width:1000px){
+    .news_top{
+
+    }
+    #warm{
+        padding-bottom:20px;
+    }
+    #warm .warm_left .news_title{
+        text-align:center;
+        margin:40px 30px 20px;
+        background-color:#f6f6f6;
+        border:1px solid #ffffff;
+    }
+    .news_right div {
+        margin: 40px 20px;
+    }
+}
+
+/*******************中屏的样式******************/
+@media all and (min-width:769px) and (max-width:999px){
+    #warm{
+        width:90%;
+    }
+    #warm .warm_left .news_title{
+        text-align:center;
+        margin:40px 30px;
+        background-color:#f6f6f6;
+        border:1px solid #ffffff;
+    }
+    #warm .warm_left p.news_myp{
+        margin:15px 30px;
+    }
+    #warm .warm_left p.news_myp1{
+        margin:40px 30px;
+    }
+    .news_right div {
+        margin: 40px 20px;
+    }
+}
+
+/*******************小屏的样式******************/
+@media all and (max-width:768px){
+    #warm{
+        width:90%;
+    }
+    #warm .warm_left .news_title{
+        text-align:center;
+        margin:20px 5%;
+        background-color:#f6f6f6;
+        border:1px solid #ffffff;
+    }
+    #warm .warm_left p.news_myp{
+        margin:10px 5%;
+    }
+    #warm .warm_left p.news_myp1{
+        margin:20px 5%;
+    }
+    .news_right div{
+        margin:20px 10px;
+    }
+    #warm .warm_left img{
+        height:50%;
+    }
+    #warm .warm_left p{
+        background:#eee !important;
+        max-width: 260px !important;
+    }
+    #warm .warm_left .news_title ul{
+        display: inline-block;
+        margin: 0 auto;
+        overflow: hidden;
+    }
+    #warm .warm_left .news_title ul li{
+        clear: both;
+        padding: 0 0 0 30px;
+        background: url(../img/news_detail.png) no-repeat 0px 3px;
+    }
+    #warm .warm_left .news_title ul li.newsType{
+        background: url(../img/news_detail.png) no-repeat 0px 3px;
+    }
+    #warm .warm_left .news_title ul li.newsAuthor{
+        background: url(../img/news_detail.png) no-repeat 0px -35px;
+    }
+    #warm .warm_left .news_title ul li.newsDate{
+        padding-right: 0;
+        background: url(../img/news_detail.png) no-repeat 0px -71px;
+    }
+}

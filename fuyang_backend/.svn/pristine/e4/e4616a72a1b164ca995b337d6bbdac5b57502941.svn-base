@@ -1,0 +1,44 @@
+<!-- 审核活动-->
+<div id="active_review" ng-controller="activityReviewCtrl">
+		
+    <div class="table_box" >
+    	<div class="table" style="border:none">
+    		活动名称：<input type="text" id="cTitle"  >
+    		主办单位：<input type="text" id="cHostUnit" >
+    		审核状态：<select id="status" >
+		    			<option value="">--请选择--</option>
+		    			<option value="2">未审核</option>
+		    			<option value="1">审核已通过</option>
+		    			<option value="0">审核未通过</option>
+	    		  </select>
+    		<input type="button" ng-click="searchBtn()" style="width:70px;" value="查询">
+    	</div>
+    
+        <table id="example2" class="table" cellspacing="0">
+            <thead>
+            <tr>
+                <td>活动名称</td>
+                <td>主办单位</td>
+                <td>审核状态</td>
+                <td>联系人</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="obj in list track by $index">
+                <td>
+                    <a href="#/actReviewDetail" ng-bind="obj.title" ng-click="getId(obj)"></a>
+                </td>
+                <td ng-bind="obj.hostUnit"></td>
+                <td class="notice">
+                	<!-- <a href="#/actReviewDetail" ng-bind="obj.status" ng-click="getId(obj)"></a> -->
+                	<span ><a ng-if="obj.status == 0" href="#/actReviewDetail"  ng-click="getId(obj)">审核未通过</a></span>
+                	<span ng-if="obj.status == 1" >审核已通过</span>
+                	<span><a ng-if="obj.status == 2"  href="#/actReviewDetail"  ng-click="getId(obj)">待审核</a></span>
+             	</td>
+                <td ng-bind="obj.pricipalName"></td>
+            </tr>
+            </tbody>
+        </table>
+        <div id="act_rvpage"></div>
+    </div>
+</div>

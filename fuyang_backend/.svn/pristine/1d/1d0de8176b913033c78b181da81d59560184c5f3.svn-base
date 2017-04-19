@@ -1,0 +1,91 @@
+<div ng-include="'tpl/include/header.html'"></div>
+<div id="group_detail_main" class="active_content" ng-controller="actDetailCtrl">
+    <div class="container" style="padding-top:20px">
+        <div id="main_top">
+            <div id="group_pic">
+                <img src="img/org_pic.jpg"/>
+            </div>
+            <div id="group_info">
+                <h2>阜阳褒扬英烈志愿者协会</h2>
+                <table>
+                    <tr>
+                        <td>
+                            团队类型：<span>志愿者协会</span>
+                        </td>
+                        <td>
+                            法人代表：<span>你好阳光</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            成立时间：<span>2016年10月13号</span>
+                        </td>
+                        <td>
+                            联系电话：<span>15512351211</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            团队人数：<span>200</span>人
+                        </td>
+                        <td>
+                            所属区域：<span>颍州区</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            活动数量：<span>254</span>个
+                        </td>
+                        <td>
+                            服务时长：<span>45642</span>小时
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">协会地址：<span>安徽省阜阳市颍州区烈士革命纪念馆和平公园</span></td>
+                    </tr>
+                </table>
+                <button>申请加入</button>
+            </div>
+            <div id="hot_groups">
+                <div class="top">
+                    <span>热门组织</span>
+                </div>
+                <ul>
+                    <li><a href="">团颍泉区委联合泉河湾爱心协会</a></li>
+                    <li><a href="">团颍泉区委联合泉河湾爱心协会</a></li>
+                    <li><a href="">团颍泉区委联合泉河湾爱心协会</a></li>
+                    <li><a href="">团颍泉区委联合泉河湾爱心协会</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="active_mydv1 col-xs-12 col-sm-12 col-md-8 col-lg-8">
+        <p>
+            <p style="text-indent:0em;">活动内容</p>
+            <p>
+               陵园内，松柏苍翠，静穆庄严。省委、省人大、省政府、省政协、省军区，阜阳市委、市人大、市政府、市政协、阜阳警备区，安徽省人民团体，阜阳市人民团体，省会各界群众分别敬献的5个大型花篮一字排开，摆在纪念碑北侧。花篮的红色缎带上写着"烈士永垂不朽”6个金色大字。
+            </p>
+        </p>
+        <p class="active_myp">
+            <p>
+                9时30分，庄严的公祭活动正式开始。6名礼兵迈着铿锵有力的步伐，分两列行进到纪念碑前持枪伫立。随着《义勇军进行曲》庄严高亢的旋律，全场齐声高唱中华人民共和国国歌，激昂的国歌声在广 场上空回荡。随后，全场肃立，向为民 族独立、人民解放和国家富强、人民幸福英勇牺牲的烈士们默哀。
+            </p>
+            <p>
+                烈士纪念日省会各界代表举行公祭活动 谢伏瞻陈润儿出席
+            </p>
+            <p>
+                "我们是共产主义接班人……”默哀结束，少年儿童面向烈士纪念碑，唱响中国少年先锋队队歌，高举右手，齐致队礼，表达他们继承革命先辈光荣传统、踏着烈士足迹奋勇向前的远大志向。
+            </p>
+        </p>
+        <p class="active_myp">
+            <p>伴随着深情的《献花曲》，10名礼兵抬起花篮，缓步走向烈士纪念碑，将花篮摆放到纪念碑基座上。谢伏瞻等省领导领导沿着花岗岩铺就的台阶登上纪念碑基座，驻足凝视，深情缅怀。谢伏瞻缓步上前，仔细整理花篮上的缎带。随后，省领导和各界代表一起瞻仰了革命烈士纪念碑，并步行至吉鸿昌烈士墓、雪枫亭等处，表达缅怀之情。</p>
+            <p>省委各部委、省政府组成部门及直属机构主要负责同志，郑州市有关领导同志和省、市、区直机关干部，省会各界群众代表、大中小学生代表、驻郑部队官兵代表等共3000余人参加了公祭活动。</p>
+        </p>
+        <p class="active_myp">
+            <p>关于国家烈士纪念日，这些你都了解吗？</p>
+            <p>缅怀是为了唤醒记忆，纪念是为了缔造未来。2014年8月31日，十二届全国人大常委会第十次会议表决，通过了关于设立烈士纪念日的决定，以法律形式将9月30日设立为烈士纪念日。在第三个烈士纪念日来临之际，让我们一起来了解一下关于烈士纪念日的那些事儿。以此，致敬英烈，仰望崇高，砥砺前行。</p>
+        </p>
+    </div>
+        <div class="clearfix visible-md visible-lg"></div>
+    </div>
+</div>
+<div ng-include="'tpl/include/footer.html'"></div>

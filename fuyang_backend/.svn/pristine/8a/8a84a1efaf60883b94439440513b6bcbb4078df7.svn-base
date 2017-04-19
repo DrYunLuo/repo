@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+ <mapper namespace="com.yichuang.fuyang.dao.AccountDao">
+ 	
+ 	<!-- 根据志愿者id获取志愿者账户 -->
+ 	<select id="findByVolunteerId" parameterType="string" resultMap="stepRstMap">
+ 		SELECT a.* from accounts a where volunteerId = #{volunteerId}
+	 </select>
+	 
+	 <resultMap type="com.yichuang.fuyang.entity.Accounts" id="stepRstMap">
+	 	<id property="id" column="id"/>
+	 	<result property="mark" column="mark"/>
+	 	<result property="lastMarkTime" column="lastMarkTime"/>
+	 	<result property="stepCount" column="stepCount"/>
+	 	<result property="lastStepTime" column="lastStepTime"/>
+	 	<result property="createdAt" column="createdAt"/>
+	 	<result property="updatedAt" column="updatedAt"/>
+	 	<result property="volunteerId" column="volunteerId"/>
+	 	<result property="credit" column="credit"/>
+	 	<result property="currentStep" column="currentStep"/>
+	 	<result property="sevenDay" column="sevenDay"/>
+	 </resultMap>
+	 
+	 <update id="updateAccount" parameterType="com.yichuang.fuyang.entity.Accounts">
+	 	UPDATE ACCOUNTS
+	 	<set>
+	 		<if test="lastStepTime!=null">
+	 			lastStepTime = #{lastStepTime},
+	 		</if>
+	 		<if test="currentStep!=null">
+	 			currentStep = #{currentStep},
+	 		</if>
+	 		<if test="credit!=null">
+	 			credit = #{credit},
+	 		</if>
+	 		<if test="stepCount!=null">
+	 			stepCount = #{stepCount},
+	 		</if>
+	 		<if test="sevenDay!=null">
+	 			sevenDay = #{sevenDay},
+	 		</if>
+	 		<if test="mark!=null">
+	 			mark = #{mark},
+	 		</if>
+	 		<if test="updatedAt != null">updatedAt = #{updatedAt}</if>
+	 	</set>
+	 	WHERE id = #{id}
+	 </update>
+ 	
+ 	
+ 	<!-- 根据账户id签到更新积分 -->
+ 	<update id="updateCredit" parameterType="string">
+ 		update accounts set credit = credit+1 where volunteerId=#{volunteerId}
+ 	</update>
+ 	
+ 	<!-- 根据任务加积分 -->
+ 	<update id="updateByMissing" parameterType="com.yichuang.fuyang.entity.Accounts">
+ 		update accounts set credit = credit + #{credit},updatedAt = #{updatedAt} where volunteerId=#{volunteerId}
+ 	</update>
+ 	
+ 	<!-- 捐赠积分 -->
+ 	<update id="juan" parameterType="hashmap">
+ 		update accounts set credit = credit- #{credit} where volunteerId=#{volunteerId} 
+ 	</update>
+ 	
+ 	<insert id="saveAccounts" parameterType="com.yichuang.fuyang.entity.Accounts">
+	  <selectKey keyProperty="id" order="BEFORE" resultType="string">
+ 		SELECT UUID()
+ 	  </selectKey>
+	  insert into accounts
+	   ( id,
+	     mark,
+	     lastMarkTime,
+	     stepCount,
+	     lastStepTime,
+	     createdAt,
+	     updatedAt,
+	     credit,
+	     volunteerId)
+	 values
+	(#{id},#{mark},#{lastMarkTime},#{stepCount},
+	#{lastStepTime},#{createdAt},#{updatedAt},#{credit},#{volunteerId})
+	</insert>
+ 	
+  <!-- 根据志愿者ID  更新账户信息 -->
+  <update id="updateAccountByVolId" parameterType="com.yichuang.fuyang.entity.Accounts" >
+  	update accounts 
+  	<set>
+  			<if test="lastStepTime != null">lastStepTime = #{lastStepTime},</if>
+	 		<if test="currentStep != null">currentStep =  currentStep + #{currentStep},</if>
+	 		<if test="credit != null">credit = credit + #{credit},</if>
+	 		<if test="stepCount != null">stepCount =stepCount + #{stepCount},</if>
+	 		<if test="sevenDay != null">sevenDay = #{sevenDay},</if>
+	 		<if test="mark != null">mark =mark + #{mark},</if>
+	 		<if test="updatedAt != null">updatedAt = #{updatedAt}</if>
+  	</set>
+  		where volunteerId =  #{volunteerId}
+  </update>
+  
+  	<!-- 添加捐赠物品记录 -->
+ 	<insert id="addDonatrecord" parameterType="com.yichuang.fuyang.entity.Donatrecord">
+ 		insert into donatrecord (id,campaignId,volunteerId,leaveMessage,messageTime,donatTime,donationAmount,createdTime,updatedTime,goodsCode)
+ 		values(#{id},#{campaignId},#{volunteerId},#{leaveMessage},#{messageTime},#{donatTime},#{donationAmount},#{createdTime},#{updatedTime},#{goodsCode})
+ 	</insert>
+  
+ </mapper>

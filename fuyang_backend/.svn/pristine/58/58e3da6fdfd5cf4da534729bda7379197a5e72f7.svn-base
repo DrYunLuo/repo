@@ -1,0 +1,286 @@
+package com.yichuang.fuyang.service;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.sql.Timestamp;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
+
+import com.yichuang.fuyang.dao.AccountDao;
+import com.yichuang.fuyang.dao.GroupsDao;
+import com.yichuang.fuyang.dao.UserDao;
+import com.yichuang.fuyang.dao.VolunteersDao;
+import com.yichuang.fuyang.entity.Accounts;
+import com.yichuang.fuyang.entity.Groups;
+import com.yichuang.fuyang.entity.User;
+import com.yichuang.fuyang.entity.Volunteers;
+import com.yichuang.fuyang.util.Utils;
+
+
+
+/**
+ * 业务层实现类
+ * @Service 与组件扫描配合, 扫描到
+ *   cn.tedu.note.service
+ */
+@Service("userService")
+public class UserServiceImpl implements UserService{
+
+	@Autowired //注入的组件ID是 userDao
+	private UserDao userDao;
+	@Autowired
+	private VolunteersDao volunteersDao;
+	@Autowired
+	private AccountDao accountDao;
+	@Autowired
+	private GroupsDao groupsDao;
+	@Autowired
+	private PropertyService propertyService;
+	@Autowired
+	private VolunteersService volunteersService;
+	@Autowired
+	private AccountService accountService;
+	
+	/**
+	 * 用户登录
+	 */
+	@Transactional
+	public User login(String name,String password) 
+		throws NameOrPasswordException {
+		//检查入口参数!!!
+		if(name==null||name.trim()==""){
+			throw new NameOrPasswordException(1, "The user is empty");
+		}
+		if(password==null||password.trim()==""){
+			throw new NameOrPasswordException(2, "The password is empty");
+		}
+		name=name.trim();
+		password.trim();
+//		User user=userDao.findUserByName(name);
+		User user = userDao.getUserDynamic(name);
+		if(user==null){
+			throw new NameOrPasswordException(1, "用户不存在");
+		}
+		if(!name.equals(user.getPhone()) && !name.equals(user.getNickname())){
+			throw new NameOrPasswordException(1,"名字错误");
+		}
+		//计算加盐的密码
+		//String pwd = DigestUtils.md5Hex(
+		//	password+"今天你吃了么?");
+		String pwd=Utils.md5salt(password);
+		if(pwd.equals(user.getPassword())){
+			//登录成功!!
+			String token = UUID.randomUUID().toString();
+            user.setToken(token);
+            userDao.updateToken(user);
+            //System.out.println(token);
+			return user;
+		}
+		throw new NameOrPasswordException(2, "错误密码");
+	}
+
+	
+	/**
+	 * 根据id查询个人信息
+	 * 如果是志愿者返回账户,个人信息
+	 * 如果不是志愿者 
+	 * 只返回个人信息
+	 */
+	public Map<String , Object> getUserById(String id) throws YichuangException{
+		User user = new User();
+		user.setId(id);
+		List<User> list = userDao.getUserById(user);
+		Map<String, Object> mp = new HashMap<String , Object>();
+		if(CollectionUtils.isEmpty(list)){
+			throw new YichuangException(2,"用户不存在");
+		}
+		User userList = list.get(0);
+		String type = userList.getType();
+		String volunteerId = userList.getVolunteerId();
+		String groupId = userList.getGroupId();
+		if(StringUtils.isEmpty(type)&&StringUtils.isEmpty(volunteerId)&&StringUtils.isEmpty(groupId)){
+			mp.put("user", list);
+		}
+		
+		else if(!StringUtils.isEmpty(volunteerId) ||type.equals(propertyService.USERTYPE_VOL)){
+			
+			mp.put("user", list);
+			
+			List<Volunteers> volList = volunteersDao.getVolunById(volunteerId);
+			if(volList != null && volList.size() > 0){
+				Integer ranking = volunteersService.getRngkingById(volunteerId);
+				volList.get(0).setRanking(ranking);
+				
+				Accounts accounts = accountService.getCredit(volunteerId);
+				if(accounts != null){
+					volList.get(0).setCredit(accounts.getCredit());
+				}
+			}
+			
+			mp.put("volunteer", volList);
+		}
+		
+		else if(!StringUtils.isEmpty(groupId) || type.equals(propertyService.USERTYPE_GRO)){
+			List<Groups> groList = groupsDao.getGroupsById(groupId);
+			mp.put("user", list);
+			mp.put("group", groList);
+		}
+		return mp;
+	}
+	
+	/**
+	 * 用户注册
+	 */
+	@Transactional
+	public void saveUser(String phone, String password,String nickname,String groupId) {
+		if(phone==null||phone.trim().isEmpty()){
+			throw new YichuangException(1, "phone is empty");
+		}
+		if(password==null||password.trim().isEmpty()){
+			throw new YichuangException(2, "Password is empty");
+		}
+		
+		if(groupId == null){//非组织注册时验证手机号码
+			//验证手机号码是否正确
+			if(!Utils.regexCheck("^1[3|4|5|7|8][0-9]\\d{8}$", phone)){
+				throw new YichuangException(1,"手机号码不符合规则");
+			}
+		}
+		
+		User user1 =userDao.findUserByPhone(phone);
+		if(user1 != null){
+			throw new YichuangException(2,"用户已注册");
+		}
+		User user = new User();
+		long time1 = System.currentTimeMillis();
+		Timestamp datetime = new Timestamp(time1);
+		/*
+		 * Field        Type  Comment
+	       _id          varchar(255) NOT NULL
+	       phone        varchar(255) NULL
+	       password     varchar(255) NULL
+	       wechatId     varchar(255) NULL
+	       type         varchar(255) NULL
+	       generation   varchar(255) NULL
+	       nickname     varchar(255) NULL
+	       createdAt    datetime NOT NULL
+	       updatedAt    datetime NOT NULL
+	       VolunteerId  varchar(255) NULL
+	       GroupManagerId   varchar(255) NULL
+	       ManagerId        varchar(255) NULL
+		 */
+		user.setId(UUID.randomUUID().toString());
+		user.setGroupId(groupId);
+		user.setPhone(phone);
+		user.setUsername("");
+		if(groupId != null){
+			user.setUsername(phone);
+		}
+		if(nickname != null){
+			user.setUsername(nickname);
+		}
+		user.setPassword(password);
+		user.setWechatId("");
+		user.setType("");
+		user.setNickname(nickname);
+		user.setCreatedAt(datetime);
+		user.setUpdatedAt(datetime);
+		user.setToken("");
+		
+		userDao.saveUser(user);
+	}
+	
+	/**
+	 * 用户名
+	 */
+	@Transactional
+	public void updateTokenToNull(String userId) throws Exception {
+		this.userDao.updateTokenToNull(userId);
+	}
+	
+	
+	/**
+	 * 管理后台修改密码 LH
+	 * @param user
+	 * @return
+	 */
+	public int updateUserById(User user){
+		return userDao.updateUserById(user);
+	};
+	
+	
+	/**
+	 * 根据用户ID查找用户 LH
+	 * @param id
+	 * @return
+	 */
+	public List<User> getUserByID(String id) {
+		User user = new User();
+		user.setId(id);
+			return  userDao.getUserById(user);
+	}
+	
+	/**
+	 * 根据用户token查找用户Id LH
+	 * @param token
+	 * @return
+	 */
+	public User getUserIdByToken(String token){
+		return userDao.getUserIdByToken(token);
+	}
+	
+	/**
+	 * 根据id更新任务标志
+	 */
+	@Override
+	public Integer updateDateByid(User user) {
+		Integer integer = userDao.updateDateByid(user);
+		return integer;
+	}
+
+
+	/**
+	 * 增加用户
+	 */
+	@Override
+	public Integer addUser(User user) {
+		Integer integer = userDao.addUser(user);
+		return integer;
+	}
+
+
+	/**
+	 * 根据志愿者id获取用户信息
+	 */
+	@Override
+	public List<User> getUserByVolunId(User user) {
+		List<User> list = userDao.getUserById(user);
+		return list;
+	}
+
+
+	@Override
+	public void updateUserType(User user) {
+		userDao.updateUserType(user);
+	}
+
+	/**
+	 * 根据手机查询用户
+	 * @param phone
+	 * @return
+	 */
+	public User findUserByPhone(String phone){
+		return userDao.findUserByPhone(phone);
+	}
+	
+
+	
+	
+	
+}

@@ -1,0 +1,4 @@
+$(function(){
+    $.post("",{},function(result){});
+    $(".volun_detail").empty().append("<div class='volun_person_img col-xs-3 col-sm-3 col-md-3 col-lg-3'><img src='img/volun1.jpg' alt='图片丢失' class='col-xs-12 col-sm-12 col-md-12 col-lg-12'><div class='col-xs-12 col-sm-12 col-md-12 col-lg-12'>革命烈士公祭活动</div><div class='col-xs-12 col-sm-12 col-md-12 col-lg-12'>志愿名人</div><div class='col-xs-12 col-sm-12 col-md-12 col-lg-12'>欧阳俊男</div><div class='volun_content col-xs-12 col-sm-12 col-md-12 col-lg-12'><div class='zan_volun col-xs-6 col-sm-6 col-md-6 col-lg-6'><b class='zan_volun_img'></b><span class='zan_volun_num'>12</span></div><div class='share_volun col-xs-6 col-sm-6 col-md-6 col-lg-6'><b class='share_volun_img'></b><span class='share_volun_num'>455</span></div></div></div>");
+});

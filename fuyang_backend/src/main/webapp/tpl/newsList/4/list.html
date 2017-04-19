@@ -1,0 +1,32 @@
+<div ng-include="'tpl/include/header.html'"></div>
+<div id="newslist" class="container" ng-controller="newsListCtrl4">
+    <div id="box_left" class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+        <ul>
+            <li><a href="#/1/news_list">通知公告</a></li>
+            <li><a href="#/2/news_list">各区动态</a></li>
+            <li><a href="#/3/news_list">活动新闻</a></li>
+            <li><a href="#/4/news_list" class="active">公益人物</a></li>
+        </ul>
+    </div>
+    <div id="box_right" class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
+        <p>公益人物</p>
+        <div id="list_box">
+            <ul>
+                <li ng-repeat="obj in volunStory">
+                    <div class="row">
+                        <p class="col-xs-7 col-sm-9 col-md-9 col-lg-9">
+                            <a href="#/news_detail/{{obj.id}}" ng-bind="obj.title"></a>
+                        </p>
+                        <div class="col-xs-5 col-sm-3 col-md-3 col-lg-3">
+                            <span style="float: right;" ng-bind="obj.createdAt"></span>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div id="newslist_page4" style="overflow: hidden;display: table;margin: 0 auto;">
+
+        </div>
+    </div>
+</div>
+<div ng-include="'tpl/include/footer.html'"></div>

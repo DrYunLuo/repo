@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="志愿阜阳,志愿,阜阳,志愿者协会,志愿者,阜阳公益"/>
+    <meta name="description" content="志愿阜阳" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="shortcut icon" href="img/favicon.ico" />
+    <!-- js -->
+    <!--[if IE 8]>
+    <script src="js/es5-shim.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="js/jquery-1.11.3.js"></script>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript" src="js/angular-route.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap-paginator.js"></script>
+    <script type="text/javascript" src="js/storageInfo.js"></script>
+
+    <!--[if lt IE 9]>
+    <script src="js/jquery.JPlaceholder.js"></script>
+    <script type="text/javascript" src="js/respond.min.js"></script>
+    <script type="text/javascript" src="js/html5shiv.min.js"></script>
+    <![endif]-->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/groups.css">
+    <link rel="stylesheet" href="css/paging.css">
+    <link rel="stylesheet" href="css/campaign.css">
+    <!--<link rel="stylesheet" href="css/luntan_detail.css?v=020201"/>-->
+    <link rel="stylesheet" href="css/volun.css">
+    <link rel="stylesheet" href="css/mycss.css"/>
+    <link rel="stylesheet" href="css/ass_css.css"/>
+    <link rel="stylesheet" href="css/active_detail.css"/>
+    <link rel="stylesheet" href="css/news_detail.css"/>
+    <link rel="stylesheet" href="css/group_detail.css"/>
+    <link rel="stylesheet" href="css/newslist.css"/>
+    <title>志愿阜阳</title>
+</head>
+<body ng-controller="parentCtrl">
+<!-------------------------main部分---------------------------------->
+<div ng-include="'include/header.html'" ng-init="volun=true"></div>
+<div id="groups_main" class="volun_person" ng-controller="personCtrl">
+    <div class="container" style="padding-top:15px;">
+        <!-- 头部-->
+        <div class="content_box">
+            <div id="org_header">
+                <div class="title row">
+                    <h3 class="col-xs-6 col-sm-6 col-md-6 col-lg-6">风采人物</h3>
+                </div>
+                <div class="title row">
+                    <h5 class="col-xs-10 col-sm-10 col-md-10 col-lg-10">ELEGANT APPEARANCE CHARACTERS</h5>
+                </div>
+                <div class="selectClass row">
+                    <ul class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <li><a class="active" ng-click="showTotal()">全部</a></li>
+                        <li><a class="" ng-click="showF()">推荐</a></li>
+                        <li><a class="" ng-click="showTW()">最新</a></li>
+                        <li><a class="" ng-click="showTH()">最热</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div id="left_container" class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+                <div id="volun_detail" class="row">
+                    <div ng-repeat="item in list track by $index" class="volun_person_img col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <div class="media">
+                            <a class="media-left" href="">
+                                <div ng-if="!item.photo"><img ng-src="img/120.jpg"></div>
+                                <div ng-if="item.photo"> <img ng-src="{{item.photo}}"> </div>
+                            </a>
+                            <div class="media-body">
+                                <div>
+                                    姓名：<span ng-bind="item.realname"></span>
+                                </div>
+                                <div>
+                                    服务时长：<span ng-bind="item.serviceTime"></span>
+                                </div>
+                                <div>
+                                    参与活动数：<span ng-bind="item.campaignTotal"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="person_listPage" style="overflow: hidden;display: table;margin: 20px auto;">
+
+                </div>
+            </div>
+            <div id="right_container" class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                <div class="content_box">
+                    <!-- 各区动态-->
+                    <div id="regional">
+                        <div class="title row">
+                            <h3 class="col-xs-6 col-sm-6 col-md-6 col-lg-6">各区动态</h3>
+                            <h5 class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="text-align: right">-<a href="#/2/news_list">MORE</a>-</h5>
+                        </div>
+                        <ul>
+                            <li ng-repeat="obj in news | limitTo:3">
+                                <a href="#/news_detail/{{obj.id}}" ng-bind="obj.title"></a>
+                                <p ng-bind="obj.summary"></p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="content_box">
+                    <!-- 活动信息-->
+                    <div id="activeInfo">
+                        <div class="title row">
+                            <h3 class="col-xs-6 col-sm-6 col-md-6 col-lg-6">活动信息</h3>
+                            <h5 class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="text-align: right">-<a href="#/3/news_list">MORE</a>-</h5>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" align="center">
+                                <a href="#/news_detail/{{campaigns[0].id}}">
+                                    <img ng-src="{{campaigns[0].titleImgUrl}}" height="150"/>
+                                </a>
+                            </div>
+                        </div>
+                        <ul>
+                            <li ng-repeat="obj in campaigns | limitTo:2">
+                                <a href="#/news_detail/{{obj.id}}" ng-bind="obj.title"></a>
+                                <p ng-bind="obj.summary"></p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $("#org_header ul li").on('click','a',function(){
+        $(this).addClass('active').parent().siblings().children('.active').removeClass('active');
+    });
+</script>
+<div ng-include="'include/footer.html'"></div>
+<div ng-view>
+
+</div>
+<!--[if lt IE 9]>
+<div>您的浏览器版本过低，请用IE8以上版本的浏览器浏览本网站</div>
+<![endif]-->
+<script type="text/javascript" src="js/index_angular.js"></script>
+<script type="text/javascript" src="js/paging.js"></script>
+</body>
+</html>
+

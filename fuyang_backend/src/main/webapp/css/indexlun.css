@@ -1,0 +1,33 @@
+
+/****************banner************************/
+#banner{
+    width:100%;
+    border-bottom: 2px solid #e5e5e5;
+}
+.item{
+    width:100%;
+}
+.item img{
+    width:100%;
+}
+a.carousel-control{
+    line-height:100%;
+}
+.carousel-control img{
+    vertical-align: middle;
+    margin-top:calc(50% + 30%);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

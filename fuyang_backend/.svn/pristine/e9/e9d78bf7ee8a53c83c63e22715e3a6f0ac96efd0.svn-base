@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.yichuang.fuyang.dao.VolunteersDao">
+
+	<!-- 志愿者注册 -->
+	<insert id="saveVolunteers" parameterType="com.yichuang.fuyang.entity.Volunteers">
+	  insert into volunteers
+	       (id,
+            realname,
+            duration,
+            quality,
+            photo,
+            
+            createdAt,
+            updatedAt,
+            GroupId,
+            sex,
+            
+            age,
+            raceId,
+            identification,
+            educationId,
+            emplee,
+            
+            tradeId,
+            tel,
+            email,
+            cardId,
+            homeAddress,
+            
+            regionId,
+            illness,
+            illnessExplain,
+            experience,
+            specialty,
+            
+            notes,
+            serviceTime,
+            
+            
+            loginTime,
+            blood,
+            party,
+            cardType,nativePlace,workAddress,qq,serviceArea,studying,studentId,school,birth,nickname)
+	   values
+	    (#{id},#{realname},#{duration},#{quality},#{photo},
+	    
+	    #{createdAt},#{updatedAt},#{GroupId},#{sex},
+	    
+	    #{age},#{raceId},#{identification},#{educationId},#{emplee},
+	    
+	    #{tradeId},#{tel},#{email},#{cardId},#{homeAddress},
+	    
+	    #{regionId},#{illness},#{illnessExplain},#{experience},#{specialty},
+	    
+	    #{notes},#{serviceTime},
+	    
+	    #{loginTime},#{blood},#{party},#{cardType},#{nativePlace},#{workAddress},#{qq},#{serviceArea},#{studying},#{studentId},
+	    #{school},#{birth},#{nickname})
+	</insert>
+	
+	
+	<!-- 获取志愿者总数 -->
+    <select id="getTotalVolunteers"
+		resultType="Integer">
+		select 
+			count(id)
+		from
+			volunteers
+	</select>
+	
+	<!-- 获取服务时长 -->
+	<select id="getSumServiceTime"
+		resultType="Integer">
+		select 
+			sum(serviceTime)
+		from
+			volunteers
+	</select>
+	
+	
+	<!-- 获取志愿者排行 -->
+	<select id="getRankingVolun" resultMap="BaseResultMap">
+		SELECT id as id,realname,serviceTime,photo FROM volunteers where `status`='1' 
+	</select>
+	
+	
+	<!-- 根据id查询志愿者 -->
+	<select id="getVolunById" parameterType="string" resultMap="other">
+		SELECT v.*,g.`name` FROM volunteers v LEFT JOIN groups g ON v.`GroupId` = g.`id` WHERE v.`id`= #{id}
+	</select>
+	
+	<!-- 根据志愿者id查询所参加的活动信息 -->
+	<select id="getAllCampaignsById" parameterType="string" resultMap="getAllCampaigns">
+		SELECT c.*,camp.`iscalc` FROM campaigns AS c,campaignrecords AS camp
+		WHERE c.`id`=camp.`campaignId` AND camp.`volunteerId`= #{id}
+	</select>
+	
+	<resultMap type="com.yichuang.fuyang.entity.Campaigns" id="getAllCampaigns">
+		<id column="id" property="id"/> 
+		<result column="title" property="title"/>
+		<result column="pricipalTel" property="pricipalTel"/>
+		<result column="memberCount" property="memberCount"/>
+		<result column="location" property="location"/>
+		<association property="campaignrecord" javaType="com.yichuang.fuyang.entity.Campaignrecords">
+			<result column="iscalc" property="iscalc"/>
+		</association>   
+	</resultMap>
+	
+	<!-- 获取志愿者列表 -->
+	<select id="getVolun" parameterType="com.yichuang.fuyang.entity.Volunteers" resultType="com.yichuang.fuyang.entity.Volunteers">
+		select * from volunteers 
+		<where>
+			<if test="id != null and id !=''">
+				id = #{id}
+			</if>
+			<if test="realname != null and realname != ''">
+				and realname = #{realname}
+			</if>
+			<if test="cardId !=null and cardId !=''">
+				 and cardId = #{cardId}
+			</if>
+		</where>
+	</select>
+	
+	
+	<!-- 获取当前志愿者排名 -->
+	<select id="getRankingById" parameterType="string" resultType="Integer">
+	<![CDATA[
+		SELECT count(id)+1 from volunteers v1 WHERE 
+		(SELECT serviceTime from volunteers where id = #{id}) < v1.serviceTime
+	]]>
+	</select>
+	
+	<!-- 官方审核志愿者 -->
+	<update id="ourShenHe" parameterType="com.yichuang.fuyang.entity.Volunteers">
+		update volunteers 
+		<set>
+			<if test="status != null and status != ''">
+				status = #{status},
+			</if>
+			<if test="notes != null and notes != ''">
+				 notes = #{notes},
+			</if>
+			<if test="updatedAt != null and updatedAt != ''">
+				 updatedAt = #{updatedAt}
+			</if>
+		</set>
+	    where id=#{id}
+	</update>
+	
+	<!-- 组织审核志愿者 -->
+	<update id="groupShenHe" parameterType="string">
+		update volunteers
+		<set>
+			<if test="GroupCheck != null and GroupCheck != ''">
+				GroupCheck = #{GroupCheck},
+			</if>
+			<if test="notes != null and notes != ''">
+				 notes = #{notes},
+			</if>
+			<if test="updatedAt != null">
+				updatedAt = #{updatedAt}
+			</if>
+		</set>
+	 where id=#{id}
+	</update>
+	
+	
+	<!-- 加入组织 -->
+	<update id="joinGroup" parameterType="string" >
+		update volunteers set GroupId =#{GroupId} where id=#{id}
+	</update>
+	
+	<resultMap type="com.yichuang.fuyang.entity.Volunteers" id="BaseResultMap">
+      <id column="id" property="id"/>    
+  	</resultMap>
+  	
+  	<!-- 根据志愿者审核结果查询志愿者 -->
+  	<select id="findVolunByGroupCheck" parameterType="com.yichuang.fuyang.entity.Volunteers" resultType="com.yichuang.fuyang.entity.Volunteers">
+  		select * from volunteers 
+  		<where>
+  			<if test="sRealName != null and sRealName != ''">and realName like CONCAT('%',#{sRealName},'%')</if>
+  			<if test="sTel != null and sTel != ''">and tel like CONCAT('%',#{sTel},'%')</if>
+	  		<if test="GroupId != null and GroupId != ''">
+	  			and GroupId = #{GroupId}
+	  		</if>
+	  		<if test="GroupCheck != null and GroupCheck != ''">
+	  			and GroupCheck = #{GroupCheck}
+	  		</if>
+	  		<if test="id != null and id != ''">
+	  			and id = #{id}
+	  		</if>
+  		</where>
+  	</select>
+  	
+  	<!-- 获取官方未审核志愿者   LH-->
+  	<select id="findVolunByStatus" resultType="com.yichuang.fuyang.entity.Volunteers">
+  		select * from volunteers 
+  		<where>
+  			<if test="sRealName != null and sRealName != ''">and realName like CONCAT('%',#{sRealName},'%')</if>
+  			<if test="sTel != null and sTel != ''">and tel like CONCAT('%',#{sTel},'%')</if>
+  			<if test="status != null and status != ''">
+  				status = #{status}
+  			</if>
+  		</where>
+  	</select>
+  	
+  	<!-- 组织查询待审核加入活动志愿者   LH-->
+  	<select id="getVolByIscalc"  resultType="com.yichuang.fuyang.entity.Volunteers">
+  		select realname,tel from volunteers where id in (select  volunteerId from campaignrecords where iscalc = 0 )
+  	</select>
+  	
+  	<!-- 志愿者修改信息 -->
+  	<update id="updateVolunInfo" parameterType="com.yichuang.fuyang.entity.Volunteers">
+		update volunteers 
+		<set>
+			<if test="realname != null and realname != ''">realname = #{realname},</if>
+			<if test="duration != null and duration != ''">duration = #{duration},</if>
+			<if test="quality != null and quality != ''">quality = #{quality},</if>
+			<if test="photo != null and photo != ''">photo = #{photo},</if>
+			<if test="GroupId != null and GroupId != ''">GroupId = #{GroupId},</if>
+			<if test="age != null and age != ''">age = #{age},</if>
+			<if test="raceId != null and raceId != ''">raceId = #{raceId},</if>
+			<if test="identification != null and identification != ''">identification = #{identification},</if>
+			<if test="educationId != null and educationId != ''">educationId = #{educationId},</if>
+			<if test="emplee != null and emplee != ''">emplee = #{emplee},</if>
+			<if test="tradeId != null and tradeId != ''">tradeId = #{tradeId},</if>
+			<if test="tel != null and tel !=''">tel = #{tel},</if>
+			<if test="cardId != null and cardId != ''">cardId = #{cardId},</if>
+			<if test="regionId != null and regionId != ''">regionId = #{regionId},</if>
+			<if test="illness != null and illness != ''">illness = #{illness},</if> 
+			<if test="illnessExplain != null and illnessExplain != ''">illnessExplain = #{illnessExplain},</if>
+			<if test="experience != null and experience != ''">experience = #{experience},</if>
+			<if test="specialty != null and specialty != ''">specialty = #{specialty},</if>
+			<if test="serviceTime != null and serviceTime != ''">serviceTime = serviceTime + #{serviceTime},</if>
+			<if test="blood != null and blood != ''">blood = #{blood},</if>
+			<if test="party != null and party != ''">party = #{party},</if>
+			<if test="GroupId != null and GroupId != ''">GroupId = #{GroupId},</if>
+			<if test="nativePlace != null and nativePlace !=''">nativePlace = #{nativePlace},</if>
+			<if test="workAddress != null and workAddress != ''">workAddress = #{workAddress},</if>
+			<if test="qq != null and qq != ''">qq = #{qq},</if>
+			<if test="serviceArea != null and serviceArea != null">serviceArea = #{serviceArea},</if>
+			<if test="studying != null and studying != ''">studying = #{studying},</if>
+			<if test="studentId != null and studentId !=''">studentId = #{studentId},</if>
+			<if test="school != null and school != ''">school = #{school},</if>
+			<if test="birth != null and birth != ''">birth = #{birth},</if>
+			<if test="status != null and status != ''">status = #{status},</if>
+			<if test="nickname != null and nickname != ''">nickname = #{nickname},</if>
+			<if test="sex != null and sex != ''">sex = #{sex},</if>
+			<if test="email != null and email != ''">email = #{email},</if>
+			<if test="homeAddress != null and homeAddress!= ''">homeAddress = #{homeAddress},</if>
+			<if test="campaignTotal != null ">campaignTotal = campaignTotal + #{campaignTotal},</if>
+			<if test="updatedAt != null and updatedAt !=''">updatedAt = #{updatedAt}</if>
+		</set>
+		where id = #{id}
+  	</update>
+  	
+  	<resultMap type="com.yichuang.fuyang.entity.Volunteers" id="other">
+  		<id column="id" property="id" />
+  		<result column="realname" property="realname"/>
+  		<result column="duration" property="duration"/>
+  		<result column="quality" property="quality"/>
+  		<result column="photo" property="photo"/>
+  		<result column="GroupId" property="GroupId"/>
+  		<result column="age" property="age"/>
+  		<result column="raceId" property="raceId"/>
+  		<result column="identification" property="identification"/>
+  		<result column="educationId" property="educationId"/>
+  		<result column="emplee" property="emplee"/>
+  		<result column="tradeId" property="tradeId"/>
+  		<result column="tel" property="tel"/>
+  		<result column="cardId" property="cardId"/>
+  		<result column="regionId" property="regionId"/>
+  		<result column="illness" property="illness"/>
+  		<result column="illnessExplain" property="illnessExplain"/>
+  		<result column="experience" property="experience"/>
+  		<result column="specialty" property="specialty"/>
+  		<result column="serviceTime" property="serviceTime"/>
+  		<result column="blood" property="blood"/>
+  		<result column="party" property="party"/>
+  		<result column="GroupId" property="GroupId"/>
+  		<result column="nativePlace" property="nativePlace"/>
+  		<result column="workAddress" property="workAddress"/>
+  		<result column="qq" property="qq"/>
+  		<result column="serviceArea" property="serviceArea"/>
+  		<result column="studying" property="studying"/>
+  		<result column="studentId" property="studentId"/>
+  		<result column="school" property="school"/>
+  		<result column="birth" property="birth"/>
+  		<result column="status" property="status"/>
+  		<result column="nickname" property="nickname"/>
+  		<result column="sex" property="sex"/>
+  		<result column="email" property="email"/>
+  		<result column="homeAddress" property="homeAddress"/>
+  		<result column="campaignTotal" property="campaignTotal"/>
+  		<result column="updatedAt" property="updatedAt"/>
+  		<result column="GroupCheck" property="GroupCheck"/>
+  		<association property="groups" javaType="com.yichuang.fuyang.entity.Groups">
+  			<result column="name" property="name"/>
+  		</association>
+  	</resultMap>
+  	
+</mapper>
+
+
+
+
+
+

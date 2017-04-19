@@ -1,0 +1,141 @@
+<div ng-include="'tpl/include/header.html'" ng-init="groups=true"></div>
+<div id="group_detail_main" ng-controller="groupDetailCtrl">
+    <div class="container" style="padding-top:20px">
+        <div id="main_top">
+            <div id="group_pic">
+                <img ng-src="{{org.logo}}"/>
+            </div>
+            <div id="group_info">
+                <h2 ng-bind="org.name"></h2>
+                <table>
+                    <tr>
+                        <td>
+                            团队类型：<span ng-bind="org.groupType">志愿者协会</span>
+                        </td>
+                        <td>
+                            法人代表：<span ng-bind="org.contactsname">胡青</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            成立时间：<span ng-bind="org.createdAt">2016年10月13号</span>
+                        </td>
+                        <td>
+                            联系电话：<span ng-bind="org.contactstel">15512351211</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            团队人数：<span ng-bind="org.volTotal">200</span>人
+                        </td>
+                        <td>
+                            所属区域：<span ng-bind="org.regionid">颍州区</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            活动数量：<span ng-bind="org.campaignCount">254</span>个
+                        </td>
+                        <td>
+                            服务时长：<span ng-bind="org.serverTime">45642</span>小时
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">协会地址：<span ng-bind="org.address">安徽省阜阳市颍州区烈士革命纪念馆和平公园</span></td>
+                    </tr>
+                </table>
+                <button ng-click="joinGroup()">申请加入</button>
+            </div>
+        </div>
+        <div id="main_content" class="row">
+            <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+                <div id="main_tabs">
+                    <img src="img/ground_dital.png" class="ground_img-left" alt="">
+                    <span class="group_actlist current">团队活动</span>
+                    <img src="img/ground_dital-right.png" alt="">
+                    <span class="group_desc">团队介绍</span>
+                </div>
+                <div id="group_actlist" class="db">
+                    <ul>
+                        <li ng-repeat="obj in allCampaign">
+                            <div class="act_pic">
+                                <a href="#/active_detail/{{obj.id}}">
+                                    <img ng-src="{{obj.image}}"/>
+                                </a>
+                            </div>
+                            <div class="act_summary">
+                                <h3><a href="#/active_detail/{{obj.id}}"><span ng-bind="obj.title"></span></a></h3>
+                                <p>活动时间：<span ng-bind="obj.startTime"></span> 至 <span ng-bind="obj.endTime"></span></p>
+                                <p>发起组织：<span ng-bind="obj.hostUnit"></span></p>
+                                <p>发 起 人：<span ng-bind="obj.pricipalName"></span></p>
+                                <div>
+                                    招募人数：<span class="notice" ng-bind="obj.limit"></span>人 &nbsp;&nbsp;&nbsp;
+                                    参与人数：<span class="notice" ng-bind="obj.memberCount"></span>人
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <div id="actlist_page" style="overflow: hidden;display: table;margin: 20px auto;">
+                    </div>
+                </div>
+                <div id="group_desc" class="dn" ng-bind="org.description">
+
+                </div>
+            </div>
+            <div class="ground_detail-right col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                <div id="right_container">
+                    <div class="content_box">
+                        <!-- 各区动态-->
+                        <div id="regional">
+                            <div class="title row">
+                                <h3 class="col-xs-6 col-sm-6 col-md-6 col-lg-6">各区动态</h3>
+                                <h5 class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="text-align: right">-<a href="#/2/news_list">MORE</a>-</h5>
+                            </div>
+                            <ul>
+                                <li ng-repeat="obj in news | limitTo:3">
+                                    <a href="#/news_detail/{{obj.id}}" ng-bind="obj.title"></a>
+                                    <p ng-bind="obj.summary"></p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="content_box">
+                        <!-- 活动信息-->
+                        <div id="activeInfo">
+                            <div class="title row">
+                                <h3 class="col-xs-6 col-sm-6 col-md-6 col-lg-6">活动信息</h3>
+                                <h5 class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="text-align: right">-<a href="#/3/news_list">MORE</a>-</h5>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" align="center">
+                                    <a href="#/news_detail/{{campaigns[0].id}}">
+                                        <img ng-src="{{campaigns[0].titleImgUrl}}" height="150"/>
+                                    </a>
+                                </div>
+                            </div>
+                            <ul>
+                                <li ng-repeat="obj in campaigns | limitTo:2">
+                                    <a href="#/news_detail/{{obj.id}}" ng-bind="obj.title"></a>
+                                    <p ng-bind="obj.summary"></p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $("#main_tabs .group_actlist").on('click',function(){
+        $(this).addClass('current').siblings('.current').removeClass('current');
+        $('#group_actlist').show();
+        $("#group_desc").hide();
+    });
+    $("#main_tabs .group_desc").on('click',function(){
+        $(this).addClass('current').siblings('.current').removeClass('current');
+        $('#group_actlist').hide();
+        $("#group_desc").show();
+    });
+</script>
+<div ng-include="'tpl/include/footer.html'"></div>

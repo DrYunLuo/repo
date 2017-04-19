@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <title></title>
+    <script src="js/jquery-1.11.3.js"></script>
+    <style>
+    *{
+    margin:0;
+    padding:0;
+    font-size: 12px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color:#000;
+}
+a{
+    text-decoration:none;
+}
+body{
+    background-color: #eeeeee;
+}
+img{
+    width: 100%;
+}
+.container{
+     width: 100%;
+ }
+.header{
+    width: 100%;
+    background-color:#333;
+    text-align: center;
+    color:#fff;
+}
+.header span{
+	color:#e84c3d;
+}
+.banner{
+
+    width: 100%;
+}
+.banner img{
+    width: 100%;
+}
+.section{
+    width: 100%;
+    background-color: #fff;
+    padding-top: 10px;
+}
+.section .myaside1{
+    width: 47%;
+    display: inline-block;
+    margin-bottom: 10px;
+    padding-left: 5px;
+}
+.myaside1 img{
+    float: left;
+    width: 30px;
+    height: 30px;
+    border-radius:50%;
+    display: inline-block;
+    margin-top:15px;
+}
+.myaside1 .text{
+    float: left;
+    width: 70%;
+    line-height: 100%;
+    display: inline-block;
+
+}
+.text h3{
+    width: 100%;
+    height: 1rem;
+    padding: 8px;
+    font-weight: normal;
+    color: #000;
+}
+.text p{
+    width: 100%;
+    padding: 8px;
+    color: #aaa;
+    font-size: 0.8rem;
+}
+.section .myaside1 .text span{
+    color: #e84c3d;
+}
+.project{
+    width: 100%;
+    text-align: center;
+    position: relative;
+    background-color: #eeeeee;
+    padding: 3px;
+    border-bottom:1px solid #ddd;
+}
+.project input{
+    width:40%;
+    height: 20px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    padding-left: 30px;
+}
+.project img{
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    left: 35%;
+    bottom:5px;
+}
+.main{
+    width: 100%;
+}
+.mydv1{
+    width: 95%;
+    background-color: #eeeeee;
+    padding:8px 10px;
+    border-bottom:1px solid #ddd;
+}
+.mydv1 img{
+    width:20%;
+    height: 60px;
+    vertical-align:bottom;
+    border:0;
+    border-radius: 10px;
+    display: inline-block;
+}
+.baby{
+    width:75%;
+    display: inline-block;
+    padding:0 2px;
+}
+.baby h3{
+    width: 100%;
+    display: inline-block;
+    font-weight: normal;
+    font-size: 1rem;
+}
+.baby p{
+    font-size: 0.6rem;
+    color: #aaa;
+}
+.total{
+    width: 100%;
+}
+.total .myp2{
+    float: left;
+}
+.total .myp3{
+    float: right;
+}
+footer{
+    width:100%;
+    text-align: center;
+    height: 25px;
+    background-color:#eee;
+}
+footer p{
+    display: inline-block;
+    line-height: 25px;
+}
+    </style>
+</head>
+<body>
+    <header class="header">
+        已有
+        <span>1</span>
+        份爱心
+    </header>
+    <div class="banner">
+        <div class="container">
+            <img class="myimg1" src="img/活动详情页_09.png" alt=""/>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="container">
+            <div class="myaside1 aside1">
+                <img src="" alt=""/>
+                <div class="text">
+                    <h3>啊实打实大健康</h3>
+                    <p>共有
+                        <span>1500  </span>
+                        万份爱心</p>
+                </div>
+            </div>
+            <div class="myaside1 aside2">
+                <img src="" alt=""/>
+                <div class="text">
+                    <h3>哈哈哈哈啊哈哈哈</h3>
+                    <p>共有
+                        <span></span>
+                        万份爱心</p>
+                </div>
+            </div>
+            <div class="myaside1 aside3">
+                <img src="" alt=""/>
+                <div class="text">
+                    <h3>哈哈哈哈啊哈哈哈</h3>
+                    <p>共有
+                        <span></span>
+                        万份爱心</p>
+                </div>
+            </div>
+            <div class="myaside1 aside4">
+                <img src="" alt=""/>
+                <div class="text">
+                    <h3>哈哈哈哈啊哈哈哈</h3>
+                    <p>共有
+                        <span></span>
+                        万份爱心</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="project">
+        <div class="container">
+            公益项目
+        </div>
+    </div>
+    <div class="main">
+        
+    </div>
+
+    <footer>
+        <p>爱心捐赠</p>
+        <p>LOVE&ALIPAY</p>
+    </footer>
+</body>
+<script>
+    $(function(){
+    	function GetQueryString(name)
+        {
+            var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if(r!=null)return  unescape(r[2]); return null;
+        }
+    	var vid=GetQueryString('vid');
+        $.get("/fuyang_backend/campaigns/getLovingHeart",function(data){
+        	console.log(data);
+        	$("header span").text(data.data);
+        });
+        var s=0;
+        var f;
+        
+        $.get("/fuyang_backend/campaigns/getBenefit?pageNo=1&pageSize=10",function(result){
+        	console.log(result);
+        	console.log(result.data.list[0].image);
+        	console.log(result.data.list[0].title);
+//	                        第一部分...
+        	$(".section .aside1 img").attr("src",result.data.list[0].image);
+        	$(".section .aside1 h3").text(result.data.list[0].title);
+        	if(result.data.list[0].lovingHeart==null){
+        		s=0;
+        	}else{
+        		s=result.data.list[0].lovingHeart;
+        	}
+        	$(".section .aside1 p span").text(s+'');
+//        	第二部分...
+			
+        	$(".section .aside2 img").attr("src",result.data.list[1].image);
+        	$(".section .aside2 h3").text(result.data.list[1].title);
+        	if(result.data.list[1].lovingHeart==null){
+        		s=0;
+        	}else{
+        		s=result.data.list[1].lovingHeart;
+        	}
+        	$(".section .aside2 p span").text(s+'');
+//        	第三部分...
+			
+        	$(".section .aside3 img").attr("src",result.data.list[2].image);
+        	$(".section .aside3 h3").text(result.data.list[2].title);
+        	if(result.data.list[2].lovingHeart==null){
+        		s=0;
+        	}else{
+        		s=result.data.list[2].lovingHeart;
+        	}
+        	$(".section .aside3 p span").text(s+'');
+//        	第四部分...
+			
+        	$(".section .aside4 img").attr("src",result.data.list[3].image);
+        	$(".section .aside4 h3").text(result.data.list[3].title);
+        	if(result.data.list[3].lovingHeart==null){
+        		s=0;
+        	}else{
+        		s=result.data.list[3].lovingHeart;
+        	}
+        	$(".section .aside4 p span").text(s+'');
+       
+	        var size=result.data.list.length;
+	        var arr1=new Array(size);
+	        for(var i=0;i<size;i++){
+	        	arr1[i]=result.data.list[i].id;
+	        };
+	        console.log(arr1);
+	        for(var i=0;i<size;i++){
+	        	if(result.data.list[i].lovingHeart==null){
+	        		s=0;
+	        	}else{
+	        		s=result.data.list[i].lovingHeart;
+	        	}
+	        	f=Math.ceil(s/(result.data.list[i].captical*10000));
+	        	$(".main").append("<div class='mydv1'><img src='"+result.data.list[i].image+"' alt=''/><div class='baby'><h3>"+result.data.list[i].title+"</h3><p class='myp1'>"+result.data.list[i].location+"</p><div class='dv'><progress value='"+f+"' max='100'></progress><span>"+f+"%</span></div><div class='total'><p class='myp2'>共<span>"+s+"</span>份爱心</p><p class='myp3'>目标<span>"+result.data.list[i].captical+"</span>万元</p></div></div></div>");
+	        };
+//	        $(".main").append("<div class='mydv1'><img src='"+result.data.list[i].image+"' alt=''/><div class='baby'><h3>"+result.data.list[i].title+"</h3><p class='myp1'>"+result.data.list[i].location+"</p><div class='dv'><progress value='"+f+"' max='100'></progress><span>"+f+"%</span></div><div class='total'><p class='myp2'>共<span>"+s+"</span>份爱心</p><p class='myp3'>目标<span>"+result.data.list[i].captical+"</span>万元</p></div></div></div>");
+        
+	        $(".section .myaside1").each(function(key,value){
+	        	$(value).on("click",function(){
+	        		window.location.href="/fuyang_backend/html/activity_donation.html?id="+arr1[key]+"&vid="+vid;
+	        	});
+	        });
+	        
+	        $(".main .mydv1").each(function(key,value){
+	        	$(value).on("click",function(){
+	        		window.location.href="/fuyang_backend/html/activity_donation.html?id="+arr1[key]+"&vid="+vid;
+	        	});
+	        });
+        });
+    });
+</script>
+</html>

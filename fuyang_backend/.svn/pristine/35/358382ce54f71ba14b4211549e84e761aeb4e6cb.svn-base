@@ -1,0 +1,78 @@
+package com.yichuang.fuyang.util;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import org.apache.commons.codec.digest.DigestUtils;
+import org.springframework.util.StringUtils;
+
+/**
+ * 利用工具类封装 通用算法 
+ */
+public class Utils {
+	//private static final String SALT="今天你吃了么?";
+	
+	public static String md5salt(String pwd){
+		return DigestUtils.md5Hex(pwd);
+	}
+	
+	//sh1Hex 加密
+	public static String sh1(String params){
+		return DigestUtils.sha1Hex(params);
+	}
+	
+	
+	//接口加密
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static JsonResult checkKeyParams(String requestParams,String keyParams){
+		JsonResult jsonResult = null;
+		if(StringUtils.isEmpty(keyParams) || !keyParams.equals(Utils.sh1(requestParams))){
+			jsonResult = new JsonResult(1,"接口验证未通过，请核实",null);
+		}
+		return jsonResult;
+	}
+	
+	/**
+	 *  g根据文件名获取文件后缀
+	 * @param fileName
+	 * @return
+	 */
+	public static String getFileSuffix(String fileName){
+		String fileSuffix = "";
+		
+		if(!StringUtils.isEmpty(fileName)){
+			String[] FileNameArr = fileName.split("\\.");
+			
+			if(FileNameArr != null &&  FileNameArr.length>0){
+				fileSuffix = FileNameArr[FileNameArr.length-1];
+				
+			}
+		}
+		return fileSuffix;
+	}
+	
+	/**
+	 *	string 转为Date
+	 * @param dateStr
+	 * @return
+	 */
+	public static Date stringToDate(String dateStr,String formatStr){
+		SimpleDateFormat sdf =new SimpleDateFormat(formatStr);
+		Date parseDate = null;
+		try {
+			parseDate = sdf.parse(dateStr);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return parseDate;
+	}
+	
+	
+	
+	
+	
+}
+
+

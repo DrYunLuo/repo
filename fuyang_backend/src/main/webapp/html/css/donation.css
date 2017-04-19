@@ -1,0 +1,153 @@
+*{
+    margin:0;
+    padding:0;
+    font-size: 12px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color:#000;
+}
+a{
+    text-decoration:none;
+}
+body{
+    background-color: #eeeeee;
+}
+img{
+    width: 100%;
+}
+.container{
+     width: 100%;
+ }
+header {
+    width: 100%;
+    background-color:#333;
+    text-align: center;
+    color:#fff;
+}
+.banner{
+    width: 100%;
+}
+.banner img{
+    width: 100%;
+}
+.section{
+    width: 100%;
+    background-color: #fff;
+    padding-top: 10px;
+}
+.section .myaside1{
+    width: 47%;
+    display: inline-block;
+    margin-bottom: 10px;
+    padding-left: 5px;
+}
+.myaside1 img{
+    float: left;
+    width: 30px;
+    height: 30px;
+    border-radius:50%;
+    display: inline-block;
+    margin-top:15px;
+}
+.myaside1 .text{
+    float: left;
+    width: 70%;
+    line-height: 100%;
+    display: inline-block;
+
+}
+.text h3{
+    width: 100%;
+    height: 1rem;
+    padding: 8px;
+    font-weight: normal;
+    color: #000;
+}
+.text p{
+    width: 100%;
+    padding: 8px;
+    color: #aaa;
+    font-size: 0.8rem;
+}
+span{
+    color: #e84c3d;
+}
+.project{
+    width: 100%;
+    text-align: center;
+    position: relative;
+    background-color: #eeeeee;
+    padding: 3px;
+    border-bottom:1px solid #ddd;
+}
+.project input{
+    width:40%;
+    height: 20px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    padding-left: 30px;
+}
+.project img{
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    left: 35%;
+    bottom:5px;
+}
+.main{
+    width: 100%;
+}
+.mydv1{
+    width: 95%;
+    background-color: #eeeeee;
+    padding:8px 10px;
+    border-bottom:1px solid #ddd;
+}
+.mydv1 img{
+    width:20%;
+    height: 60px;
+    vertical-align:bottom;
+    border:0;
+    border-radius: 10px;
+    display: inline-block;
+}
+.baby{
+    width:75%;
+    display: inline-block;
+    padding:0 2px;
+}
+.baby h3{
+    width: 100%;
+    display: inline-block;
+    font-weight: normal;
+    font-size: 1rem;
+}
+.baby p{
+    font-size: 0.6rem;
+    color: #aaa;
+}
+.total{
+    width: 100%;
+}
+.total .myp2{
+    float: left;
+}
+.total .myp3{
+    float: right;
+}
+footer{
+    width:100%;
+    text-align: center;
+    height: 25px;
+    background-color:#eee;
+}
+footer p{
+    display: inline-block;
+    line-height: 25px;
+}
+
+
+
+
+
+
+

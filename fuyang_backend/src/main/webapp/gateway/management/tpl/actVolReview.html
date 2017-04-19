@@ -1,0 +1,26 @@
+<!-- 组织审核参加活动的志愿者-->
+<div id="actvol_review" ng-controller="actVolReviewCtrl">
+    <div class="table_box">
+        <table id="example2" class="table" cellspacing="0">
+            <thead>
+            <tr>
+                <td>姓名</td>
+                <td>手机号</td>
+                <td>审核状态</td>
+                <td>备注</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="obj in list track by $index">
+                <td>
+                    <a href="#/actVolReviewDetail" ng-bind="obj.realname" ng-click="getId(obj)"></a>
+                </td>
+                <td ng-bind="obj.tel"></td>
+                <td class="notice">待审核</td>
+                <td ng-bind="obj.notes"></td>
+            </tr>
+            </tbody>
+        </table>
+        <div id="actvolun_rvpage"></div>
+    </div>
+</div>

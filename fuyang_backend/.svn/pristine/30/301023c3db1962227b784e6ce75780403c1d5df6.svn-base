@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+ <mapper namespace="com.yichuang.fuyang.dao.ChinaDao">
+ 	
+ 	
+ 	<!-- 根据pid获取地区 -->
+ 	<select id="findByPid" parameterType="integer" resultMap="BaseResultMap">
+ 		select * from china where pid = #{pid}
+ 	</select>
+ 	
+ 	<!-- 根据地区名称模糊查询获取地区id -->
+ 	<select id="findByName" parameterType="String" resultType="com.yichuang.fuyang.entity.China">
+ 		select * from china where name like '%${name}%'
+ 	</select>
+ 	
+ 	<resultMap type="com.yichuang.fuyang.entity.China" id="BaseResultMap">
+ 		<id column="id" property="id"/>
+ 	</resultMap>
+ </mapper>

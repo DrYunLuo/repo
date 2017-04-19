@@ -1,0 +1,51 @@
+<div id="news_edit" ng-controller="newsEditCtrl">
+    <form method="post" enctype="multipart/form-data">
+        <table class="newsEditTable" cellspacing="0" width="100%">
+            <tr>
+                <td>标题：</td>
+                <td><input type="text" id="newsTitle" ng-value="news.title"/></td>
+                <td>作者：</td>
+                <td><input type="text" id="newsAuthor" ng-value="news.author"/></td>
+            </tr>
+            <tr>
+                <td>新闻分类：</td>
+                <td>
+                    <select name="newsType" id="newsType">
+                        <option value="1">通知公告</option>
+                        <option value="2">各区动态</option>
+                        <option value="3">活动信息</option>
+                    </select>
+                </td>
+                <td>标题图片：</td>
+                <td id="uploadPic">
+                    <div>上传图片</div>
+                    <input type="file" id="newsPic" name='file' onchange="uploadPic()"/>
+                </td>
+            </tr>
+            <tr>
+                <td>新闻摘要：</td>
+                <td><textarea id="newsSummary" style="width:267px;height:75px;" ng-bind="news.summary"></textarea></td>
+                <td>图片预览：</td>
+                <td id="picView">
+                   
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">图片设为轮播图：</td>
+                <td>
+                	<label><input name="isPublish" type="radio" value="1" id="isPublishTrue" />是</label>&nbsp;
+                    <label><input name="isPublish" type="radio" value="0" id="isPublishFalse" checked />否</label>
+                </td>
+            </tr>
+            <tr>
+                <td>详细内容：</td>
+                <td colspan="3">
+                    <textarea id="editor_id" name="content" style="width:100%;height:160px;">
+
+                    </textarea>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <div><button id="bt-edit" ng-click="newsSubmit()">提交</button></div>
+</div>

@@ -1,0 +1,32 @@
+<div ng-include="'tpl/include/header.html'"></div>
+<!--********************暖春行动********************-->
+<div id="warm" ng-controller="newsDetailCtrl">
+    <!--********************左半边内容********************-->
+    <div class="warm_left col-xs-12 col-sm-12 col-md-8 col-lg-8">
+        <!--********************左半边内容,标题部分********************-->
+        <div class="news_title">
+            <h3 ng-bind="news.title">关于开展2017年阜阳青年志愿者服务春运 “暖冬行动”
+                <!--<span>(阅读数：106次）</span>-->
+            </h3>
+            <p>文章类别：<span ng-bind="news.newsType">新闻动态</span>&nbsp;&nbsp;作者：<span ng-bind="news.author">悠食有机</span>&nbsp;&nbsp;&nbsp;发布时间：<span ng-bind="news.createdAt"></span></p>
+        </div>
+        <!--********************左半边内容,标题下面部分********************-->
+        <div id="news_content">
+
+        </div>
+    </div>
+    <!--********************右半边内容********************-->
+    <div class="news_right col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <div>
+            <p>热门活动</p>
+            <ul>
+                <li>团颍泉区委联合泉河湾爱心协会到新...</li>
+                <li>颍泉：伍明镇三门中学团委开展“传...</li>
+                <li>阜南举行烈士纪念日祭奠革命烈士活...</li>
+                <li>阜南公益志愿者与孤寡老人欢度国庆</li>
+                <li>界首舒庄镇志愿者赴敬老院慰问温暖...</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div ng-include="'tpl/include/footer.html'"></div>

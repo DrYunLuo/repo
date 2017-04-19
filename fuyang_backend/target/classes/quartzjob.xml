@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='utf-8'?>  
+<job-scheduling-data xmlns="http://www.quartz-scheduler.org/xml/JobSchedulingData"  
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+  xsi:schemaLocation="http://www.quartz-scheduler.org/xml/JobSchedulingData http://www.quartz-scheduler.org/xml/job_scheduling_data_1_8.xsd"  
+  version="1.8">  
+    <schedule>  
+    	<!-- 作业类 -->
+        <job>  
+            <name>grantVTBJob</name>  
+            <group>MYJOB_GROUP</group>  
+            <description>grant VTB to users ...</description>  
+            <job-class>com.yichuang.fuyang.web.common.GrantVTBJob</job-class>  
+        </job>  
+        <!--  触发器 -->
+        <trigger>  
+            <cron>  
+                <name>GetAccessToken_Trigger</name>  
+                <group>MYTRIGGER_GROUP</group>  
+                <job-name>grantVTBJob</job-name>  
+                <job-group>MYJOB_GROUP</job-group>  
+                <cron-expression>0 0 24 * * ?</cron-expression>  
+                <!--   0 0/1 * * * ? -->
+            </cron>  
+        </trigger>  
+    </schedule>  
+</job-scheduling-data>  
